@@ -761,7 +761,6 @@ final_data_2 %>%
   )
 dev.off()
 
-
 # Specify the desired metabolite order (reversed for Pyruvate to appear at the top)
 desired_order <- rev(c(
   "Pyruvate_M0", "Pyruvate_M1", "Pyruvate_M2", "Pyruvate_M3",
@@ -777,7 +776,7 @@ final_data_2 <- final_data_2 %>%
   mutate(Metabolite = factor(Metabolite, levels = desired_order))
 
 # Generate the ggplot heatmap with reversed y-axis
-final_data_2 %>%
+final_data_2_heatmap <- final_data_2 %>%
   ggplot(aes(x = Tissue_Group, y = Metabolite, fill = Avg_Normalized_Value)) +
   geom_tile(color = "grey") +  # Add borders for better readability
   scale_fill_gradient2(
@@ -796,5 +795,8 @@ final_data_2 %>%
     panel.grid.major = element_blank(),                # Remove grid lines
     panel.grid.minor = element_blank()
   )
+
+ggsave(final_data_2_heatmap, filename = "final_data_2_heatmap.pdf", height = 7, width = 7)
+
 
 ```
