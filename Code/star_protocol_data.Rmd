@@ -34,6 +34,7 @@ sapply(packages, install_if_missing)
 
 Setting up the working directory
 ```{r}
+#If using your own working directory, comment the one below (DO NOT DELETE IT) and your own working directory:
 setwd("/Users/isaacmarin-valencia/Desktop/STAR_Protocol/Excel_files")
 
 ```
@@ -728,38 +729,72 @@ final_data_2 <- final_data %>%
   ungroup() %>% 
   unite("Metabolite", Metabolite_1, Ion, sep = "_")  # Unir las columnas Metabolite_1 e Ion
 
-
-
-
 # Pivot data to wide format for heatmap
 heatmap_data <- final_data_2 %>%
   select(Metabolite, Tissue_Group, Avg_Normalized_Value) %>%
-  pivot_wider(names_from = Tissue_Group, values_from = Avg_Normalized_Value, values_fill = 0) %>%
+  pivot_wider(
+    names_from = Tissue_Group, 
+    values_from = Avg_Normalized_Value, 
+    values_fill = list(Avg_Normalized_Value = 0) # Fill missing values with 0 (or NA if you prefer)
+  ) %>%
   column_to_rownames("Metabolite")  # Set rownames for the heatmap
 
-# Convert to matrix
-heatmap_matrix <- as.matrix(heatmap_data)
+# Generate the ggplot heatmap
+final_data_2 %>%
+  ggplot(aes(x = Tissue_Group, y = Metabolite, fill = Avg_Normalized_Value)) +
+  geom_tile(color = "grey") +  # Add borders for better readability
+  scale_fill_gradient2(
+    low = "blue", mid = "white", high = "red", midpoint = 0.2,  # Set midpoint to 0.3
+    na.value = "grey"  # Set color for NA values
+  ) +
+  labs(
+    x = "Tissue Group",
+    y = "Metabolite",
+    fill = "Avg Normalized Value"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis text for readability
+    axis.text.y = element_text(size = 8),              # Adjust y-axis text size
+    panel.grid.major = element_blank(),                # Remove grid lines
+    panel.grid.minor = element_blank()
+  )
+dev.off()
 
-# Define a color palette
-my_palette <- colorRampPalette(c("blue", "white", "red"))(n = 299)
 
-# Plot the heatmap
-heatmap.2(
-  heatmap_matrix,
-  main = "Avg Normalized Value Heatmap",    # Title
-  notecol = "black",                        # Cell label color
-  density.info = "none",                    # Turn off density plot
-  trace = "none",                           # Turn off trace lines
-  margins = c(10, 10),                      # Margins around the plot
-  col = my_palette,                         # Custom color palette
-  dendrogram = "none",                      # No dendrograms
-  Colv = "NA",                              # No column clustering
-  Rowv = FALSE,                             # No row clustering
-  scale = "none",                           # No scaling
-  labRow = rownames(heatmap_matrix),        # Use metabolite (ion) as row labels
-  key = TRUE                                # Include a color key
-)
+# Specify the desired metabolite order (reversed for Pyruvate to appear at the top)
+desired_order <- rev(c(
+  "Pyruvate_M0", "Pyruvate_M1", "Pyruvate_M2", "Pyruvate_M3",
+  "Glutamate_M0", "Glutamate_M1", "Glutamate_M2", "Glutamate_M3", "Glutamate_M4", "Glutamate_M5",
+  "Glutamine_M0", "Glutamine_M1", "Glutamine_M2", "Glutamine_M3", "Glutamine_M4", "Glutamine_M5",
+  "GABA_M0", "GABA_M1", "GABA_M2", "GABA_M3", "GABA_M4",
+  "Succinate_M0", "Succinate_M1", "Succinate_M2", "Succinate_M3", "Succinate_M4",
+  "Fumarate_M0", "Fumarate_M1", "Fumarate_M2", "Fumarate_M3", "Fumarate_M4"
+))
 
+# Update the Metabolite column to follow the reversed desired order
+final_data_2 <- final_data_2 %>%
+  mutate(Metabolite = factor(Metabolite, levels = desired_order))
 
+# Generate the ggplot heatmap with reversed y-axis
+final_data_2 %>%
+  ggplot(aes(x = Tissue_Group, y = Metabolite, fill = Avg_Normalized_Value)) +
+  geom_tile(color = "grey") +  # Add borders for better readability
+  scale_fill_gradient2(
+    low = "blue", mid = "white", high = "red", midpoint = 0.3,  # Set midpoint to 0.3
+    na.value = "grey"  # Set color for NA values
+  ) +
+  labs(
+    x = "Tissue Group",
+    y = "Metabolite",
+    fill = "Avg Normalized Value"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis text for readability
+    axis.text.y = element_text(size = 8),              # Adjust y-axis text size
+    panel.grid.major = element_blank(),                # Remove grid lines
+    panel.grid.minor = element_blank()
+  )
 
 ```
