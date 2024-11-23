@@ -7,37 +7,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-
-
-remotes::install_github(
-  "Neurometabolomics/Abimael-spatial-metabolomics-data-analysis-toolkit",
-  subdir = "AbiMatrix",
-  auth_token = "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",
-  quiet = FALSE
-)
-
-Sys.setenv(GITHUB_PAT = "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")
-# Install remotes package if not already installed
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-
-# Install AbiMatrix from GitHub
-remotes::install_github("Neurometabolomics/Abimael-spatial-metabolomics-data-analysis-toolkit/AbiMatrix")
-
-library(remotes)
-library(AbiMatrix)
-library(Cardinal)
-library(dplyr)
-library(EBImage)
-library(ggplot2)
-library(reshape2)
-library(tidyr)
-library(dplyr)
-library(tidyr)
-library(stringr)
-
-# 1) Install and upload the libraries of the packages.
+#1) Install and upload the libraries of the packages we will use for the code below:
 
 # Function to check if a package is installed and install it if not
 install_if_missing <- function(pkg) {
@@ -47,12 +17,14 @@ install_if_missing <- function(pkg) {
   require(pkg, character.only = TRUE)
 }
 
-# List of packages to be loaded
-packages <- c("plyr","tidyverse", "ggpubr", "readxl", "kableExtra", "ggplot2",
-              "dplyr", "stringr", "tidyr", "RColorBrewer", "forcats",
-              "gridExtra", "pwr", "broom", "gt", "glue", "knitr", "broom", "pwr", "pheatmap",
-              "ComplexHeatmap", "circlize", "gridExtra", "circlize", "grid", "plotly", "webshot2", "stringr", "ggalt", "ggpubr", "rstatix",
-              "forcats")
+packages <- c(
+  "plyr", "tidyverse", "ggpubr", "readxl", "kableExtra", "ggplot2",
+  "dplyr", "stringr", "tidyr", "RColorBrewer", "forcats",
+  "gridExtra", "pwr", "broom", "gt", "glue", "knitr", "broom", "pwr", "pheatmap",
+  "ComplexHeatmap", "circlize", "gridExtra", "circlize", "grid", "plotly", "webshot2", 
+  "stringr", "ggalt", "ggpubr", "rstatix", "forcats", "gplots",
+  "remotes", "AbiMatrix", "Cardinal", "EBImage", "reshape2" # Additional packages
+)
 
 # Load or install the necessary packages
 sapply(packages, install_if_missing)
@@ -725,7 +697,7 @@ final_data <- read.csv("final_msi_data.csv") %>%
               dplyr::select(-mz)
 
 
-# Procesar los datos y agrupar por categorías de tejido
+# Unir las columnas Metabolite_1 e Ion en una sola columna llamada Metabolite
 final_data_2 <- final_data %>%
   separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
   pivot_longer(
@@ -746,13 +718,47 @@ final_data_2 <- final_data %>%
       str_ends(Tissue, "hippo") ~ "Hippo",    # Identificar tejidos que terminan en "hippo"
       str_ends(Tissue, "cereb") ~ "Cereb"     # Identificar tejidos que terminan en "cereb"
     )
-  ) %>% 
+  ) %>%
   group_by(Metabolite_1, Tissue_Group, Ion) %>%
   summarize(
     Avg_Normalized_Value = mean(Normalized_Value, na.rm = TRUE),  # Calcular el promedio
     StdDev_Normalized_Value = sd(Normalized_Value, na.rm = TRUE), # Calcular la desviación estándar
     .groups = "drop"  # Desagrupar después de calcular
-  )
+  ) %>%
+  ungroup() %>% 
+  unite("Metabolite", Metabolite_1, Ion, sep = "_")  # Unir las columnas Metabolite_1 e Ion
+
+
+
+
+# Pivot data to wide format for heatmap
+heatmap_data <- final_data_2 %>%
+  select(Metabolite, Tissue_Group, Avg_Normalized_Value) %>%
+  pivot_wider(names_from = Tissue_Group, values_from = Avg_Normalized_Value, values_fill = 0) %>%
+  column_to_rownames("Metabolite")  # Set rownames for the heatmap
+
+# Convert to matrix
+heatmap_matrix <- as.matrix(heatmap_data)
+
+# Define a color palette
+my_palette <- colorRampPalette(c("blue", "white", "red"))(n = 299)
+
+# Plot the heatmap
+heatmap.2(
+  heatmap_matrix,
+  main = "Avg Normalized Value Heatmap",    # Title
+  notecol = "black",                        # Cell label color
+  density.info = "none",                    # Turn off density plot
+  trace = "none",                           # Turn off trace lines
+  margins = c(10, 10),                      # Margins around the plot
+  col = my_palette,                         # Custom color palette
+  dendrogram = "none",                      # No dendrograms
+  Colv = "NA",                              # No column clustering
+  Rowv = FALSE,                             # No row clustering
+  scale = "none",                           # No scaling
+  labRow = rownames(heatmap_matrix),        # Use metabolite (ion) as row labels
+  key = TRUE                                # Include a color key
+)
 
 
 
