@@ -691,14 +691,14 @@ write.csv(merged_final, "final_msi_data.csv", row.names = FALSE)
 ```
 
 
-Figure barplot from file "final_msi_data.csv"
+Figure heatmap and barplot from file "final_msi_data.csv"
 ```{r}
 #Load the library:
 final_data <- read.csv("final_msi_data.csv") %>% 
               dplyr::select(-mz)
 
 
-# Unir las columnas Metabolite_1 e Ion en una sola columna llamada Metabolite
+#Create a dataframe to make the data suitable for plotting:
 final_data_2 <- final_data %>%
   separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
   pivot_longer(
@@ -729,39 +729,7 @@ final_data_2 <- final_data %>%
   ungroup() %>% 
   unite("Metabolite", Metabolite_1, Ion, sep = "_")  # Unir las columnas Metabolite_1 e Ion
 
-# Pivot data to wide format for heatmap
-heatmap_data <- final_data_2 %>%
-  select(Metabolite, Tissue_Group, Avg_Normalized_Value) %>%
-  pivot_wider(
-    names_from = Tissue_Group, 
-    values_from = Avg_Normalized_Value, 
-    values_fill = list(Avg_Normalized_Value = 0) # Fill missing values with 0 (or NA if you prefer)
-  ) %>%
-  column_to_rownames("Metabolite")  # Set rownames for the heatmap
-
-# Generate the ggplot heatmap
-final_data_2 %>%
-  ggplot(aes(x = Tissue_Group, y = Metabolite, fill = Avg_Normalized_Value)) +
-  geom_tile(color = "grey") +  # Add borders for better readability
-  scale_fill_gradient2(
-    low = "blue", mid = "white", high = "red", midpoint = 0.2,  # Set midpoint to 0.3
-    na.value = "grey"  # Set color for NA values
-  ) +
-  labs(
-    x = "Tissue Group",
-    y = "Metabolite",
-    fill = "Avg Normalized Value"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis text for readability
-    axis.text.y = element_text(size = 8),              # Adjust y-axis text size
-    panel.grid.major = element_blank(),                # Remove grid lines
-    panel.grid.minor = element_blank()
-  )
-dev.off()
-
-# Specify the desired metabolite order (reversed for Pyruvate to appear at the top)
+# Specify the desired metabolite order (reversed for Pyruvate to appear at the top):
 desired_order <- rev(c(
   "Pyruvate_M0", "Pyruvate_M1", "Pyruvate_M2", "Pyruvate_M3",
   "Glutamate_M0", "Glutamate_M1", "Glutamate_M2", "Glutamate_M3", "Glutamate_M4", "Glutamate_M5",
@@ -796,7 +764,40 @@ final_data_2_heatmap <- final_data_2 %>%
     panel.grid.minor = element_blank()
   )
 
-ggsave(final_data_2_heatmap, filename = "final_data_2_heatmap.pdf", height = 7, width = 7)
+ggsave(final_data_2_heatmap, filename = "final_data_2_heatmap.pdf", height = 7, width = 4)
 
+
+#Barplot with Glutamate, glutamine, GABA, and other pyruvate:
+final_data_2_barplot <- final_data_2 %>%
+  separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
+  filter(Metabolite_1 %in% c("Glutamate", "Glutamine", "GABA", "Fumarate"),
+         Ion %in% c("M0", "M2"),
+         Tissue_Group %in% c("Cereb", "Cortex")) %>%
+  mutate(Metabolite_1 = factor(Metabolite_1, levels = c("Glutamate", "Glutamine", "GABA", "Fumarate"))) %>%  # Set facet order
+  ggplot(aes(x = Tissue_Group, y = Avg_Normalized_Value, fill = Ion)) +
+  geom_errorbar(aes(ymin = Avg_Normalized_Value - StdDev_Normalized_Value,
+                    ymax = Avg_Normalized_Value + StdDev_Normalized_Value, color = Ion),
+                position = position_dodge(width = 1), width = 0.2) +  # Error bars
+  geom_bar(stat = "identity", position = position_dodge(width = 1)) +  # Bar plot with dodge for grouping
+  facet_wrap(~ Metabolite_1, scales = "free_y") +  # Facet by metabolite
+  scale_color_manual(values = c("dodgerblue1", "red")) +  # Color error bars
+  scale_fill_manual(values = c("dodgerblue1", "red")) +  # Color bars
+  labs(
+    x = "Brain Region",
+    y = "Avg Normalized Value",
+    fill = "Isotopologue"
+  ) +
+  scale_y_continuous(name = "Ratio", expand = c(0, 0), breaks = seq(0, 1.2, 0.2)) +
+  theme(
+    axis.title.y = element_text(color = "black"),
+    axis.title.y.right = element_text(color = "blue"),
+    axis.text = element_text(size = 12, color = "black", family = "Helvetica"),
+    axis.title = element_text(size = 12, face = "bold", color = "black"),
+    axis.text.x = element_text(angle = 0, hjust = 0.5, vjust = 1.2, color = "black")
+  ) +
+  coord_cartesian(ylim = c(0, 1))
+
+  
+ggsave(final_data_2_barplot, filename = "final_data_2_barplot.pdf", height = 6, width = 6)
 
 ```
