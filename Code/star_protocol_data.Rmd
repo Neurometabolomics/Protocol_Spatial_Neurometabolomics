@@ -767,7 +767,7 @@ final_data_2_heatmap <- final_data_2 %>%
 ggsave(final_data_2_heatmap, filename = "final_data_2_heatmap.pdf", height = 7, width = 4)
 
 
-#Barplot with Glutamate, glutamine, GABA, and other pyruvate:
+#Barplot with Glutamate, Glutamine, GABA, and Pyruvate:
 final_data_2_barplot <- final_data_2 %>%
   separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
   filter(Metabolite_1 %in% c("Glutamate", "Glutamine", "GABA", "Fumarate"),
