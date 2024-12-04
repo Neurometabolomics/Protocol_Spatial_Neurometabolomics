@@ -1,0 +1,25 @@
+ISOCORRECTOR LOG-FILE - 2024-12-04 16:27:20.260054
+IsoCorrectoR-version: 1.22.0
+
+IsoCorrectoR is free software and comes without any warranty.
+
+FILES AND DIRECTORIES
+
+Measurement File: measure_file.csv
+Molecule File: molecule_file.csv
+Element File: element_file.csv
+Working Directory: /Users/numliapmacprom2/Documents/GitHub/STAR_Protocol/Code
+Output Directory: /Users/numliapmacprom2/Documents/GitHub/STAR_Protocol/Code/2024-12-04_162720
+Result File(s): IsoCorrectoR_corrected_data_Corrected.csv, IsoCorrectoR_corrected_data_CorrectedFractions.csv, IsoCorrectoR_corrected_data_Residuals.csv, IsoCorrectoR_corrected_data_RelativeResiduals.csv, IsoCorrectoR_corrected_data_MeanEnrichment.csv, IsoCorrectoR_corrected_data_RawData.csv
+
+PARAMETERS
+
+Correction for tracer impurity: TRUE
+Correction of tracer element in core molecule: TRUE
+Ultra-High-Resolution correction mode: FALSE
+Calculation of mean enrichment: TRUE
+Molecules in the correction process: Fumarate, GABA, Glutamate, Glutamine, Pyruvate, Succinate
+Tracer(s): C
+Tracer purity: 0.99
+Limit value for calculation: 1e-08
+

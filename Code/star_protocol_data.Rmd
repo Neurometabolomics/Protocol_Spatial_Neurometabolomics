@@ -23,7 +23,7 @@ packages <- c(
   "gridExtra", "pwr", "broom", "gt", "glue", "knitr", "broom", "pwr", "pheatmap",
   "ComplexHeatmap", "circlize", "gridExtra", "circlize", "grid", "plotly", "webshot2", 
   "stringr", "ggalt", "ggpubr", "rstatix", "forcats", "gplots",
-  "remotes", "AbiMatrix", "Cardinal", "EBImage", "reshape2" # Additional packages
+  "remotes", "AbiMatrix", "Cardinal", "EBImage", "reshape2", "IsoCorrectoR" # Additional packages
 )
 
 # Load or install the necessary packages
@@ -690,12 +690,97 @@ write.csv(merged_final, "final_msi_data.csv", row.names = FALSE)
 # code location on labarchive: https://mynotebook.labarchives.com/NzYyOTM4Ljh8NTg2ODc2LzU4Njg3Ni9Ob3RlYm9vay8xMjgwOTM4ODM1fDE5MzY2OTAuNzk5OTk5OTk5OA==/page/1712891-2606
 ```
 
+```{r}
+
+prepIsocoR <- function(measure_file = NA, molecule_file = NA, element_file = NA, outdir = ".") {
+  # check input
+  if (is.null(measure_file) || !is.data.frame(measure_file)) {
+    stop("Please provide a valid data frame for the measurement file.")
+  }
+  
+  # Rename column name
+  colnames(measure_file)[-1] <- paste0("Sample", seq_along(colnames(measure_file)[-1]))
+  colnames(measure_file)[1] <- "Measurements/Samples"
+  
+  # Rename row name
+  #measure_file$`Measurements/Samples` <- gsub("Glutamate", "Glu", measure_file$`Measurements/Samples`)
+  #measure_file$`Measurements/Samples` <- gsub("Glutamine", "Gln", measure_file$`Measurements/Samples`)
+  measure_file$`Measurements/Samples` <- gsub("M", "", measure_file$`Measurements/Samples`)
+  
+  rownames(measure_file) <- NULL
+  
+  measure_file_path <- file.path(outdir, "measure_file.csv")
+  write.csv(measure_file, file = measure_file_path, row.names = FALSE)
+  
+  metabolites <- c("Fumarate", "GABA", "Glutamate", "Glutamine", "Pyruvate", "Succinate")
+  formulas <- c("C4H4O4LabC4", "C4H9N1O2LabC4", "C5H9N1O4LabC5", "C5H10N2O3LabC5", "C3H4O3LabC3", "C4H6O4LabC4")
+  neutral_loss <- c(NA, NA, NA, NA, NA, NA)
+  
+  molecule_file <- data.frame(
+    Molecule = metabolites,
+    `MS ion or MS/MS product ion` = formulas,
+    `MS/MS neutral loss` = neutral_loss
+  )
+  
+  colnames(molecule_file) <- c(
+    "Molecule",
+    "MS ion or MS/MS product ion",
+    "MS/MS neutral loss"
+  )
+  
+  write.csv(molecule_file, file = "molecule_file.csv", row.names = FALSE)
+  
+  # Create a data frame for the element file
+  element_file <- data.frame(
+    Element = c("C", "H", "N", "O"),
+    `Isotope abundance_Mass shift` = c(
+      "0.0107_1/0.9893_0",  # Carbon isotopes
+      "0.000115_1/0.999885_0",  # Hydrogen isotopes
+      "0.99632_0/0.00368_1",  # Nitrogen isotopes
+      "0.99757_0/0.00038_1/0.00205_2"  # Oxygen isotopes
+    ),
+    `Tracer isotope mass shift` = c(1, 1, 1, 2),
+    `Tracer purity` = c(0.99, 0.99, 0.99, 0.99)
+  )
+  
+  colnames(element_file) <- c(
+    "Element",
+    "Isotope abundance_Mass shift",
+    "Tracer isotope mass shift",
+    "Tracer purity"
+  )
+
+  write.csv(element_file, file = "element_file.csv", row.names = FALSE)
+  
+  invisible(NULL)
+}
+
+prepIsocoR(measure_file = final_data)
+
+IsoCorrection(
+    MeasurementFile = "measure_file.csv",
+    MoleculeFile = "molecule_file.csv",
+    ElementFile = "element_file.csv",
+    DirOut = ".",                       # Output directory
+    FileOut = "corrected_data",         # Output file name
+    FileOutFormat = "csv",              # Output file format
+    CorrectTracerImpurity = TRUE,
+    CorrectTracerElementCore = TRUE,
+    CalculateMeanEnrichment = TRUE
+)
+
+```
 
 Figure heatmap and barplot from file "final_msi_data.csv"
 ```{r}
 #Load the library:
-final_data <- read.csv("final_msi_data.csv") %>% 
+final_data <- read.csv("../Excel_files/final_msi_data.csv") %>% 
               dplyr::select(-mz)
+
+
+corrected_final_data <- read.csv("2024-12-04_162720/IsoCorrectoR_corrected_data_Corrected.csv")
+corrected_final_data$X <- gsub("_(\\d+)$", "_M\\1", corrected_final_data$X)
+names(corrected_final_data) <- names(final_data)
 
 
 #Create a dataframe to make the data suitable for plotting:
@@ -801,3 +886,6 @@ final_data_2_barplot <- final_data_2 %>%
 ggsave(final_data_2_barplot, filename = "final_data_2_barplot.pdf", height = 6, width = 6)
 
 ```
+
+
+
