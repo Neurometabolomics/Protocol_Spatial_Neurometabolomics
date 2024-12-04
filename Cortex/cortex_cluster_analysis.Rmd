@@ -2,6 +2,8 @@
 title: "Cluster analysis"
 output: html_document
 date: "2024-11-25"
+editor_options: 
+  chunk_output_type: console
 ---
 
 load library
@@ -16,8 +18,20 @@ library(stringi)
 library(tidyr)
 ```
 
-Read all in put file
+Set up the working directory
+```{r}
+setwd("/Users/isaacmarin-valencia/Desktop/STAR_Protocol_Cereb/Cortex")
 
+```
+
+
+Open the RData file (remove any RData loaded before)
+```{r}
+load("~/Desktop/STAR_Protocol_Cereb/Cereb/cortex.RData")
+```
+
+
+Read all in put file
 ```{r}
 readCluster <- function(cluster_name, number_of_cluster) {
   df <- NULL
@@ -541,8 +555,9 @@ p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) 
        x = "Cluster",
        y = "Intensity",
        fill = "Super class") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(hjust = 1))
+ scale_y_continuous(name= "Ratio", expand=c(0,0))+
+
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
 
 print(p1)
 ```

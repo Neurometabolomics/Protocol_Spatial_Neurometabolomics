@@ -2,6 +2,8 @@
 title: "Cluster analysis"
 output: html_document
 date: "2024-11-25"
+editor_options: 
+  chunk_output_type: console
 ---
 
 load library
@@ -14,10 +16,25 @@ library(ggplot2)
 library(reshape2)
 library(stringi)
 library(tidyr)
+
+# install.packages("geomtextpath")
+
 ```
 
-Read all in put file
+Set up the working directory
+```{r}
+setwd("/Users/isaacmarin-valencia/Desktop/STAR_Protocol_Cereb/Cereb")
 
+```
+
+
+Open the RData file
+```{r}
+load("~/Desktop/STAR_Protocol_Cereb/Cereb/cereb_cluster_analysis.RData")
+```
+
+
+Read all in put file
 ```{r}
 readCluster <- function(cluster_name, number_of_cluster) {
   df <- NULL
@@ -526,8 +543,8 @@ superclass_data <- summarized_for_donut |>
 
 ```
 
-Plot test
 
+Plot test. Plot for Figure 
 ```{r}
 long_barplot1 <- summarized_for_barplot |>
   pivot_longer(cols = starts_with("Intensity"),
