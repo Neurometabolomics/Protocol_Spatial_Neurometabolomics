@@ -16,6 +16,7 @@ library(ggplot2)
 library(reshape2)
 library(stringi)
 library(tidyr)
+library(dplyr)
 ```
 
 Set up the working directory
@@ -541,12 +542,34 @@ superclass_data <- summarized_for_donut |>
 
 Plot test. Plot for the figure
 ```{r}
+# Original table1:
+
+table1 <- tibble::tibble(
+  Mainclass = c("Ornithine alkaloids", "Pyridine alkaloids", "Other alkaloids", 
+                "Benzenes", "Monosaccharides", "Fatty acids", 
+                "Other fatty acyls", "Pyrimidines", "Other nucleic acids", 
+                "Amino acids and peptides", "Other organic acids", 
+                "Organonitrogen compounds", "Other organic nitrogen compounds", 
+                "Azoles", "Other organoheterocyclic compounds", 
+                "Cinnamic acids and derivatives", "Bile acids"),
+  Mainclass.color = c("#F8766DB5", "#F8766DB8", "#F8766DBB", 
+                      "#DE8C00BE", "#DEAC00C2", "#7CAE00C4", 
+                      "#7CAE00C8", "#00C08BCA", "#00C08BCE", 
+                      "#00B4F0D0", "#00B4F0D3", "#619CFFD6", 
+                      "#619CFFDA", "#C77CFFDC", "#C77CFFE0", 
+                      "#F564E3E2", "#FF64B0E5")
+)
+
 long_barplot1 <- summarized_for_barplot |>
   pivot_longer(cols = starts_with("Intensity"),
                names_to = "Cluster",
                values_to = "Intensity") |>
   mutate(Cluster = sub("Intensity\\.cluster", "", Cluster),
-         Cluster = factor(Cluster, levels = as.character(1:20)))
+         Cluster = factor(Cluster, levels = as.character(1:20))) 
+
+# Assign consistent colors from table1 to table_subset
+long_barplot1 <- long_barplot1 %>%
+  left_join(table1, by = "Mainclass")
 
 p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) +
   geom_bar(stat = "identity", position = "stack") +
@@ -555,34 +578,33 @@ p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) 
        y = "Intensity",
        fill = "Super class") +
  scale_y_continuous(name= "Ratio", expand=c(0,0))+
+ theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
 
-  theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
-
-print(p1)
+p1
 
 ggsave(p1 ,filename = "p1_cortex.pdf",width = 7,height=4)
 
 ```
 
 ```{r}
-long_barplot2 <- summarized_for_barplot |>
-  pivot_longer(cols = starts_with("Intensity"),
-               names_to = "Cluster",
-               values_to = "Intensity") |>
-  mutate(Cluster = sub("Intensity\\.cluster", "", Cluster),
-         Cluster = factor(Cluster, levels = as.character(1:20)))
-
-# Plot barplot for Mainclass
-p2 <- ggplot(long_barplot2, aes(x = Cluster, y = Intensity, fill = Mainclass)) +
-  geom_bar(stat = "identity", position = "stack") +
-  labs(title = "Stacked Barplot: Mainclass by Clusters",
-       x = "Cluster",
-       y = "Intensity",
-       fill = "Mainclass") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-print(p2)
+# long_barplot2 <- summarized_for_barplot |>
+#   pivot_longer(cols = starts_with("Intensity"),
+#                names_to = "Cluster",
+#                values_to = "Intensity") |>
+#   mutate(Cluster = sub("Intensity\\.cluster", "", Cluster),
+#          Cluster = factor(Cluster, levels = as.character(1:20)))
+# 
+# # Plot barplot for Mainclass
+# p2 <- ggplot(long_barplot2, aes(x = Cluster, y = Intensity, fill = Mainclass)) +
+#   geom_bar(stat = "identity", position = "stack") +
+#   labs(title = "Stacked Barplot: Mainclass by Clusters",
+#        x = "Cluster",
+#        y = "Intensity",
+#        fill = "Mainclass") +
+#   theme_minimal() +
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# 
+# print(p2)
 
 ```
 
