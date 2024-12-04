@@ -801,3 +801,128 @@ final_data_2_barplot <- final_data_2 %>%
 ggsave(final_data_2_barplot, filename = "final_data_2_barplot.pdf", height = 6, width = 6)
 
 ```
+
+
+Figure 4C Cortex
+
+Set up the working directory
+```{r}
+setwd("/Users/isaacmarin-valencia/Desktop/STAR_Protocol_Cereb/Cortex")
+
+```
+
+
+Open the RData file (remove any RData loaded before)
+```{r}
+load("~/Desktop/STAR_Protocol_Cereb/Cortex/cortext.RData")
+```
+
+Plot test. Plot for the figure
+```{r}
+# Original table1:
+
+table1 <- tibble::tibble(
+  Mainclass = c("Ornithine alkaloids", "Pyridine alkaloids", "Other alkaloids", 
+                "Benzenes", "Monosaccharides", "Fatty acids", 
+                "Other fatty acyls", "Pyrimidines", "Other nucleic acids", 
+                "Amino acids and peptides", "Other organic acids", 
+                "Organonitrogen compounds", "Other organic nitrogen compounds", 
+                "Azoles", "Other organoheterocyclic compounds", 
+                "Cinnamic acids and derivatives", "Bile acids"),
+  Mainclass.color = c("#F8766DB5", "#F8766DB8", "#F8766DBB", 
+                      "#DE8C00BE", "#DEAC00C2", "#7CAE00C4", 
+                      "#7CAE00C8", "#00C08BCA", "#00C08BCE", 
+                      "#00B4F0D0", "#00B4F0D3", "#619CFFD6", 
+                      "#619CFFDA", "#C77CFFDC", "#C77CFFE0", 
+                      "#F564E3E2", "#FF64B0E5")
+)
+
+long_barplot1 <- summarized_for_barplot |>
+  pivot_longer(cols = starts_with("Intensity"),
+               names_to = "Cluster",
+               values_to = "Intensity") |>
+  mutate(Cluster = sub("Intensity\\.cluster", "", Cluster),
+         Cluster = factor(Cluster, levels = as.character(1:20))) 
+
+# Assign consistent colors from table1 to table_subset
+long_barplot1 <- long_barplot1 %>%
+  left_join(table1, by = "Mainclass")
+
+p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Stacked Barplot: Superclass by Clusters",
+       x = "Cluster",
+       y = "Intensity",
+       fill = "Super class") +
+ scale_y_continuous(name= "Ratio", expand=c(0,0))+
+ theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
+
+p1
+
+ggsave(p1 ,filename = "p1_cortex.pdf",width = 7,height=4)
+
+```
+
+
+Figure 4C Cerebellum
+
+Set up the working directory
+```{r}
+setwd("/Users/isaacmarin-valencia/Desktop/STAR_Protocol_Cereb/Cereb")
+
+```
+
+
+Open the RData file
+```{r}
+load("~/Desktop/STAR_Protocol_Cereb/Cereb/cereb_cluster_analysis.RData")
+```
+
+```{r}
+# Original table1:
+
+table1 <- tibble::tibble(
+  Mainclass = c("Ornithine alkaloids", "Pyridine alkaloids", "Other alkaloids", 
+                "Benzenes", "Monosaccharides", "Fatty acids", 
+                "Other fatty acyls", "Pyrimidines", "Other nucleic acids", 
+                "Amino acids and peptides", "Other organic acids", 
+                "Organonitrogen compounds", "Other organic nitrogen compounds", 
+                "Azoles", "Other organoheterocyclic compounds", 
+                "Cinnamic acids and derivatives", "Bile acids"),
+  Mainclass.color = c("#F8766DB5", "#F8766DB8", "#F8766DBB", 
+                      "#DE8C00BE", "#DEAC00C2", "#7CAE00C4", 
+                      "#7CAE00C8", "#00C08BCA", "#00C08BCE", 
+                      "#00B4F0D0", "#00B4F0D3", "#619CFFD6", 
+                      "#619CFFDA", "#C77CFFDC", "#C77CFFE0", 
+                      "#F564E3E2", "#FF64B0E5")
+)
+
+long_barplot1 <- summarized_for_barplot |>
+  pivot_longer(cols = starts_with("Intensity"),
+               names_to = "Cluster",
+               values_to = "Intensity") |>
+  mutate(Cluster = sub("Intensity\\.cluster", "", Cluster),
+         Cluster = factor(Cluster, levels = as.character(1:20))) 
+
+# Assign consistent colors from table1 to table_subset
+long_barplot1 <- long_barplot1 %>%
+  left_join(table1, by = "Mainclass")
+
+long_barplot1 %>% 
+  distinct(Superclass, .keep_all = TRUE)
+
+p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Stacked Barplot: Superclass by Clusters",
+       x = "Cluster",
+       y = "Intensity",
+       fill = "Super class") +
+ scale_y_continuous(name= "Ratio", expand=c(0,0))+
+ theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
+
+p1
+
+ggsave(p1 ,filename = "p1_cereb.pdf",width = 7,height=4)
+
+
+```
