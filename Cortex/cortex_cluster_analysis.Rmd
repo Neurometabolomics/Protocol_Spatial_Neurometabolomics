@@ -28,7 +28,7 @@ setwd("/Users/isaacmarin-valencia/Desktop/STAR_Protocol_Cereb/Cortex")
 
 Open the RData file (remove any RData loaded before)
 ```{r}
-load("~/Desktop/STAR_Protocol_Cereb/Cereb/cortex.RData")
+load("~/Desktop/STAR_Protocol_Cereb/Cortex/cortext.RData")
 ```
 
 
