@@ -539,8 +539,7 @@ superclass_data <- summarized_for_donut |>
 
 ```
 
-Plot test
-
+Plot test. Plot for the figure
 ```{r}
 long_barplot1 <- summarized_for_barplot |>
   pivot_longer(cols = starts_with("Intensity"),
@@ -560,6 +559,9 @@ p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) 
   theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
 
 print(p1)
+
+ggsave(p1 ,filename = "p1_cortex.pdf",width = 7,height=4)
+
 ```
 
 ```{r}
@@ -581,6 +583,7 @@ p2 <- ggplot(long_barplot2, aes(x = Cluster, y = Intensity, fill = Mainclass)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 print(p2)
+
 ```
 
 ```{r}
