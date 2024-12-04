@@ -1,0 +1,802 @@
+---
+title: "Cluster analysis"
+output: html_document
+date: "2024-11-25"
+---
+
+load library
+
+```{r setup, include=FALSE}
+library(curl)
+library(dplyr)
+library(geomtextpath)
+library(ggplot2)
+library(reshape2)
+library(stringi)
+library(tidyr)
+```
+
+Read all in put file
+
+```{r}
+readCluster <- function(cluster_name, number_of_cluster) {
+  df <- NULL
+  for (i in 1:number_of_cluster) {
+    file <- paste0(cluster_name, i, ".csv")
+    if (i == 1) {
+      df <- read.csv(file)
+      colnames(df)[colnames(df) == "Intensity"] <- paste0("Intensity", ".cluster", i)
+    } else {
+      tmp_df <- read.csv(file)
+      colnames(tmp_df)[colnames(tmp_df) == "Intensity"] <- paste0("Intensity", ".cluster", i)
+      df <- merge(df, tmp_df)
+    }
+  }
+  return(df)
+} 
+
+
+cluster <- readCluster("ClusterNo.", 20)
+data_matrix <- read.csv("Data_Matrix_with_tag.csv")
+
+```
+
+process tag file
+
+```{r}
+tag <- NULL
+tag <- data.frame(
+  m.z = round(data_matrix$m.z, 4),
+  Label = data_matrix$Label
+)
+
+```
+
+Use RefMet for classification
+
+```{r}
+met_list <- stri_join_list(list(tag$Label), sep = "\n")
+h <- new_handle()
+handle_setform(h, metabolite_name = met_list)
+req <- curl_fetch_memory("https://www.metabolomicsworkbench.org/databases/refmet/name_to_refmet_new_minID.php", handle = h)
+
+refmet <- read.table(
+  text = rawToChar(req$content),
+  header = TRUE,
+  na.strings = "-",
+  stringsAsFactors = FALSE,
+  quote = "",
+  comment.char = "",
+  sep = "\t"
+)
+
+refmet[is.na(refmet)] <- "-"
+refmet[refmet == ""] <- "-"
+
+```
+
+Check missing label
+
+```{r}
+filtered_refmet <- subset(refmet, is.na(Standardized.name))
+```
+
+Manually add them to refmet
+
+```{r}
+addRef <- function(data_frame, met_file) {
+  
+  met <- read.csv(met_file)
+  
+  ref <- data.frame(
+    Input.name = met$sys_name,
+    Standardized.name = met$name,
+    Formula = met$formula,
+    Exact.mass = met$exactmass,
+    Super.class = met$cf_superclass,
+    Main.class = met$cf_class,
+    Sub.class = met$cf_subclass,
+    PubChem_CID = met$pubchem_cid,
+    ChEBI_ID = met$chebi_id,
+    HMDB_ID = met$hmdb_id,
+    LM_ID = met$lm_id,
+    KEGG_ID = met$kegg_id,
+    INCHI_KEY = met$inchi_key,
+    RefMet_ID = met$regno
+  )
+  
+  data_frame <- data_frame |>
+  left_join(ref, by = "Input.name", suffix = c("_original", "_ref")) |>
+  mutate(across(
+    ends_with("_original"),
+    ~ ifelse(. %in% c("-", NA), get(sub("_original", "_ref", cur_column())), .),
+    .names = "{.col}"
+  )) |>
+  rename_with(~ sub("_original", "", .), ends_with("_original")) |>
+  select(names(data_frame))
+
+  return(data_frame)  
+}
+
+refmet <- addRef(refmet, "MWSD148427.csv")
+
+# Use DL-a- hydroxyglutaric acid to represent (R)-(-)-citramalic acid/DL-a- hydroxyglutaric acid
+# due to higher natural abundance
+refmet[16, 1] <- "(3R)-3-hydroxy-4-(trimethylazaniumyl)butanoate"
+refmet[17, 1] <- "(3R)-3-hydroxy-4-(trimethylazaniumyl)butanoate"
+refmet[18, 1] <- "(3R)-3-hydroxy-4-(trimethylazaniumyl)butanoate"
+refmet <- addRef(refmet, "MWSD42914.csv")
+
+# Use gamma(amino)-butyric acid to represent 2-aminobutyrate/gamma(amino)-butyric acid
+# due to higher natural abundance
+refmet[43, 1] <- "4-amino-butanoic acid"
+refmet[44, 1] <- "4-amino-butanoic acid"
+refmet[45, 1] <- "4-amino-butanoic acid"
+refmet <- addRef(refmet, "MWSD1864.csv")
+
+# Use 2-hydroxypropane-1,2,3-tricarboxylic acid to represent 2-hydroxypropane-1,2,3-tricarboxylic acid/isocitrate
+# due to higher natural abundance
+refmet[58, 1] <- "2-hydroxypropane-1,2,3-tricarboxylic acid"
+refmet[59, 1] <- "2-hydroxypropane-1,2,3-tricarboxylic acid"
+refmet[60, 1] <- "2-hydroxypropane-1,2,3-tricarboxylic acid"
+refmet <- addRef(refmet, "MWSD37071.csv")
+
+# Use 3,4-Dihydroxyphenylacetate to represent 3,4-Dihydroxyphenylacetate/Homogentisate
+# due to higher natural abundance
+refmet[73, 1] <- "2-(3,4-dihydroxyphenyl)acetic acid"
+refmet[74, 1] <- "2-(3,4-dihydroxyphenyl)acetic acid"
+refmet[75, 1] <- "2-(3,4-dihydroxyphenyl)acetic acid"
+refmet <- addRef(refmet, "MWSD37733.csv")
+
+# Use 4-hydroxyphenylacetate to represent 3-hydroxyphenylacetate/4-hydroxyphenylacetate
+# due to higher natural abundance
+refmet[82, 1] <- "4-hydroxyphenyl acetate"
+refmet[83, 1] <- "4-hydroxyphenyl acetate"
+refmet[84, 1] <- "4-hydroxyphenyl acetate"
+refmet <- addRef(refmet, "MWSD54341.csv")
+
+# Use pimelate to represent 3-methyladipic acid/pimelate (heptanedioate)
+# due to higher natural abundance
+refmet[88, 1] <- "Heptanedioic acid"
+refmet[89, 1] <- "Heptanedioic acid"
+refmet[90, 1] <- "Heptanedioic acid"
+refmet <- addRef(refmet, "MWSD1973.csv")
+
+# Use Norepinephrine to represent 4,5-bis(hydroxymethyl)-2-methylpyridin-3-ol/Norepinephrine (noradrenaline)
+# due to higher natural abundance
+refmet[91, 1] <- "4-[(1R)-2-amino-1-hydroxyethyl]benzene-1,2-diol"
+refmet[92, 1] <- "4-[(1R)-2-amino-1-hydroxyethyl]benzene-1,2-diol"
+refmet[93, 1] <- "4-[(1R)-2-amino-1-hydroxyethyl]benzene-1,2-diol"
+refmet <- addRef(refmet, "MWSD37141.csv")
+
+# Use 4-Aminobenzoate to represent 4-Aminobenzoate/anthranilate
+# due to higher natural abundance
+refmet[97, 1] <- "4-aminobenzoic acid"
+refmet[98, 1] <- "4-aminobenzoic acid"
+refmet[99, 1] <- "4-aminobenzoic acid"
+refmet <- addRef(refmet, "MWSD37770.csv")
+
+# Use 4'-Hydroxyflavanone to represent 4'-Hydroxyflavanone/6-Hydroxyflavanone
+# due to higher natural abundance
+refmet[103, 1] <- "(2S)-2-(4-hydroxyphenyl)-2,3-dihydro-4H-chromen-4-one"
+refmet[104, 1] <- "(2S)-2-(4-hydroxyphenyl)-2,3-dihydro-4H-chromen-4-one"
+refmet[105, 1] <- "(2S)-2-(4-hydroxyphenyl)-2,3-dihydro-4H-chromen-4-one"
+refmet <- addRef(refmet, "MWSD56440.csv")
+
+# Use thymine to represent 4-imidazoleacetate/thymine
+# due to higher natural abundance
+refmet[106, 1] <- "5-methyl-1,2,3,4-tetrahydropyrimidine-2,4-dione"
+refmet[107, 1] <- "5-methyl-1,2,3,4-tetrahydropyrimidine-2,4-dione"
+refmet[108, 1] <- "5-methyl-1,2,3,4-tetrahydropyrimidine-2,4-dione"
+refmet <- addRef(refmet, "MWSD37168.csv")
+
+# Use L-Hydroxyproline to represent 5-Aminolevulinate/L-Hydroxyproline
+# due to higher natural abundance
+refmet[109, 1] <- "(4S)-4-hydroxy-L-proline"
+refmet[110, 1] <- "(4S)-4-hydroxy-L-proline"
+refmet[111, 1] <- "(4S)-4-hydroxy-L-proline"
+refmet <- addRef(refmet, "MWSD51705.csv")
+
+# Use L-valine to represent 5-aminovalerate/L-valine
+# due to higher natural abundance
+refmet[112, 1] <- "(2S)-2-amino-3-methylbutanoic acid"
+refmet[113, 1] <- "(2S)-2-amino-3-methylbutanoic acid"
+refmet[114, 1] <- "(2S)-2-amino-3-methylbutanoic acid"
+refmet <- addRef(refmet, "MWSD37484.csv")
+
+refmet[118, 1] <- "(2S)-2-amino-4-{[(1R)-1-[(carboxymethyl)carbamoyl]-2-sulfanylethyl]carbamoyl}butanoic acid"
+refmet[119, 1] <- "(2S)-2-amino-4-{[(1R)-1-[(carboxymethyl)carbamoyl]-2-sulfanylethyl]carbamoyl}butanoic acid"
+refmet[120, 1] <- "(2S)-2-amino-4-{[(1R)-1-[(carboxymethyl)carbamoyl]-2-sulfanylethyl]carbamoyl}butanoic acid"
+refmet <- addRef(refmet, "MWSD37087.csv")
+
+# L-leucine to represent 6-Aminohexanoate/L-isoleucine/L-leucine
+# with not particular reason but should aware it could be L-isoleucine as well
+refmet[130, 1] <- "(2S)-2-amino-4-methylpentanoic acid"
+refmet[131, 1] <- "(2S)-2-amino-4-methylpentanoic acid"
+refmet[132, 1] <- "(2S)-2-amino-4-methylpentanoic acid"
+refmet <- addRef(refmet, "MWSD42493.csv")
+
+# Use Adenosine to represent Adenosine/Deoxyguanosine
+# due to higher natural abundance
+refmet[145, 1] <- "(2R,3R,4S,5R)-2-(6-amino-9H-purin-9-yl)-5-(hydroxymethyl)oxolane-3,4-diol"
+refmet[146, 1] <- "(2R,3R,4S,5R)-2-(6-amino-9H-purin-9-yl)-5-(hydroxymethyl)oxolane-3,4-diol"
+refmet[147, 1] <- "(2R,3R,4S,5R)-2-(6-amino-9H-purin-9-yl)-5-(hydroxymethyl)oxolane-3,4-diol"
+refmet <- addRef(refmet, "MWSD37045.csv")
+
+# Use alpha-D-Glucose 6-phosphate to represent adenosine diphosphate/dGDP
+# due to higher natural abundance
+refmet[148, 1] <- "[({[(2R,3S,4R,5R)-5-(6-amino-9H-purin-9-yl)-3,4-dihydroxyoxolan-2-yl]methoxy}(hydroxy)phosphoryl)oxy]phosphonic acid"
+refmet <- addRef(refmet, "MWSD37737.csv")
+
+# Use alpha-D-Glucose 6-phosphate to represent alpha-D-Glucose 6-phosphate/beta-D-Fructose 6-phosphate/glucose 1-phosphate
+# due to highest natural abundance
+refmet[155, 1] <- "alpha-D-glucopyranose 6-(dihydrogen phosphate)"
+refmet[156, 1] <- "alpha-D-glucopyranose 6-(dihydrogen phosphate)"
+refmet[157, 1] <- "alpha-D-glucopyranose 6-(dihydrogen phosphate)"
+refmet <- addRef(refmet, "MWSD50994.csv")
+
+# Use CHCA to represent CHCA(alpha-Cyano-4-hydroxycinnamic acid)/kynurenate
+# due to its use as matrix deposition compound
+refmet[179, 1] <- "(2E)-2-cyano-3-(4-hydroxyphenyl)prop-2-enoic acid"
+refmet[180, 1] <- "(2E)-2-cyano-3-(4-hydroxyphenyl)prop-2-enoic acid"
+refmet[181, 1] <- "(2E)-2-cyano-3-(4-hydroxyphenyl)prop-2-enoic acid"
+refmet <- addRef(refmet, "MWSD63334.csv")
+
+# Use Chlorogenic acid to represent Chlorogenic acid/Neochlorogenic acid
+# due to higher natural abundance
+refmet[182, 1] <- "(1S,3R,4R,5R)-3-{[(2E)-3-(3,4-dihydroxyphenyl)prop-2-enoyl]oxy}-1,4,5-trihydroxycyclohexane-1-carboxylic acid"
+refmet[183, 1] <- "(1S,3R,4R,5R)-3-{[(2E)-3-(3,4-dihydroxyphenyl)prop-2-enoyl]oxy}-1,4,5-trihydroxycyclohexane-1-carboxylic acid"
+refmet[184, 1] <- "(1S,3R,4R,5R)-3-{[(2E)-3-(3,4-dihydroxyphenyl)prop-2-enoyl]oxy}-1,4,5-trihydroxycyclohexane-1-carboxylic acid"
+refmet <- addRef(refmet, "MWSD38262.csv")
+
+refmet[220, 1] <- "(2R)-2-hydroxy-3-oxopropyl dihydrogen phosphate"
+refmet[221, 1] <- "(2R)-2-hydroxy-3-oxopropyl dihydrogen phosphate"
+refmet[222, 1] <- "(2R)-2-hydroxy-3-oxopropyl dihydrogen phosphate"
+refmet <- addRef(refmet, "MWSD51939.csv")
+
+refmet[226, 1] <- "(2R,3R)-2-(3,4-dihydroxyphenyl)-3,4-dihydro-2H-1-benzopyran-3,5,7-triol"
+refmet[227, 1] <- "(2R,3R)-2-(3,4-dihydroxyphenyl)-3,4-dihydro-2H-1-benzopyran-3,5,7-triol"
+refmet[228, 1] <- "(2R,3R)-2-(3,4-dihydroxyphenyl)-3,4-dihydro-2H-1-benzopyran-3,5,7-triol"
+refmet <- addRef(refmet, "MWSD21833.csv")
+
+refmet[233, 1] <- "6,7,13,14-tetrahydroxy-2,9-dioxatetracyclo[6.6.2.0^{4,16}.0^{11,15}]hexadeca-1(15),4,6,8(16),11,13-hexaene-3,10-dione"
+refmet[234, 1] <- "6,7,13,14-tetrahydroxy-2,9-dioxatetracyclo[6.6.2.0^{4,16}.0^{11,15}]hexadeca-1(15),4,6,8(16),11,13-hexaene-3,10-dione"
+refmet[235, 1] <- "6,7,13,14-tetrahydroxy-2,9-dioxatetracyclo[6.6.2.0^{4,16}.0^{11,15}]hexadeca-1(15),4,6,8(16),11,13-hexaene-3,10-dione"
+refmet <- addRef(refmet, "MWSD38219.csv")
+
+# Use glutarate to represent Ethylmalonic acid/glutarate (pentanedioate)
+# due to higher natural abundance
+refmet[242, 1] <- "pentanedioic acid"
+refmet[243, 1] <- "pentanedioic acid"
+refmet[244, 1] <- "pentanedioic acid"
+refmet <- addRef(refmet, "MWSD37356.csv")
+
+# Use Kaempferol to represent Fisetin/Kaempferol
+# due to higher natural abundance
+refmet[245, 1] <- "3,5,7-trihydroxy-2-(4-hydroxyphenyl)chromen-4-one"
+refmet[246, 1] <- "3,5,7-trihydroxy-2-(4-hydroxyphenyl)chromen-4-one"
+refmet[247, 1] <- "3,5,7-trihydroxy-2-(4-hydroxyphenyl)chromen-4-one"
+refmet <- addRef(refmet, "MWSD23088.csv")
+
+# Use Glutamic acid to represent Glutamic acid/O-acetylserine
+# due to higher natural abundance
+refmet[255, 1] <- "(2S)-2-aminopentanedioic acid"
+refmet[256, 1] <- "(2S)-2-aminopentanedioic acid"
+refmet[257, 1] <- "(2S)-2-aminopentanedioic acid"
+refmet <- addRef(refmet, "MWSD37101.csv")
+
+refmet[283, 1] <- "(2S)-2-amino-3-(1H-imidazol-4-yl)propanoic acid"
+refmet[284, 1] <- "(2S)-2-amino-3-(1H-imidazol-4-yl)propanoic acid"
+refmet[285, 1] <- "(2S)-2-amino-3-(1H-imidazol-4-yl)propanoic acid"
+refmet <- addRef(refmet, "MWSD37119.csv")
+
+refmet[328, 1] <- "(2S)-2-amino-4-sulfanylbutanoic acid"
+refmet[329, 1] <- "(2S)-2-amino-4-sulfanylbutanoic acid"
+refmet[330, 1] <- "(2S)-2-amino-4-sulfanylbutanoic acid"
+refmet <- addRef(refmet, "MWSD50967.csv")
+
+# Use L-threonine to represent L-Homoserine/L-threonine 
+# due to higher natural abundance in mammal
+refmet[331, 1] <- "(2S,3R)-2-amino-3-hydroxybutanoic acid"
+refmet[332, 1] <- "(2S,3R)-2-amino-3-hydroxybutanoic acid"
+refmet[333, 1] <- "(2S,3R)-2-amino-3-hydroxybutanoic acid"
+refmet <- addRef(refmet, "MWSD37113.csv")
+
+refmet[370, 1] <- "N-[4-(3-acetamidopropylamino)butyl]acetamide"
+refmet[371, 1] <- "N-[4-(3-acetamidopropylamino)butyl]acetamide"
+refmet[372, 1] <- "N-[4-(3-acetamidopropylamino)butyl]acetamide"
+refmet <- addRef(refmet, "MWSD67065.csv")
+
+# Use N1-Acetylspermidine to represent N1-Acetylspermidine/N8-Acetylspermidine 
+# due to higher natural abundance
+refmet[376, 1] <- "N-{3-[(4-aminobutyl)amino]propyl}acetamide"
+refmet[377, 1] <- "N-{3-[(4-aminobutyl)amino]propyl}acetamide"
+refmet[378, 1] <- "N-{3-[(4-aminobutyl)amino]propyl}acetamide"
+refmet <- addRef(refmet, "MWSD37703.csv")
+
+# Use uridine to represent pseudouridine/uridine 
+# due to higher natural abundance
+refmet[456, 1] <- "1-[(2R,3R,4S,5R)-3,4-dihydroxy-5-(hydroxymethyl)oxolan-2-yl]-1,2,3,4-tetrahydropyrimidine-2,4-dione"
+refmet[457, 1] <- "1-[(2R,3R,4S,5R)-3,4-dihydroxy-5-(hydroxymethyl)oxolan-2-yl]-1,2,3,4-tetrahydropyrimidine-2,4-dione"
+refmet[458, 1] <- "1-[(2R,3R,4S,5R)-3,4-dihydroxy-5-(hydroxymethyl)oxolan-2-yl]-1,2,3,4-tetrahydropyrimidine-2,4-dione"
+refmet <- addRef(refmet, "MWSD37190.csv")
+
+refmet[459, 1] <- "4-{[(2-amino-4-hydroxypteridin-6-yl)methyl]amino}benzoic acid"
+refmet[460, 1] <- "4-{[(2-amino-4-hydroxypteridin-6-yl)methyl]amino}benzoic acid"
+refmet[461, 1] <- "4-{[(2-amino-4-hydroxypteridin-6-yl)methyl]amino}benzoic acid"
+refmet <- addRef(refmet, "MWSD51394.csv")
+
+# Use xylitol to represent ribitol (adonitol)/xylitol 
+# due to higher natural abundance
+refmet[480, 1] <- "(2R,3R,4S)-Pentane-1,2,3,4,5-pentol"
+refmet[481, 1] <- "(2R,3R,4S)-Pentane-1,2,3,4,5-pentol"
+refmet[482, 1] <- "(2R,3R,4S)-Pentane-1,2,3,4,5-pentol"
+refmet <- addRef(refmet, "MWSD38221.csv")
+
+# Use ribose 5-phosphate to represent ribose 5-phosphate/Xylulose 5-phosphate 
+# due to higher natural abundance
+refmet[483, 1] <- "{[(2R,3S,4R)-3,4,5-trihydroxyoxolan-2-yl]methoxy}phosphonic acid"
+refmet[484, 1] <- "{[(2R,3S,4R)-3,4,5-trihydroxyoxolan-2-yl]methoxy}phosphonic acid"
+refmet[485, 1] <- "{[(2R,3S,4R)-3,4,5-trihydroxyoxolan-2-yl]methoxy}phosphonic acid"
+refmet <- addRef(refmet, "MWSD37864.csv")
+
+refmet[489, 1] <- "[(3R)-3-amino-3-carboxypropyl]({[(2S,3S,4R,5R)-5-(6-amino-9H-purin-9-yl)-3,4-dihydroxyoxolan-2-yl]methyl})methylsulfanium"
+refmet[490, 1] <- "[(3R)-3-amino-3-carboxypropyl]({[(2S,3S,4R,5R)-5-(6-amino-9H-purin-9-yl)-3,4-dihydroxyoxolan-2-yl]methyl})methylsulfanium"
+refmet[491, 1] <- "[(3R)-3-amino-3-carboxypropyl]({[(2S,3S,4R,5R)-5-(6-amino-9H-purin-9-yl)-3,4-dihydroxyoxolan-2-yl]methyl})methylsulfanium"
+refmet <- addRef(refmet, "MWSD37647.csv")
+
+refmet[501, 1] <- "(2R,3R,4R,5S)-hexane-1,2,3,4,5,6-hexol"
+refmet[502, 1] <- "(2R,3R,4R,5S)-hexane-1,2,3,4,5,6-hexol"
+refmet[503, 1] <- "(2R,3R,4R,5S)-hexane-1,2,3,4,5,6-hexol"
+refmet <- addRef(refmet, "MWSD37159.csv")
+
+refmet[517, 1] <- "3-[(4-amino-2-methylpyrimidin-5-yl)methyl]-5-(2-hydroxyethyl)-4-methyl-1,3-thiazol-3-ium"
+refmet[518, 1] <- "3-[(4-amino-2-methylpyrimidin-5-yl)methyl]-5-(2-hydroxyethyl)-4-methyl-1,3-thiazol-3-ium"
+refmet[519, 1] <- "3-[(4-amino-2-methylpyrimidin-5-yl)methyl]-5-(2-hydroxyethyl)-4-methyl-1,3-thiazol-3-ium"
+refmet <- addRef(refmet, "MWSD37152.csv")
+
+refmet[520, 1] <- "2-[3-[(4-amino-2-methyl-pyrimidin-5-yl)methyl]-4-methyl-thiazol-3-ium-5-yl]ethyl phosphono hydrogen phosphate"
+refmet[521, 1] <- "2-[3-[(4-amino-2-methyl-pyrimidin-5-yl)methyl]-4-methyl-thiazol-3-ium-5-yl]ethyl phosphono hydrogen phosphate"
+refmet <- addRef(refmet, "MWSD67409.csv")
+
+refmet[537, 1] <- "7H-purin-6-amine"
+refmet[538, 1] <- "7H-purin-6-amine"
+refmet[539, 1] <- "7H-purin-6-amine"
+refmet <- addRef(refmet, "MWSD37038.csv")
+
+#filtered_refmet <- subset(refmet, is.na(Standardized.name))
+
+```
+
+The result from refmet is not correct. Redo it again but replace tag Label with refmet standard.name
+
+```{r}
+new_tag <- tag
+new_tag$Label <- refmet$Standardized.name
+
+met_list <- stri_join_list(list(new_tag$Label), sep = "\n")
+h <- new_handle()
+handle_setform(h, metabolite_name = met_list)
+req <- curl_fetch_memory("https://www.metabolomicsworkbench.org/databases/refmet/name_to_refmet_new_minID.php", handle = h)
+
+new_refmet <- read.table(
+  text = rawToChar(req$content),
+  header = TRUE,
+  na.strings = "-",
+  stringsAsFactors = FALSE,
+  quote = "",
+  comment.char = "",
+  sep = "\t"
+)
+
+new_refmet[is.na(new_refmet)] <- "-"
+new_refmet[new_refmet == ""] <- "-"
+```
+
+Fill out the missing class
+
+```{r}
+new_refmet[19, 1] <- "[2-(trimethylazaniumyl)ethoxy]phosphonic acid"
+new_refmet[20, 1] <- "[2-(trimethylazaniumyl)ethoxy]phosphonic acid"
+new_refmet[21, 1] <- "[2-(trimethylazaniumyl)ethoxy]phosphonic acid"
+new_refmet <- addRef(new_refmet, "MWSD148427.csv")
+
+new_refmet[103, 1] <- "(2S)-2-(4-hydroxyphenyl)-2,3-dihydro-4H-chromen-4-one"
+new_refmet[104, 1] <- "(2S)-2-(4-hydroxyphenyl)-2,3-dihydro-4H-chromen-4-one"
+new_refmet[105, 1] <- "(2S)-2-(4-hydroxyphenyl)-2,3-dihydro-4H-chromen-4-one"
+new_refmet <- addRef(new_refmet, "MWSD56440.csv")
+
+new_refmet[155, 1] <- "alpha-D-glucopyranose 6-(dihydrogen phosphate)"
+new_refmet[156, 1] <- "alpha-D-glucopyranose 6-(dihydrogen phosphate)"
+new_refmet[157, 1] <- "alpha-D-glucopyranose 6-(dihydrogen phosphate)"
+new_refmet <- addRef(new_refmet, "MWSD50994.csv")
+
+new_refmet[179, 1] <- "(2E)-2-cyano-3-(4-hydroxyphenyl)prop-2-enoic acid"
+new_refmet[180, 1] <- "(2E)-2-cyano-3-(4-hydroxyphenyl)prop-2-enoic acid"
+new_refmet[181, 1] <- "(2E)-2-cyano-3-(4-hydroxyphenyl)prop-2-enoic acid"
+new_refmet <- addRef(new_refmet, "MWSD63334.csv")
+
+new_refmet[459, 1] <- "4-{[(2-amino-4-hydroxypteridin-6-yl)methyl]amino}benzoic acid"
+new_refmet[460, 1] <- "4-{[(2-amino-4-hydroxypteridin-6-yl)methyl]amino}benzoic acid"
+new_refmet[461, 1] <- "4-{[(2-amino-4-hydroxypteridin-6-yl)methyl]amino}benzoic acid"
+new_refmet <- addRef(new_refmet, "MWSD51394.csv")
+
+filtered_refmet <- subset(new_refmet, is.na(Standardized.name))
+write.csv(new_refmet, file = "RefMet_for_starprotocol.csv", row.names = FALSE)
+```
+
+Add classification to new_tag
+
+```{r}
+new_tag$Superclass <- new_refmet$Super.class
+new_tag$Mainclass <- new_refmet$Main.class
+new_tag$Subclass <- new_refmet$Sub.class
+
+columns_to_clean <- c("Superclass", "Mainclass", "Subclass")
+
+new_tag[columns_to_clean] <- lapply(new_tag[columns_to_clean], function(column) {
+  cleaned_column <- gsub("\\[.*?\\]", "", column) 
+  trimws(cleaned_column) 
+})
+
+merged_cluster <- merge(new_tag, cluster)
+```
+
+Process data
+
+```{r}
+#unique_colors <- c("#F8766D", "#DE8C00", "#B79F00", "#7CAE00", "#00BA38", "#00C08B", "#00BFC4", "#00B4F0", "#619CFF", "#C77CFF", "#F564E3", "#FF64B0")
+unique_colors <- c("#F8766D", "#DE8C00", "#DEAC00", "#7CAE00", "#00C08B", "#00B4F0", "#619CFF", "#C77CFF", "#F564E3", "#FF64B0")
+tmp_df <- merged_cluster[, -c(1, 2, 5)]
+#superclass_number <- length(unique(tmp_df$Superclass))
+
+custom_colors <- c("#FF6666", "#DEAC00", "#7CAE00", "#619CFF", "#C77CFF")
+
+summarized_for_barplot <- tmp_df |>
+    group_by(Superclass, Mainclass) |>
+    summarize(across(starts_with("Intensity"), sum, na.rm = TRUE), .groups = "drop") |>
+    ungroup() |>
+    mutate(TIC = rowSums(across(starts_with("Intensity")), na.rm = TRUE),
+           TIC = round(TIC / sum(TIC) * 100, 2)) |>
+    filter(TIC > 0) |>
+    group_by(Superclass) |>
+    mutate(
+        mainclass.number = n(),
+        mainclass.min = (TIC == min(TIC)),
+        Mainclass = ifelse(mainclass.number > 1 & mainclass.min,
+                           paste0("Other ", tolower(Superclass)), Mainclass),
+        Mainclass = ifelse(mainclass.number > 2 & TIC < 1,
+                           paste0("Other ", tolower(Superclass)), Mainclass)
+    ) |>
+    group_by(Superclass, Mainclass) |>
+    summarize(across(matches("^Intensity|^TIC"), sum, na.rm = TRUE), .groups = "drop") |>
+    arrange(Superclass, desc(TIC), Mainclass) |>
+    mutate(
+        Superclass.color = unique_colors[match(Superclass, unique(Superclass))],
+        Mainclass.color = scales::alpha(Superclass.color, alpha = 0.7 + (row_number() / n()) * 0.2)
+    )
+
+
+# Summarize Superclass
+summarized_for_donut <- tmp_df |>
+    mutate(TIC = rowSums(across(starts_with("Intensity")), na.rm = TRUE)) |>
+    group_by(Superclass, Mainclass) |>
+    summarize(
+        TIC = sum(TIC, na.rm = TRUE),
+        .groups = "drop"
+    ) |>
+    mutate(
+        TIC = round(TIC / sum(TIC) * 100, 2)
+    ) |>
+    filter(TIC > 0) |>
+    group_by(Superclass) |>
+    mutate(
+        mainclass.number = n(),
+        mainclass.min = (TIC == min(TIC)),
+        Mainclass = ifelse(mainclass.number > 1 & mainclass.min,
+                           paste0("Other ", tolower(Superclass)), Mainclass),
+        Mainclass = ifelse(mainclass.number > 2 & TIC < 1,
+                           paste0("Other ", tolower(Superclass)), Mainclass)
+    ) |>
+    group_by(Superclass, Mainclass) |>
+    summarize(
+        TIC = sum(TIC, na.rm = TRUE),  # Sum TIC for grouped "Other"
+        .groups = "drop"
+    ) |>
+    arrange(Superclass, desc(TIC), Mainclass) |>
+    mutate(
+        ymax = cumsum(TIC),
+        ymin = lag(ymax, default = 0),
+        Superclass.color = unique_colors[match(Superclass, unique(Superclass))],
+        Mainclass.color = scales::alpha(Superclass.color, alpha = 0.7 + (row_number() / n()) * 0.2)
+    )
+
+superclass_data <- summarized_for_donut |> 
+    select(-Mainclass, -Mainclass.color) |>
+    group_by(Superclass) |>
+    summarize(
+        TIC = sum(TIC, na.rm = TRUE)
+    ) |>
+    mutate(
+        ymax = cumsum(TIC),
+        ymin = lag(ymax, default = 0),
+        Superclass.color = unique_colors[match(Superclass, unique(Superclass))]
+    )
+
+```
+
+Plot test
+
+```{r}
+long_barplot1 <- summarized_for_barplot |>
+  pivot_longer(cols = starts_with("Intensity"),
+               names_to = "Cluster",
+               values_to = "Intensity") |>
+  mutate(Cluster = sub("Intensity\\.cluster", "", Cluster),
+         Cluster = factor(Cluster, levels = as.character(1:20)))
+
+p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Stacked Barplot: Superclass by Clusters",
+       x = "Cluster",
+       y = "Intensity",
+       fill = "Super class") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(hjust = 1))
+
+print(p1)
+```
+
+```{r}
+long_barplot2 <- summarized_for_barplot |>
+  pivot_longer(cols = starts_with("Intensity"),
+               names_to = "Cluster",
+               values_to = "Intensity") |>
+  mutate(Cluster = sub("Intensity\\.cluster", "", Cluster),
+         Cluster = factor(Cluster, levels = as.character(1:20)))
+
+# Plot barplot for Mainclass
+p2 <- ggplot(long_barplot2, aes(x = Cluster, y = Intensity, fill = Mainclass)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Stacked Barplot: Mainclass by Clusters",
+       x = "Cluster",
+       y = "Intensity",
+       fill = "Mainclass") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(p2)
+```
+
+```{r}
+textpath_data <- summarized_for_donut |>
+  mutate(
+    label_position = (ymax_superclass + ymin_superclass) / 2,
+    text_length = nchar(Superclass),
+    scaled_text_length = text_length * 3,
+    is_overflow = (ymax_superclass - ymin_superclass) < scaled_text_length,     
+    label_x_out = ifelse(is_overflow, 6, NA),                 # x-position for overflow
+    label_y_out = ifelse(is_overflow, label_position, NA),    # y-position for overflow
+    label_x_in = 4,                                           # x-position for non-overflow
+    label_y_in = label_position                               # y-position for non-overflow
+  )
+
+# Dataset for curved text (non-overflow labels)
+textpath_curved <- textpath_data |> 
+  filter(!is_overflow) |>  # Keep only non-overflow labels
+  filter(TIC > 5) |>       # Exclude segments with insignificant TIC
+  mutate(
+    label_angle = ifelse((ymax_superclass + ymin_superclass) / 2 > 50, -90, 90),  # Adjust angle based on center
+    label_arc = paste0(Superclass, "\n", round(TIC, 1), "%")  # Add label content
+  )
+
+# Dataset for straight text (overflow labels)
+textpath_straight <- textpath_data |> 
+  filter(is_overflow)
+
+ggplot(summarized_for_donut) + 
+  # Outer ring (Mainclass)
+  geom_rect(
+    data = summarized_for_donut,
+    aes(fill = Mainclass, ymax = ymax, ymin = ymin, xmax = 5.5, xmin = 4.5),
+    color = "white",
+    size = 0.5
+  ) +
+  # Inner ring (Superclass)
+  geom_rect(
+    data = summarized_for_donut,
+    aes(fill = Superclass, ymax = ymax_superclass, ymin = ymin_superclass, xmax = 4.4, xmin = 2.5),
+    color = "white",
+    size = 0.5
+  ) +
+  geom_textpath(
+    data = textpath_curved,
+    aes(
+      x = label_x_in, y = label_y_in, angle = label_angle, label = label_arc
+    ),
+    size = 3,
+    color = "black"
+  ) +
+  # Arrows for overflow labels
+  geom_segment(
+    data = textpath_straight,
+    aes(
+      x = 4.4, y = label_position,  # Start at inner ring
+      xend = label_x_out, yend = label_y_out  # Point to external label position
+    ),
+    arrow = arrow(length = unit(0.2, "cm")),
+    color = "black"
+  ) +
+  # External labels for overflow
+  geom_text(
+    data = textpath_straight,
+    aes(
+      x = label_x_out, y = label_y_out, label = Superclass
+    ),
+    size = 3,
+    hjust = 0,  # Left-align for external labels
+    vjust = 0.5  # Vertically centered
+  ) +
+  xlim(c(0, 7)) + 
+  coord_polar( theta="y") +
+  theme_void() +
+  theme(aspect.ratio = 1, legend.position = "none") +
+  scale_fill_manual(
+    # Combine colors for both Superclass and Mainclass
+    values = c(
+      setNames(summarized_for_donut$Superclass.color, summarized_for_donut$Superclass),
+      setNames(summarized_for_donut$Mainclass.color, summarized_for_donut$Mainclass)
+    )
+  )
+```
+
+
+
+```{r}
+# Define the number of points to create smooth curves
+n_points <- 100
+
+# Add formatted_label to summarized_for_donut
+summarized_for_donut <- summarized_for_donut |>
+  mutate(
+    formatted_label = paste0(Superclass, "\n", round((ymax_superclass - ymin_superclass), 2), "%")
+  ) |>
+  filter(!is.na(ymax_superclass), !is.na(ymin_superclass))  # Clean invalid rows
+
+# Prepare data for text paths
+textpath_data <- summarized_for_donut |>
+  group_by(Superclass) |>
+  mutate(
+    label_position = (ymax_superclass + ymin_superclass) / 2,  # Midpoint for label
+    theta_start = 2 * pi * ymin_superclass / 100,  # Convert ymin to radians
+    theta_end = 2 * pi * ymax_superclass / 100,    # Convert ymax to radians
+    theta = purrr::map2(theta_start, theta_end, ~ seq(.x, .y, length.out = n_points)),  # Generate path angles
+    x_path = purrr::map(theta, ~ 3.5 * cos(.x)),  # Calculate x-coordinates for the path
+    y_path = purrr::map(theta, ~ 3.5 * sin(.x))   # Calculate y-coordinates for the path
+  ) |>
+  unnest(cols = c(theta, x_path, y_path))  # Unpack the paths
+
+# Create the plot
+p3 <- ggplot() + 
+  # Outer ring (Mainclass)
+  geom_rect(
+    data = summarized_for_donut,
+    aes(fill = Mainclass, ymax = ymax, ymin = ymin, xmax = 5.5, xmin = 4.5),
+    color = "white",
+    size = 1
+  ) +
+  # Inner ring (Superclass)
+  geom_rect(
+    data = summarized_for_donut,
+    aes(fill = Superclass, ymax = ymax_superclass, ymin = ymin_superclass, xmax = 4.4, xmin = 2.5),
+    color = "white",
+    size = 1
+  ) +
+  # Add curved Superclass labels
+  geom_textpath(
+    data = summarized_for_donut,
+    aes(x = 4, y = ymax_superclass),
+    size = 3.5,
+    text_smoothing = 20,
+    color = "black",
+    hjust = 0.5
+  ) +
+  # Add central label
+  annotate("text", x = 0, y = 0, label = "Cortex\nMetabolome", size = 6, fontface = "bold") +
+  # Adjust coordinate limits to ensure visibility
+  xlim(c(0, 6)) +
+  coord_polar( theta="y") +
+  theme_void() +  # Clean up the plot
+  theme(
+    aspect.ratio = 1,  # Maintain circular shape
+    legend.position = "none"  # Remove legend
+  ) +
+  scale_fill_manual(
+    values = c(
+      setNames(summarized_for_donut$Superclass.color, summarized_for_donut$Superclass),
+      setNames(summarized_for_donut$Mainclass.color, summarized_for_donut$Mainclass)
+    )
+  )
+
+# Print the plot
+print(p3)
+```
+
+
+```{r}
+label_data <- summarized_for_donut |>
+  mutate(
+    is_overflow = TIC < 2,  # Identify small slices
+    label_x = ifelse(
+      !is_overflow,  # If not overflow, place labels near the outer edge
+      5,
+      5 + cos(pi * ymax / 100)  # Calculate x for overflow
+    ),
+    label_y = ifelse(
+      !is_overflow,  # If not overflow, center labels on the slice
+      (ymax + ymin) / 2,
+      (ymax + ymin) / 2 + sin(pi * ymax / 100)  # Calculate y for overflow
+    )
+  )
+
+  ) |>
+  filter(is_overflow) |>
+  mutate(
+    # Line 1: From the edge of the donut to the start of the horizontal line
+    line1_x = 5.5 * cos(2 * pi * ((ymax + ymin) / 2) / 100),
+    line1_y = 5.5 * sin(2 * pi * ((ymax + ymin) / 2) / 100),
+    line1_xend = 6 * cos(2 * pi * ((ymax + ymin) / 2) / 100),  # Slightly outside the donut
+    line1_yend = 6 * sin(2 * pi * ((ymax + ymin) / 2) / 100),
+
+    # Line 2: Horizontal line extending outward
+    line2_x = line1_xend,  # Starting from the end of line 1
+    line2_y = line1_yend,
+    line2_xend = ifelse(line1_xend > 0, line1_xend + 0.5, line1_xend - 0.5),  # Horizontal shift based on side
+    line2_yend = line2_y  # Same y-coordinate for a horizontal line
+  )
+
+```
+
+```{r}
+ggplot() +
+  # Outer ring (Mainclass)
+  geom_rect(
+    data = summarized_for_donut,
+    aes(fill = Mainclass, ymax = ymax, ymin = ymin, xmax = 5.5, xmin = 4.5),
+    color = "white",
+    size = 0.5
+  ) +
+  # Inner ring (Superclass)
+  geom_rect(
+    data = superclass_data,
+    aes(fill = Superclass, ymax = ymax, ymin = ymin, xmax = 4.4, xmin = 2.5),
+    color = "white",
+    size = 0.5
+  ) +
+  # Add labels
+  geom_text(
+    data = label_data,
+    aes(
+      x = label_x,
+      y = label_y,
+      label = paste0(TIC, "%")
+    ),
+    size = 3,
+    hjust = ifelse(label_data$is_overflow, 0, 0.5),  # Align overflow labels to the left
+    color = "black"
+  ) +
+  coord_polar(theta = "y") +
+  xlim(c(0, 6)) +
+  theme_void() +
+  scale_fill_manual(
+    values = c(
+      setNames(unique(summarized_for_donut$Mainclass.color), unique(summarized_for_donut$Mainclass)),
+      setNames(unique(superclass_data$Superclass.color), unique(superclass_data$Superclass))
+    ),
+    guide = guide_legend(title = "Classes")
+  ) +
+  theme(
+    aspect.ratio = 1,
+    legend.position = "none"
+  )
+```
