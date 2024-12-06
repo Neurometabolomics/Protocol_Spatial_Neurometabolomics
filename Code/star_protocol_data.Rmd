@@ -773,18 +773,19 @@ IsoCorrection(
 
 Figure heatmap and barplot from file "final_msi_data.csv"
 ```{r}
+#Set up the working directory:
+
+setwd("/Users/isaacmarin-valencia/Desktop/STAR_Protocol_Cereb/Excel_files")
 #Load the library:
-final_data <- read.csv("../Excel_files/final_msi_data.csv") %>% 
+final_data <- read.csv("final_msi_data.csv") %>% 
               dplyr::select(-mz)
 
-
-corrected_final_data <- read.csv("2024-12-04_162720/IsoCorrectoR_corrected_data_Corrected.csv")
+corrected_final_data <- read.csv("IsoCorrectoR_corrected_data_Corrected.csv")
 corrected_final_data$X <- gsub("_(\\d+)$", "_M\\1", corrected_final_data$X)
 names(corrected_final_data) <- names(final_data)
 
-
 #Create a dataframe to make the data suitable for plotting:
-final_data_2 <- final_data %>%
+final_data_2 <- corrected_final_data %>%
   separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
   pivot_longer(
     cols = starts_with("c"), # Seleccionar las columnas que empiezan con "c"
