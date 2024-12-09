@@ -1,0 +1,552 @@
+﻿No.,Use,Tag,Label,m/z,Formula,Adduct Ion,Matrix,Polarity,All
+1,TRUE,,"(1Z)-prop-1-ene-1,2,3-tricarboxylic acid",175.0237,C6H6O6,M+H,CHCA,Positive,0.002
+2,TRUE,,"(1Z)-prop-1-ene-1,2,3-tricarboxylic acid",197.0057,C6H6O6,M+Na,CHCA,Positive,3.134
+3,TRUE,,"(1Z)-prop-1-ene-1,2,3-tricarboxylic acid",212.9801,C6H6O6,M+K,CHCA,Positive,0.001
+4,TRUE,,(2-hydroxyethyl)trimethylazanium,105.1148,C5H14NO,M+H,CHCA,Positive,0.004
+5,TRUE,,(2-hydroxyethyl)trimethylazanium,127.0968,C5H14NO,M+Na,CHCA,Positive,0.007
+6,TRUE,,(2-hydroxyethyl)trimethylazanium,143.0712,C5H14NO,M+K,CHCA,Positive,2.108
+7,TRUE,,(3-aminopropyl)({4-[(3-aminopropyl)amino]butyl})amine,203.223,C10H26N4,M+H,CHCA,Positive,6390.833
+8,TRUE,,(3-aminopropyl)({4-[(3-aminopropyl)amino]butyl})amine,225.205,C10H26N4,M+Na,CHCA,Positive,0.199
+9,TRUE,,(3-aminopropyl)({4-[(3-aminopropyl)amino]butyl})amine,241.1795,C10H26N4,M+K,CHCA,Positive,0.028
+10,TRUE,,(3R)-3-hydroxy-4-(trimethylazaniumyl)butanoate,162.1125,C7H15NO3,M+H,CHCA,Positive,0.243
+11,TRUE,,(3R)-3-hydroxy-4-(trimethylazaniumyl)butanoate,184.0944,C7H15NO3,M+Na,CHCA,Positive,0.33
+12,TRUE,,(3R)-3-hydroxy-4-(trimethylazaniumyl)butanoate,200.0689,C7H15NO3,M+K,CHCA,Positive,0.049
+13,TRUE,,(4-aminobutyl)(3-aminopropyl)amine,146.1652,C7H19N3,M+H,CHCA,Positive,2405.736
+14,TRUE,,(4-aminobutyl)(3-aminopropyl)amine,168.1471,C7H19N3,M+Na,CHCA,Positive,0.097
+15,TRUE,,(4-aminobutyl)(3-aminopropyl)amine,184.1216,C7H19N3,M+K,CHCA,Positive,0.017
+16,TRUE,,(R)-(-)-citramalic acid/DL-a- hydroxyglutaric acid,149.0444,C5H8O5/C5H8O5,M+H/M+H,CHCA/CHCA,,0.031
+17,TRUE,,(R)-(-)-citramalic acid/DL-a- hydroxyglutaric acid,171.0264,C5H8O5/C5H8O5,M+Na/M+Na,CHCA/CHCA,,0.002
+18,TRUE,,(R)-(-)-citramalic acid/DL-a- hydroxyglutaric acid,187.0009,C5H8O5/C5H8O5,M+K/M+K,CHCA/CHCA,,0
+19,TRUE,,[2-(trimethylazaniumyl)ethoxy]phosphonic acid,185.0811,C5H15NO4P,M+H,CHCA,Positive,52.772
+20,TRUE,,[2-(trimethylazaniumyl)ethoxy]phosphonic acid,207.0631,C5H15NO4P,M+Na,CHCA,Positive,0.345
+21,TRUE,,[2-(trimethylazaniumyl)ethoxy]phosphonic acid,223.0376,C5H15NO4P,M+K,CHCA,Positive,0.468
+22,TRUE,,1-(4-aminobutyl)guanidine,131.1291,C5H14N4,M+H,CHCA,Positive,0.029
+23,TRUE,,1-(4-aminobutyl)guanidine,153.1111,C5H14N4,M+Na,CHCA,Positive,0.448
+24,TRUE,,1-(4-aminobutyl)guanidine,169.0856,C5H14N4,M+K,CHCA,Positive,0.157
+25,TRUE,,1-(5'-Phosphoribosyl)-5-amino-4-imidazolecarboxamide,339.07,C9H15N4O8P,M+H,CHCA,Positive,0.01
+26,TRUE,,1-(5'-Phosphoribosyl)-5-amino-4-imidazolecarboxamide,361.052,C9H15N4O8P,M+Na,CHCA,Positive,0.005
+27,TRUE,,1-(5'-Phosphoribosyl)-5-amino-4-imidazolecarboxamide,377.0265,C9H15N4O8P,M+K,CHCA,Positive,0
+28,TRUE,,"1,3-Dimethyluric acid",197.0669,C7H8N4O3,M+H,CHCA,Positive,6.715
+29,TRUE,,"1,3-Dimethyluric acid",219.0489,C7H8N4O3,M+Na,CHCA,Positive,0.01
+30,TRUE,,"1,3-Dimethyluric acid",235.0234,C7H8N4O3,M+K,CHCA,Positive,0.221
+31,TRUE,,1-Aminocyclopropane-1-carboxylate,102.055,C4H7NO2,M+H,CHCA,Positive,0.285
+32,TRUE,,1-Aminocyclopropane-1-carboxylate,124.0369,C4H7NO2,M+Na,CHCA,Positive,0.003
+33,TRUE,,1-Aminocyclopropane-1-carboxylate,140.0114,C4H7NO2,M+K,CHCA,Positive,0.003
+34,TRUE,,1-methylhistidine,170.0924,C7H11N3O2,M+H,CHCA,Positive,6.206
+35,TRUE,,1-methylhistidine,192.0743,C7H11N3O2,M+Na,CHCA,Positive,1.583
+36,TRUE,,1-methylhistidine,208.0488,C7H11N3O2,M+K,CHCA,Positive,0.004
+37,TRUE,,2-(1-methylcarbamimidamido)acetic acid,132.0768,C4H9N3O2,M+H,CHCA,Positive,4653.615
+38,TRUE,,2-(1-methylcarbamimidamido)acetic acid,154.0587,C4H9N3O2,M+Na,CHCA,Positive,2.51
+39,TRUE,,2-(1-methylcarbamimidamido)acetic acid,170.0332,C4H9N3O2,M+K,CHCA,Positive,21.486
+40,TRUE,,2-(phosphonooxy)prop-2-enoic acid,168.9897,C3H5O6P,M+H,CHCA,Positive,0
+41,TRUE,,2-(phosphonooxy)prop-2-enoic acid,190.9716,C3H5O6P,M+Na,CHCA,Positive,0.004
+42,TRUE,,2-(phosphonooxy)prop-2-enoic acid,206.9461,C3H5O6P,M+K,CHCA,Positive,0
+43,TRUE,,2-aminobutyrate/gamma(amino)-butyric acid,104.0706,C4H9NO2/C4H9NO2,M+H/M+H,CHCA/CHCA,,15.289
+44,TRUE,,2-aminobutyrate/gamma(amino)-butyric acid,126.0525,C4H9NO2/C4H9NO2,M+Na/M+Na,CHCA/CHCA,,0.018
+45,TRUE,,2-aminobutyrate/gamma(amino)-butyric acid,142.027,C4H9NO2/C4H9NO2,M+K/M+K,CHCA/CHCA,,1.65
+46,TRUE,,2-aminoethane-1-sulfonic acid,126.0219,C2H7NO3S,M+H,CHCA,Positive,0.039
+47,TRUE,,2-aminoethane-1-sulfonic acid,148.0039,C2H7NO3S,M+Na,CHCA,Positive,0.031
+48,TRUE,,2-aminoethane-1-sulfonic acid,163.9784,C2H7NO3S,M+K,CHCA,Positive,0.115
+49,TRUE,,2'-Deoxyadenosine 5'-diphosphate,412.0418,C10H15N5O9P2,M+H,CHCA,Positive,0
+50,TRUE,,2'-Deoxyadenosine 5'-diphosphate,434.0237,C10H15N5O9P2,M+Na,CHCA,Positive,0
+51,TRUE,,2'-Deoxyadenosine 5'-diphosphate,449.9982,C10H15N5O9P2,M+K,CHCA,Positive,0
+52,TRUE,,2'-deoxycytidine,228.0979,C9H13N3O4,M+H,CHCA,Positive,0.284
+53,TRUE,,2'-deoxycytidine,250.0798,C9H13N3O4,M+Na,CHCA,Positive,29.661
+54,TRUE,,2'-deoxycytidine,266.0543,C9H13N3O4,M+K,CHCA,Positive,0.005
+55,TRUE,,2'-deoxyinosine,253.0931,C10H12N4O4,M+H,CHCA,Positive,0.161
+56,TRUE,,2'-deoxyinosine,275.0751,C10H12N4O4,M+Na,CHCA,Positive,0.026
+57,TRUE,,2'-deoxyinosine,291.0496,C10H12N4O4,M+K,CHCA,Positive,0.003
+58,TRUE,,"2-hydroxypropane-1,2,3-tricarboxylic acid/isocitrate",193.0343,C6H8O7/C6H8O7,M+H/M+H,CHCA/CHCA,,0.033
+59,TRUE,,"2-hydroxypropane-1,2,3-tricarboxylic acid/isocitrate",215.0162,C6H8O7/C6H8O7,M+Na/M+Na,CHCA/CHCA,,0.002
+60,TRUE,,"2-hydroxypropane-1,2,3-tricarboxylic acid/isocitrate",230.9907,C6H8O7/C6H8O7,M+K/M+K,CHCA/CHCA,,0.002
+61,TRUE,,2-imino-1-methylimidazolidin-4-one,114.0662,C4H7N3O,M+H,CHCA,Positive,77.58
+62,TRUE,,2-imino-1-methylimidazolidin-4-one,136.0481,C4H7N3O,M+Na,CHCA,Positive,0.777
+63,TRUE,,2-imino-1-methylimidazolidin-4-one,152.0226,C4H7N3O,M+K,CHCA,Positive,0.519
+64,TRUE,,2-isopropylmalic acid,177.0757,C7H12O5,M+H,CHCA,Positive,0.027
+65,TRUE,,2-isopropylmalic acid,199.0577,C7H12O5,M+Na,CHCA,Positive,0.023
+66,TRUE,,2-isopropylmalic acid,215.0322,C7H12O5,M+K,CHCA,Positive,0.004
+67,TRUE,,2-phosphoglycerate,187.0002,C3H7O7P,M+H,CHCA,Positive,0
+68,TRUE,,2-phosphoglycerate,208.9822,C3H7O7P,M+Na,CHCA,Positive,0
+69,TRUE,,2-phosphoglycerate,224.9566,C3H7O7P,M+K,CHCA,Positive,0
+70,TRUE,,3-(3-hydroxyphenyl)propionate,167.0703,C9H10O3,M+H,CHCA,Positive,0.155
+71,TRUE,,3-(3-hydroxyphenyl)propionate,189.0522,C9H10O3,M+Na,CHCA,Positive,3.204
+72,TRUE,,3-(3-hydroxyphenyl)propionate,205.0267,C9H10O3,M+K,CHCA,Positive,0.003
+73,TRUE,,"3,4-Dihydroxyphenylacetate/Homogentisate",169.0495,C8H8O4/C8H8O4,M+H/M+H,CHCA/CHCA,,0.018
+74,TRUE,,"3,4-Dihydroxyphenylacetate/Homogentisate",191.0315,C8H8O4/C8H8O4,M+Na/M+Na,CHCA/CHCA,,126.874
+75,TRUE,,"3,4-Dihydroxyphenylacetate/Homogentisate",207.006,C8H8O4/C8H8O4,M+K/M+K,CHCA/CHCA,,0.006
+76,TRUE,,3-hydroxybutyrate (BHBA),105.0546,C4H8O3,M+H,CHCA,Positive,0.006
+77,TRUE,,3-hydroxybutyrate (BHBA),127.0366,C4H8O3,M+Na,CHCA,Positive,0.016
+78,TRUE,,3-hydroxybutyrate (BHBA),143.0111,C4H8O3,M+K,CHCA,Positive,0.006
+79,TRUE,,3-hydroxydecanoic acid,189.1485,C10H20O3,M+H,CHCA,Positive,0.003
+80,TRUE,,3-hydroxydecanoic acid,211.1305,C10H20O3,M+Na,CHCA,Positive,0.036
+81,TRUE,,3-hydroxydecanoic acid,227.105,C10H20O3,M+K,CHCA,Positive,4.866
+82,TRUE,,3-hydroxyphenylacetate/4-hydroxyphenylacetate,153.0546,C8H8O3/C8H8O3,M+H/M+H,CHCA/CHCA,,0.085
+83,TRUE,,3-hydroxyphenylacetate/4-hydroxyphenylacetate,175.0366,C8H8O3/C8H8O3,M+Na/M+Na,CHCA/CHCA,,0.05
+84,TRUE,,3-hydroxyphenylacetate/4-hydroxyphenylacetate,191.0111,C8H8O3/C8H8O3,M+K/M+K,CHCA/CHCA,,0.012
+85,TRUE,,3-methoxytyramine,168.1019,C9H13NO2,M+H,CHCA,Positive,0.043
+86,TRUE,,3-methoxytyramine,190.0838,C9H13NO2,M+Na,CHCA,Positive,0.099
+87,TRUE,,3-methoxytyramine,206.0583,C9H13NO2,M+K,CHCA,Positive,32.283
+88,TRUE,,3-methyladipic acid/pimelate (heptanedioate),161.0808,C7H12O4/C7H12O4,M+H/M+H,CHCA/CHCA,,0.256
+89,TRUE,,3-methyladipic acid/pimelate (heptanedioate),183.0628,C7H12O4/C7H12O4,M+Na/M+Na,CHCA/CHCA,,0.082
+90,TRUE,,3-methyladipic acid/pimelate (heptanedioate),199.0373,C7H12O4/C7H12O4,M+K/M+K,CHCA/CHCA,,0.019
+91,TRUE,,"4,5-bis(hydroxymethyl)-2-methylpyridin-3-ol/Norepinephrine (noradrenaline)",170.0812,C8H11NO3/C8H11NO3,M+H/M+H,CHCA/CHCA,,1.431
+92,TRUE,,"4,5-bis(hydroxymethyl)-2-methylpyridin-3-ol/Norepinephrine (noradrenaline)",192.0631,C8H11NO3/C8H11NO3,M+Na/M+Na,CHCA/CHCA,,78.367
+93,TRUE,,"4,5-bis(hydroxymethyl)-2-methylpyridin-3-ol/Norepinephrine (noradrenaline)",208.0376,C8H11NO3/C8H11NO3,M+K/M+K,CHCA/CHCA,,0.01
+94,TRUE,,4-acetamidobutanoate,146.0812,C6H11NO3,M+H,CHCA,Positive,0.242
+95,TRUE,,4-acetamidobutanoate,168.0631,C6H11NO3,M+Na,CHCA,Positive,0.034
+96,TRUE,,4-acetamidobutanoate,184.0376,C6H11NO3,M+K,CHCA,Positive,0.131
+97,TRUE,,4-Aminobenzoate/anthranilate,138.055,C7H7NO2/C7H7NO2,M+H/M+H,CHCA/CHCA,,9.449
+98,TRUE,,4-Aminobenzoate/anthranilate,160.0369,C7H7NO2/C7H7NO2,M+Na/M+Na,CHCA/CHCA,,0.12
+99,TRUE,,4-Aminobenzoate/anthranilate,176.0114,C7H7NO2/C7H7NO2,M+K/M+K,CHCA/CHCA,,0.03
+100,TRUE,,4-Coumarate,165.0546,C9H8O3,M+H,CHCA,Positive,84.214
+101,TRUE,,4-Coumarate,187.0366,C9H8O3,M+Na,CHCA,Positive,0.233
+102,TRUE,,4-Coumarate,203.0111,C9H8O3,M+K,CHCA,Positive,0.002
+103,TRUE,,4'-Hydroxyflavanone/6-Hydroxyflavanone,241.0859,C15H12O3/C15H12O3,M+H/M+H,CHCA/CHCA,,0.361
+104,TRUE,,4'-Hydroxyflavanone/6-Hydroxyflavanone,263.0679,C15H12O3/C15H12O3,M+Na/M+Na,CHCA/CHCA,,0.104
+105,TRUE,,4'-Hydroxyflavanone/6-Hydroxyflavanone,279.0424,C15H12O3/C15H12O3,M+K/M+K,CHCA/CHCA,,0.001
+106,TRUE,,4-imidazoleacetate/thymine,127.0502,C5H6N2O2/C5H6N2O2,M+H/M+H,CHCA/CHCA,,0.002
+107,TRUE,,4-imidazoleacetate/thymine,149.0321,C5H6N2O2/C5H6N2O2,M+Na/M+Na,CHCA/CHCA,,0
+108,TRUE,,4-imidazoleacetate/thymine,165.0066,C5H6N2O2/C5H6N2O2,M+K/M+K,CHCA/CHCA,,0.002
+109,TRUE,,5-Aminolevulinate/L-Hydroxyproline,132.0655,C5H9NO3/C5H9NO3,M+H/M+H,CHCA/CHCA,,0.313
+110,TRUE,,5-Aminolevulinate/L-Hydroxyproline,154.0475,C5H9NO3/C5H9NO3,M+Na/M+Na,CHCA/CHCA,,0.026
+111,TRUE,,5-Aminolevulinate/L-Hydroxyproline,170.022,C5H9NO3/C5H9NO3,M+K/M+K,CHCA/CHCA,,0.014
+112,TRUE,,5-aminovalerate/L-valine,118.0863,C5H11NO2/C5H11NO2,M+H/M+H,CHCA/CHCA,,0.134
+113,TRUE,,5-aminovalerate/L-valine,140.0682,C5H11NO2/C5H11NO2,M+Na/M+Na,CHCA/CHCA,,0.016
+114,TRUE,,5-aminovalerate/L-valine,156.0427,C5H11NO2/C5H11NO2,M+K/M+K,CHCA/CHCA,,0.145
+115,TRUE,,5-hydroxyindoleacetate,192.0655,C10H9NO3,M+H,CHCA,Positive,89.304
+116,TRUE,,5-hydroxyindoleacetate,214.0475,C10H9NO3,M+Na,CHCA,Positive,0.071
+117,TRUE,,5-hydroxyindoleacetate,230.022,C10H9NO3,M+K,CHCA,Positive,0.018
+118,TRUE,,"5-L-Glutamyl-L-cysteinylglycine/Glutathione, reduced form(5-L-Glutamyl-L-cysteinylglycine)(GSH)",308.0911,C10H17N3O6S/C10H17N3O6S,M+H/M+H,CHCA/CHCA,,119.326
+119,TRUE,,"5-L-Glutamyl-L-cysteinylglycine/Glutathione, reduced form(5-L-Glutamyl-L-cysteinylglycine)(GSH)",330.073,C10H17N3O6S/C10H17N3O6S,M+Na/M+Na,CHCA/CHCA,,0.176
+120,TRUE,,"5-L-Glutamyl-L-cysteinylglycine/Glutathione, reduced form(5-L-Glutamyl-L-cysteinylglycine)(GSH)",346.0475,C10H17N3O6S/C10H17N3O6S,M+K/M+K,CHCA/CHCA,,0.04
+121,TRUE,,5-methylcytidine,258.1084,C10H15N3O5,M+H,CHCA,Positive,0.346
+122,TRUE,,5-methylcytidine,280.0904,C10H15N3O5,M+Na,CHCA,Positive,0.246
+123,TRUE,,5-methylcytidine,296.0649,C10H15N3O5,M+K,CHCA,Positive,0.009
+124,TRUE,,5-methylcytosine,126.0662,C5H7N3O,M+H,CHCA,Positive,0.019
+125,TRUE,,5-methylcytosine,148.0481,C5H7N3O,M+Na,CHCA,Positive,1.102
+126,TRUE,,5-methylcytosine,164.0226,C5H7N3O,M+K,CHCA,Positive,0.001
+127,TRUE,,5-oxoproline,130.0499,C5H7NO3,M+H,CHCA,Positive,55.491
+128,TRUE,,5-oxoproline,152.0318,C5H7NO3,M+Na,CHCA,Positive,0.021
+129,TRUE,,5-oxoproline,168.0063,C5H7NO3,M+K,CHCA,Positive,0.011
+130,TRUE,,6-Aminohexanoate/L-isoleucine/L-leucine,132.1019,C6H13NO2/C6H13NO2/C6H13NO2,M+H/M+H/M+H,CHCA/CHCA/CHCA,,0.111
+131,TRUE,,6-Aminohexanoate/L-isoleucine/L-leucine,154.0838,C6H13NO2/C6H13NO2/C6H13NO2,M+Na/M+Na/M+Na,CHCA/CHCA/CHCA,,0.046
+132,TRUE,,6-Aminohexanoate/L-isoleucine/L-leucine,170.0583,C6H13NO2/C6H13NO2/C6H13NO2,M+K/M+K/M+K,CHCA/CHCA/CHCA,,39.636
+133,TRUE,,6-hydroxypurine,137.0458,C5H4N4O,M+H,CHCA,Positive,0.302
+134,TRUE,,6-hydroxypurine,159.0277,C5H4N4O,M+Na,CHCA,Positive,0.021
+135,TRUE,,6-hydroxypurine,175.0022,C5H4N4O,M+K,CHCA,Positive,0.002
+136,TRUE,,6-phosphogluconate,277.0319,C6H13O10P,M+H,CHCA,Positive,0.001
+137,TRUE,,6-phosphogluconate,299.0139,C6H13O10P,M+Na,CHCA,Positive,0
+138,TRUE,,6-phosphogluconate,314.9883,C6H13O10P,M+K,CHCA,Positive,0
+139,TRUE,,Acetylcarnitine,204.123,C9H17NO4,M+H,CHCA,Positive,0.146
+140,TRUE,,Acetylcarnitine,226.105,C9H17NO4,M+Na,CHCA,Positive,0.114
+141,TRUE,,Acetylcarnitine,242.0795,C9H17NO4,M+K,CHCA,Positive,0.383
+142,TRUE,,Acetylcholine,164.1281,C7H17NO3,M+H,CHCA,Positive,0.014
+143,TRUE,,Acetylcholine,186.1101,C7H17NO3,M+Na,CHCA,Positive,0.092
+144,TRUE,,Acetylcholine,202.0846,C7H17NO3,M+K,CHCA,Positive,0.05
+145,TRUE,,Adenosine/Deoxyguanosine,268.104,C10H13N5O4/C10H13N5O4,M+H/M+H,CHCA/CHCA,,59.071
+146,TRUE,,Adenosine/Deoxyguanosine,290.086,C10H13N5O4/C10H13N5O4,M+Na/M+Na,CHCA/CHCA,,0.626
+147,TRUE,,Adenosine/Deoxyguanosine,306.0605,C10H13N5O4/C10H13N5O4,M+K/M+K,CHCA/CHCA,,0.001
+148,TRUE,,adenosine diphosphate/dGDP,428.0367,C10H15N5O10P2/C10H15N5O10P2,M+H/M+H,CHCA/CHCA,,0
+149,TRUE,,adipate,147.0652,C6H10O4,M+H,CHCA,Positive,488.162
+150,TRUE,,adipate,169.0471,C6H10O4,M+Na,CHCA,Positive,0.035
+151,TRUE,,adipate,185.0216,C6H10O4,M+K,CHCA,Positive,0.053
+152,TRUE,,allantoin,159.0513,C4H6N4O3,M+H,CHCA,Positive,0.017
+153,TRUE,,allantoin,181.0332,C4H6N4O3,M+Na,CHCA,Positive,0.003
+154,TRUE,,allantoin,197.0077,C4H6N4O3,M+K,CHCA,Positive,2.086
+155,TRUE,,alpha-D-Glucose 6-phosphate/beta-D-Fructose 6-phosphate/glucose 1-phosphate,261.037,C6H13O9P/C6H13O9P/C6H13O9P,M+H/M+H/M+H,CHCA/CHCA/CHCA,,0.017
+156,TRUE,,alpha-D-Glucose 6-phosphate/beta-D-Fructose 6-phosphate/glucose 1-phosphate,283.0189,C6H13O9P/C6H13O9P/C6H13O9P,M+Na/M+Na/M+Na,CHCA/CHCA/CHCA,,0.001
+157,TRUE,,alpha-D-Glucose 6-phosphate/beta-D-Fructose 6-phosphate/glucose 1-phosphate,298.9934,C6H13O9P/C6H13O9P/C6H13O9P,M+K/M+K/M+K,CHCA/CHCA/CHCA,,0
+158,TRUE,,alpha-ketoglutarate,147.0288,C5H6O5,M+H,CHCA,Positive,0.032
+159,TRUE,,alpha-ketoglutarate,169.0107,C5H6O5,M+Na,CHCA,Positive,0
+160,TRUE,,alpha-ketoglutarate,184.9852,C5H6O5,M+K,CHCA,Positive,0.005
+161,TRUE,,azelate (nonanedioate),189.1121,C9H16O4,M+H,CHCA,Positive,0.99
+162,TRUE,,azelate (nonanedioate),211.0941,C9H16O4,M+Na,CHCA,Positive,4.616
+163,TRUE,,azelate (nonanedioate),227.0686,C9H16O4,M+K,CHCA,Positive,0.168
+164,TRUE,,Benzoate,123.0441,C7H6O2,M+H,CHCA,Positive,11.988
+165,TRUE,,Benzoate,145.026,C7H6O2,M+Na,CHCA,Positive,0.21
+166,TRUE,,Benzoate,161.0005,C7H6O2,M+K,CHCA,Positive,0.004
+167,TRUE,,beta-hydroxyisovalerate,119.0703,C5H10O3,M+H,CHCA,Positive,0.329
+168,TRUE,,beta-hydroxyisovalerate,141.0522,C5H10O3,M+Na,CHCA,Positive,0.009
+169,TRUE,,beta-hydroxyisovalerate,157.0267,C5H10O3,M+K,CHCA,Positive,0.001
+170,TRUE,,"butane-1,4-diamine",89.1073,C4H12N2,M+H,CHCA,Positive,0.481
+171,TRUE,,"butane-1,4-diamine",111.0893,C4H12N2,M+Na,CHCA,Positive,0.084
+172,TRUE,,"butane-1,4-diamine",127.0638,C4H12N2,M+K,CHCA,Positive,0
+173,TRUE,,butyric acid,89.0597,C4H8O2,M+H,CHCA,Positive,0.171
+174,TRUE,,butyric acid,111.0416,C4H8O2,M+Na,CHCA,Positive,0.034
+175,TRUE,,butyric acid,127.0161,C4H8O2,M+K,CHCA,Positive,0.001
+176,TRUE,,CDP,404.0255,C9H15N3O11P2,M+H,CHCA,Positive,0
+177,TRUE,,CDP,426.0074,C9H15N3O11P2,M+Na,CHCA,Positive,0
+178,TRUE,,CDP,441.9819,C9H15N3O11P2,M+K,CHCA,Positive,0
+179,TRUE,,CHCA(alpha-Cyano-4-hydroxycinnamic acid)/kynurenate,190.0499,C10H7NO3/C10H7NO3,M+H/M+H,CHCA/CHCA,,1690.267
+180,TRUE,,CHCA(alpha-Cyano-4-hydroxycinnamic acid)/kynurenate,212.0318,C10H7NO3/C10H7NO3,M+Na/M+Na,CHCA/CHCA,,812.328
+181,TRUE,,CHCA(alpha-Cyano-4-hydroxycinnamic acid)/kynurenate,228.0063,C10H7NO3/C10H7NO3,M+K/M+K,CHCA/CHCA,,720.58
+182,TRUE,,Chlorogenic acid/Neochlorogenic acid,355.1024,C16H18O9/C16H18O9,M+H/M+H,CHCA/CHCA,,3.284
+183,TRUE,,Chlorogenic acid/Neochlorogenic acid,377.0843,C16H18O9/C16H18O9,M+Na/M+Na,CHCA/CHCA,,2.333
+184,TRUE,,Chlorogenic acid/Neochlorogenic acid,393.0588,C16H18O9/C16H18O9,M+K/M+K,CHCA/CHCA,,0.034
+185,TRUE,,cholate,409.2949,C24H40O5,M+H,CHCA,Positive,0.002
+186,TRUE,,cholate,431.2768,C24H40O5,M+Na,CHCA,Positive,0
+187,TRUE,,cholate,447.2513,C24H40O5,M+K,CHCA,Positive,0
+188,TRUE,,cholest-5-en-3-ol,387.3621,C27H46O,M+H,CHCA,Positive,0.007
+189,TRUE,,cholest-5-en-3-ol,409.3441,C27H46O,M+Na,CHCA,Positive,0.016
+190,TRUE,,cholest-5-en-3-ol,425.3186,C27H46O,M+K,CHCA,Positive,0.023
+191,TRUE,,ciliatine (2-aminoethylphosphonate),126.0315,C2H8NO3P,M+H,CHCA,Positive,0.002
+192,TRUE,,ciliatine (2-aminoethylphosphonate),148.0134,C2H8NO3P,M+Na,CHCA,Positive,0.002
+193,TRUE,,ciliatine (2-aminoethylphosphonate),163.9879,C2H8NO3P,M+K,CHCA,Positive,0
+194,TRUE,,citrulline,176.103,C6H13N3O3,M+H,CHCA,Positive,2.894
+195,TRUE,,citrulline,198.0849,C6H13N3O3,M+Na,CHCA,Positive,3.206
+196,TRUE,,citrulline,214.0594,C6H13N3O3,M+K,CHCA,Positive,0.017
+197,TRUE,,cysteine-glutathione disulfide,427.0952,C13H22N4O8S2,M+H,CHCA,Positive,0.001
+198,TRUE,,cysteine-glutathione disulfide,449.0771,C13H22N4O8S2,M+Na,CHCA,Positive,0
+199,TRUE,,cytidine,244.0928,C9H13N3O5,M+H,CHCA,Positive,0.177
+200,TRUE,,cytidine,266.0747,C9H13N3O5,M+Na,CHCA,Positive,0.645
+201,TRUE,,cytidine,282.0492,C9H13N3O5,M+K,CHCA,Positive,0.002
+202,TRUE,,cytidine 5'-monophosphate,324.0591,C9H14N3O8P,M+H,CHCA,Positive,0.002
+203,TRUE,,cytidine 5'-monophosphate,346.0411,C9H14N3O8P,M+Na,CHCA,Positive,0.018
+204,TRUE,,cytidine 5'-monophosphate,362.0156,C9H14N3O8P,M+K,CHCA,Positive,0
+205,TRUE,,Cytosine,112.0505,C4H5N3O,M+H,CHCA,Positive,0.096
+206,TRUE,,Cytosine,134.0325,C4H5N3O,M+Na,CHCA,Positive,0.017
+207,TRUE,,Cytosine,150.007,C4H5N3O,M+K,CHCA,Positive,0.002
+208,TRUE,,D-(-)-Quinic acid,193.0707,C7H12O6,M+H,CHCA,Positive,2.481
+209,TRUE,,D-(-)-Quinic acid,215.0526,C7H12O6,M+Na,CHCA,Positive,0.006
+210,TRUE,,D-(-)-Quinic acid,231.0271,C7H12O6,M+K,CHCA,Positive,0.001
+211,TRUE,,Daidzein,255.0652,C15H10O4,M+H,CHCA,Positive,0.028
+212,TRUE,,Daidzein,277.0471,C15H10O4,M+Na,CHCA,Positive,0
+213,TRUE,,Daidzein,293.0216,C15H10O4,M+K,CHCA,Positive,0.001
+214,TRUE,,D-Alanyl-D-alanine,161.0921,C6H12N2O3,M+H,CHCA,Positive,0.162
+215,TRUE,,D-Alanyl-D-alanine,183.074,C6H12N2O3,M+Na,CHCA,Positive,0.208
+216,TRUE,,D-Alanyl-D-alanine,199.0485,C6H12N2O3,M+K,CHCA,Positive,0.036
+217,TRUE,,dCMP,308.0642,C9H14N3O7P,M+H,CHCA,Positive,0.01
+218,TRUE,,dCMP,330.0462,C9H14N3O7P,M+Na,CHCA,Positive,0
+219,TRUE,,dCMP,346.0206,C9H14N3O7P,M+K,CHCA,Positive,0.002
+220,TRUE,,DL-Glyceraldehyde 3phosphate (G3P),171.0053,C3H7O6P,M+H,CHCA,Positive,0.005
+221,TRUE,,DL-Glyceraldehyde 3phosphate (G3P),192.9872,C3H7O6P,M+Na,CHCA,Positive,0
+222,TRUE,,DL-Glyceraldehyde 3phosphate (G3P),208.9617,C3H7O6P,M+K,CHCA,Positive,0
+223,TRUE,,Dopamine,154.0863,C8H11NO2,M+H,CHCA,Positive,0.049
+224,TRUE,,Dopamine,176.0682,C8H11NO2,M+Na,CHCA,Positive,0.43
+225,TRUE,,Dopamine,192.0427,C8H11NO2,M+K,CHCA,Positive,0.754
+226,TRUE,,EC,291.0863,C15H14O6,M+H,CHCA,Positive,0.308
+227,TRUE,,EC,313.0683,C15H14O6,M+Na,CHCA,Positive,0.006
+228,TRUE,,EC,329.0427,C15H14O6,M+K,CHCA,Positive,0.012
+229,TRUE,,ECG,443.0973,C22H18O10,M+H,CHCA,Positive,0
+230,TRUE,,EGC,307.0812,C15H14O7,M+H,CHCA,Positive,0.08
+231,TRUE,,EGC,329.0632,C15H14O7,M+Na,CHCA,Positive,0.785
+232,TRUE,,EGC,345.0377,C15H14O7,M+K,CHCA,Positive,0.002
+233,TRUE,,Ellagnic acid,303.0135,C14H6O8,M+H,CHCA,Positive,0.001
+234,TRUE,,Ellagnic acid,324.9955,C14H6O8,M+Na,CHCA,Positive,0.001
+235,TRUE,,Ellagnic acid,340.97,C14H6O8,M+K,CHCA,Positive,0
+236,TRUE,,Equol,243.1016,C15H14O3,M+H,CHCA,Positive,0.039
+237,TRUE,,Equol,265.0835,C15H14O3,M+Na,CHCA,Positive,0.414
+238,TRUE,,Equol,281.058,C15H14O3,M+K,CHCA,Positive,0.002
+239,TRUE,,Eriodictyol,289.0707,C15H12O6,M+H,CHCA,Positive,0.015
+240,TRUE,,Eriodictyol,311.0526,C15H12O6,M+Na,CHCA,Positive,0.003
+241,TRUE,,Eriodictyol,327.0271,C15H12O6,M+K,CHCA,Positive,0
+242,TRUE,,Ethylmalonic acid/glutarate (pentanedioate),133.0495,C5H8O4/C5H8O4,M+H/M+H,CHCA/CHCA,,0.444
+243,TRUE,,Ethylmalonic acid/glutarate (pentanedioate),155.0315,C5H8O4/C5H8O4,M+Na/M+Na,CHCA/CHCA,,0.423
+244,TRUE,,Ethylmalonic acid/glutarate (pentanedioate),171.006,C5H8O4/C5H8O4,M+K/M+K,CHCA/CHCA,,0.006
+245,TRUE,,Fisetin/Kaempferol,287.055,C15H10O6/C15H10O6,M+H/M+H,CHCA/CHCA,,0.003
+246,TRUE,,Fisetin/Kaempferol,309.037,C15H10O6/C15H10O6,M+Na/M+Na,CHCA/CHCA,,0.001
+247,TRUE,,Fisetin/Kaempferol,325.0114,C15H10O6/C15H10O6,M+K/M+K,CHCA/CHCA,,0
+248,TRUE,,Folate,442.147,C19H19N7O6,M+H,CHCA,Positive,0.073
+249,TRUE,,Genistein,271.0601,C15H10O5,M+H,CHCA,Positive,0.005
+250,TRUE,,Genistein,293.042,C15H10O5,M+Na,CHCA,Positive,0.001
+251,TRUE,,Genistein,309.0165,C15H10O5,M+K,CHCA,Positive,0.001
+252,TRUE,,gluconate,197.0656,C6H12O7,M+H,CHCA,Positive,4.24
+253,TRUE,,gluconate,219.0475,C6H12O7,M+Na,CHCA,Positive,0.004
+254,TRUE,,gluconate,235.022,C6H12O7,M+K,CHCA,Positive,0.252
+255,TRUE,,Glutamic acid/O-acetylserine,148.0604,C5H9NO4/C5H9NO4,M+H/M+H,CHCA/CHCA,,54.665
+256,TRUE,,Glutamic acid/O-acetylserine,170.0424,C5H9NO4/C5H9NO4,M+Na/M+Na,CHCA/CHCA,,0.077
+257,TRUE,,Glutamic acid/O-acetylserine,186.0169,C5H9NO4/C5H9NO4,M+K/M+K,CHCA/CHCA,,0.047
+258,TRUE,,Glutamine,147.0764,C5H10N2O3,M+H,CHCA,Positive,277.888
+259,TRUE,,Glutamine,169.0584,C5H10N2O3,M+Na,CHCA,Positive,0.262
+260,TRUE,,Glutamine,185.0329,C5H10N2O3,M+K,CHCA,Positive,1.785
+261,TRUE,,Glycine,76.0393,C2H5NO2,M+H,CHCA,Positive,0.391
+262,TRUE,,Glycine,98.0212,C2H5NO2,M+Na,CHCA,Positive,0
+263,TRUE,,Glycine,113.9957,C2H5NO2,M+K,CHCA,Positive,0
+264,TRUE,,Guanine,152.0567,C5H5N5O,M+H,CHCA,Positive,0.163
+265,TRUE,,Guanine,174.0386,C5H5N5O,M+Na,CHCA,Positive,0.003
+266,TRUE,,Guanine,190.0131,C5H5N5O,M+K,CHCA,Positive,0.009
+267,TRUE,,Guanosine,284.0989,C10H13N5O5,M+H,CHCA,Positive,1.176
+268,TRUE,,Guanosine,306.0809,C10H13N5O5,M+Na,CHCA,Positive,0.306
+269,TRUE,,Guanosine,322.0554,C10H13N5O5,M+K,CHCA,Positive,0.004
+270,TRUE,,Guanosine 5'-diphosphate,444.0316,C10H15N5O11P2,M+H,CHCA,Positive,0
+271,TRUE,,Guanosine 5'-monophosphate,364.0653,C10H14N5O8P,M+H,CHCA,Positive,0.003
+272,TRUE,,Guanosine 5'-monophosphate,386.0472,C10H14N5O8P,M+Na,CHCA,Positive,0.002
+273,TRUE,,Guanosine 5'-monophosphate,402.0217,C10H14N5O8P,M+K,CHCA,Positive,0
+274,TRUE,,"gulono-1,4-lactone",179.055,C6H10O6,M+H,CHCA,Positive,0.069
+275,TRUE,,"gulono-1,4-lactone",201.037,C6H10O6,M+Na,CHCA,Positive,0
+276,TRUE,,"gulono-1,4-lactone",217.0114,C6H10O6,M+K,CHCA,Positive,0
+277,TRUE,,Hesperetin,303.0863,C16H14O6,M+H,CHCA,Positive,0.025
+278,TRUE,,Hesperetin,325.0683,C16H14O6,M+Na,CHCA,Positive,0.001
+279,TRUE,,Hesperetin,341.0427,C16H14O6,M+K,CHCA,Positive,0
+280,TRUE,,histamine,112.0869,C5H9N3,M+H,CHCA,Positive,0.234
+281,TRUE,,histamine,134.0689,C5H9N3,M+Na,CHCA,Positive,0.039
+282,TRUE,,histamine,150.0434,C5H9N3,M+K,CHCA,Positive,0.014
+283,TRUE,,histidine/L-histidine,156.0768,C6H9N3O2/C6H9N3O2,M+H/M+H,CHCA/CHCA,,140.716
+284,TRUE,,histidine/L-histidine,178.0587,C6H9N3O2/C6H9N3O2,M+Na/M+Na,CHCA/CHCA,,0.034
+285,TRUE,,histidine/L-histidine,194.0332,C6H9N3O2/C6H9N3O2,M+K/M+K,CHCA/CHCA,,0.049
+286,TRUE,,homocitrulline,190.1186,C7H15N3O3,M+H,CHCA,Positive,402.618
+287,TRUE,,homocitrulline,212.1006,C7H15N3O3,M+Na,CHCA,Positive,0.376
+288,TRUE,,homocitrulline,228.0751,C7H15N3O3,M+K,CHCA,Positive,0.295
+289,TRUE,,hyodeoxycholate,393.2999,C24H40O4,M+H,CHCA,Positive,37.653
+290,TRUE,,hyodeoxycholate,415.2819,C24H40O4,M+Na,CHCA,Positive,0.011
+291,TRUE,,hyodeoxycholate,431.2564,C24H40O4,M+K,CHCA,Positive,0.001
+292,TRUE,,hypotaurine,110.027,C2H7NO2S,M+H,CHCA,Positive,0.002
+293,TRUE,,hypotaurine,132.009,C2H7NO2S,M+Na,CHCA,Positive,0.003
+294,TRUE,,hypotaurine,147.9835,C2H7NO2S,M+K,CHCA,Positive,0.008
+295,TRUE,,Indole-3-acetic acid,176.0706,C10H9NO2,M+H,CHCA,Positive,0.56
+296,TRUE,,Indole-3-acetic acid,198.0525,C10H9NO2,M+Na,CHCA,Positive,0.814
+297,TRUE,,Indole-3-acetic acid,214.027,C10H9NO2,M+K,CHCA,Positive,0.005
+298,TRUE,,Inosine,269.088,C10H12N4O5,M+H,CHCA,Positive,0.064
+299,TRUE,,Inosine,291.07,C10H12N4O5,M+Na,CHCA,Positive,0.017
+300,TRUE,,Inosine,307.0445,C10H12N4O5,M+K,CHCA,Positive,0.003
+301,TRUE,,inosine-5'-monophosphate,349.0544,C10H13N4O8P,M+H,CHCA,Positive,0.004
+302,TRUE,,inosine-5'-monophosphate,371.0363,C10H13N4O8P,M+Na,CHCA,Positive,0.234
+303,TRUE,,inosine-5'-monophosphate,387.0108,C10H13N4O8P,M+K,CHCA,Positive,0
+304,TRUE,,itaconate (methylenesuccinate),131.0339,C5H6O4,M+H,CHCA,Positive,0.011
+305,TRUE,,itaconate (methylenesuccinate),153.0158,C5H6O4,M+Na,CHCA,Positive,0.003
+306,TRUE,,itaconate (methylenesuccinate),168.9903,C5H6O4,M+K,CHCA,Positive,0
+307,TRUE,,Jasmonic acid,211.1329,C12H18O3,M+H,CHCA,Positive,0.017
+308,TRUE,,Jasmonic acid,233.1148,C12H18O3,M+Na,CHCA,Positive,0.508
+309,TRUE,,Jasmonic acid,249.0893,C12H18O3,M+K,CHCA,Positive,1.066
+310,TRUE,,L-alanine,90.055,C3H7NO2,M+H,CHCA,Positive,110.932
+311,TRUE,,L-alanine,112.0369,C3H7NO2,M+Na,CHCA,Positive,0.004
+312,TRUE,,L-alanine,128.0114,C3H7NO2,M+K,CHCA,Positive,0
+313,TRUE,,L-arginine,175.119,C6H14N4O2,M+H,CHCA,Positive,136.817
+314,TRUE,,L-arginine,197.1009,C6H14N4O2,M+Na,CHCA,Positive,532.604
+315,TRUE,,L-arginine,213.0754,C6H14N4O2,M+K,CHCA,Positive,0.054
+316,TRUE,,L-asparagine,133.0608,C4H8N2O3,M+H,CHCA,Positive,2.345
+317,TRUE,,L-asparagine,155.0427,C4H8N2O3,M+Na,CHCA,Positive,0.006
+318,TRUE,,L-asparagine,171.0172,C4H8N2O3,M+K,CHCA,Positive,0.003
+319,TRUE,,L-aspartic acid,134.0448,C4H7NO4,M+H,CHCA,Positive,0.713
+320,TRUE,,L-aspartic acid,156.0267,C4H7NO4,M+Na,CHCA,Positive,0.006
+321,TRUE,,L-aspartic acid,172.0012,C4H7NO4,M+K,CHCA,Positive,0
+322,TRUE,,L-Cysteate,170.0118,C3H7NO5S,M+H,CHCA,Positive,0.002
+323,TRUE,,L-Cysteate,191.9937,C3H7NO5S,M+Na,CHCA,Positive,0.005
+324,TRUE,,L-Cysteate,207.9682,C3H7NO5S,M+K,CHCA,Positive,0
+325,TRUE,,L-cystine,241.0311,C6H12N2O4S2,M+H,CHCA,Positive,0.002
+326,TRUE,,L-cystine,263.0131,C6H12N2O4S2,M+Na,CHCA,Positive,0.001
+327,TRUE,,L-cystine,278.9876,C6H12N2O4S2,M+K,CHCA,Positive,0
+328,TRUE,,L-Homocystein,136.0427,C4H9NO2S,M+H,CHCA,Positive,0.005
+329,TRUE,,L-Homocystein,158.0246,C4H9NO2S,M+Na,CHCA,Positive,0.009
+330,TRUE,,L-Homocystein,173.9991,C4H9NO2S,M+K,CHCA,Positive,0
+331,TRUE,,L-Homoserine/L-threonine,120.0655,C4H9NO3/C4H9NO3,M+H/M+H,CHCA/CHCA,,0.093
+332,TRUE,,L-Homoserine/L-threonine,142.0475,C4H9NO3/C4H9NO3,M+Na/M+Na,CHCA/CHCA,,0.004
+333,TRUE,,L-Homoserine/L-threonine,158.022,C4H9NO3/C4H9NO3,M+K/M+K,CHCA/CHCA,,0.014
+334,TRUE,,linoleate (18:2n6),281.2475,C18H32O2,M+H,CHCA,Positive,0.007
+335,TRUE,,linoleate (18:2n6),303.2295,C18H32O2,M+Na,CHCA,Positive,0.019
+336,TRUE,,linoleate (18:2n6),319.2039,C18H32O2,M+K,CHCA,Positive,1.071
+337,TRUE,,L-lysine,147.1128,C6H14N2O2,M+H,CHCA,Positive,185.415
+338,TRUE,,L-lysine,169.0947,C6H14N2O2,M+Na,CHCA,Positive,0.058
+339,TRUE,,L-lysine,185.0692,C6H14N2O2,M+K,CHCA,Positive,19.798
+340,TRUE,,L-phenylalanine,166.0863,C9H11NO2,M+H,CHCA,Positive,1.076
+341,TRUE,,L-phenylalanine,188.0682,C9H11NO2,M+Na,CHCA,Positive,2.443
+342,TRUE,,L-phenylalanine,204.0427,C9H11NO2,M+K,CHCA,Positive,0.136
+343,TRUE,,L-proline,116.0706,C5H9NO2,M+H,CHCA,Positive,0.667
+344,TRUE,,L-proline,138.0525,C5H9NO2,M+Na,CHCA,Positive,7.029
+345,TRUE,,L-proline,154.027,C5H9NO2,M+K,CHCA,Positive,0.47
+346,TRUE,,L-serine,106.0499,C3H7NO3,M+H,CHCA,Positive,0.088
+347,TRUE,,L-serine,128.0318,C3H7NO3,M+Na,CHCA,Positive,0.004
+348,TRUE,,L-serine,144.0063,C3H7NO3,M+K,CHCA,Positive,0.001
+349,TRUE,,L-tyrosine,182.0812,C9H11NO3,M+H,CHCA,Positive,18.882
+350,TRUE,,L-tyrosine,204.0631,C9H11NO3,M+Na,CHCA,Positive,19.8
+351,TRUE,,L-tyrosine,220.0376,C9H11NO3,M+K,CHCA,Positive,0.002
+352,TRUE,,Maclurin,263.055,C13H10O6,M+H,CHCA,Positive,0.084
+353,TRUE,,Maclurin,285.037,C13H10O6,M+Na,CHCA,Positive,0.002
+354,TRUE,,Maclurin,301.0114,C13H10O6,M+K,CHCA,Positive,0.001
+355,TRUE,,Maleic acid,117.0182,C4H4O4,M+H,CHCA,Positive,0
+356,TRUE,,Maleic acid,139.0002,C4H4O4,M+Na,CHCA,Positive,0.001
+357,TRUE,,Maleic acid,154.9747,C4H4O4,M+K,CHCA,Positive,0
+358,TRUE,,Melatonin,233.1285,C13H16N2O2,M+H,CHCA,Positive,9.888
+359,TRUE,,Melatonin,255.1104,C13H16N2O2,M+Na,CHCA,Positive,0.567
+360,TRUE,,Melatonin,271.0849,C13H16N2O2,M+K,CHCA,Positive,0.6
+361,TRUE,,myricetin,319.0448,C15H10O8,M+H,CHCA,Positive,0.003
+362,TRUE,,myricetin,341.0268,C15H10O8,M+Na,CHCA,Positive,0
+363,TRUE,,myricetin,357.0013,C15H10O8,M+K,CHCA,Positive,0
+364,TRUE,,myristate (14:0),229.2162,C14H28O2,M+H,CHCA,Positive,0.005
+365,TRUE,,myristate (14:0),251.1982,C14H28O2,M+Na,CHCA,Positive,0.093
+366,TRUE,,myristate (14:0),267.1726,C14H28O2,M+K,CHCA,Positive,0.028
+367,TRUE,,"N(1),N(12)-diacetylspermine",287.2442,C14H30N4O2,M+H,CHCA,Positive,0.358
+368,TRUE,,"N(1),N(12)-diacetylspermine",309.2261,C14H30N4O2,M+Na,CHCA,Positive,0.049
+369,TRUE,,"N(1),N(12)-diacetylspermine",325.2006,C14H30N4O2,M+K,CHCA,Positive,0.008
+370,TRUE,,N-[3-({4-[(1-hydroxyethylidene)amino]butyl}ammonio)propyl]ethanimidic acid,230.1863,C11H23N3O2,M+H,CHCA,Positive,0.516
+371,TRUE,,N-[3-({4-[(1-hydroxyethylidene)amino]butyl}ammonio)propyl]ethanimidic acid,252.1682,C11H23N3O2,M+Na,CHCA,Positive,0.008
+372,TRUE,,N-[3-({4-[(1-hydroxyethylidene)amino]butyl}ammonio)propyl]ethanimidic acid,268.1427,C11H23N3O2,M+K,CHCA,Positive,0.058
+373,TRUE,,N-[3-({4-[(3-aminopropyl)amino]butyl}amino)propyl]acetamide,245.2336,C12H28N4O,M+H,CHCA,Positive,0.024
+374,TRUE,,N-[3-({4-[(3-aminopropyl)amino]butyl}amino)propyl]acetamide,267.2155,C12H28N4O,M+Na,CHCA,Positive,0.134
+375,TRUE,,N-[3-({4-[(3-aminopropyl)amino]butyl}amino)propyl]acetamide,283.19,C12H28N4O,M+K,CHCA,Positive,0.044
+376,TRUE,,N-[4-[(3-Aminopropyl)amino]butyl]-Acetamide/N-{3-[(4-aminobutyl)amino]propyl}acetamide,188.1757,C9H21N3O/C9H21N3O,M+H/M+H,CHCA/CHCA,,4.094
+377,TRUE,,N-[4-[(3-Aminopropyl)amino]butyl]-Acetamide/N-{3-[(4-aminobutyl)amino]propyl}acetamide,210.1577,C9H21N3O/C9H21N3O,M+Na/M+Na,CHCA/CHCA,,0.886
+378,TRUE,,N-[4-[(3-Aminopropyl)amino]butyl]-Acetamide/N-{3-[(4-aminobutyl)amino]propyl}acetamide,226.1322,C9H21N3O/C9H21N3O,M+K/M+K,CHCA/CHCA,,0.058
+379,TRUE,,N-acetylasparagine,175.0713,C6H10N2O4,M+H,CHCA,Positive,0.043
+380,TRUE,,N-acetylasparagine,197.0533,C6H10N2O4,M+Na,CHCA,Positive,0.478
+381,TRUE,,N-acetylasparagine,213.0278,C6H10N2O4,M+K,CHCA,Positive,1.522
+382,TRUE,,N-acetylaspartate (NAA),176.0553,C6H9NO5,M+H,CHCA,Positive,0.872
+383,TRUE,,N-acetylaspartate (NAA),198.0373,C6H9NO5,M+Na,CHCA,Positive,0.203
+384,TRUE,,N-acetylaspartate (NAA),214.0118,C6H9NO5,M+K,CHCA,Positive,0.35
+385,TRUE,,N-acetyl-aspartyl-glutamate (NAAG),305.0979,C11H16N2O8,M+H,CHCA,Positive,3.375
+386,TRUE,,N-acetyl-aspartyl-glutamate (NAAG),327.0799,C11H16N2O8,M+Na,CHCA,Positive,0.022
+387,TRUE,,N-acetyl-aspartyl-glutamate (NAAG),343.0544,C11H16N2O8,M+K,CHCA,Positive,0.024
+388,TRUE,,N-acetylcysteine,164.0376,C5H9NO3S,M+H,CHCA,Positive,0.005
+389,TRUE,,N-acetylcysteine,186.0195,C5H9NO3S,M+Na,CHCA,Positive,0.014
+390,TRUE,,N-acetylcysteine,201.994,C5H9NO3S,M+K,CHCA,Positive,0
+391,TRUE,,N-acetylglutamate,190.071,C7H11NO5,M+H,CHCA,Positive,1.613
+392,TRUE,,N-acetylglutamate,212.0529,C7H11NO5,M+Na,CHCA,Positive,0.016
+393,TRUE,,N-acetylglutamate,228.0274,C7H11NO5,M+K,CHCA,Positive,0.005
+394,TRUE,,N-acetylglycine,118.0499,C4H7NO3,M+H,CHCA,Positive,0.012
+395,TRUE,,N-acetylglycine,140.0318,C4H7NO3,M+Na,CHCA,Positive,0.001
+396,TRUE,,N-acetylglycine,156.0063,C4H7NO3,M+K,CHCA,Positive,0
+397,TRUE,,N-acetylleucine,174.1125,C8H15NO3,M+H,CHCA,Positive,0.028
+398,TRUE,,N-acetylleucine,196.0944,C8H15NO3,M+Na,CHCA,Positive,8218.18
+399,TRUE,,N-acetylleucine,212.0689,C8H15NO3,M+K,CHCA,Positive,0.197
+400,TRUE,,N-acetylmethionine,192.0689,C7H13NO3S,M+H,CHCA,Positive,51.514
+401,TRUE,,N-acetylmethionine,214.0508,C7H13NO3S,M+Na,CHCA,Positive,0.039
+402,TRUE,,N-acetylmethionine,230.0253,C7H13NO3S,M+K,CHCA,Positive,0.008
+403,TRUE,,N-acetylneuraminate,310.1133,C11H19NO9,M+H,CHCA,Positive,0.196
+404,TRUE,,N-acetylneuraminate,332.0952,C11H19NO9,M+Na,CHCA,Positive,0.308
+405,TRUE,,N-acetylneuraminate,348.0697,C11H19NO9,M+K,CHCA,Positive,0.746
+406,TRUE,,N-acetylphenylalanine,208.0968,C11H13NO3,M+H,CHCA,Positive,4.691
+407,TRUE,,N-acetylphenylalanine,230.0788,C11H13NO3,M+Na,CHCA,Positive,0.419
+408,TRUE,,N-acetylphenylalanine,246.0533,C11H13NO3,M+K,CHCA,Positive,4.373
+409,TRUE,,N-acetylproline,158.0812,C7H11NO3,M+H,CHCA,Positive,4034.903
+410,TRUE,,N-acetylproline,180.0631,C7H11NO3,M+Na,CHCA,Positive,1.961
+411,TRUE,,N-acetylproline,196.0376,C7H11NO3,M+K,CHCA,Positive,17.227
+412,TRUE,,N-acetyltyrosine,224.0917,C11H13NO4,M+H,CHCA,Positive,1.646
+413,TRUE,,N-acetyltyrosine,246.0737,C11H13NO4,M+Na,CHCA,Positive,0.479
+414,TRUE,,N-acetyltyrosine,262.0482,C11H13NO4,M+K,CHCA,Positive,1.714
+415,TRUE,,N-acetylvaline,160.0968,C7H13NO3,M+H,CHCA,Positive,23.116
+416,TRUE,,N-acetylvaline,182.0788,C7H13NO3,M+Na,CHCA,Positive,4.011
+417,TRUE,,N-acetylvaline,198.0533,C7H13NO3,M+K,CHCA,Positive,1.06
+418,TRUE,,Naringenin,273.0757,C15H12O5,M+H,CHCA,Positive,0.027
+419,TRUE,,Naringenin,295.0577,C15H12O5,M+Na,CHCA,Positive,0.002
+420,TRUE,,Naringenin,311.0322,C15H12O5,M+K,CHCA,Positive,0.001
+421,TRUE,,nicotinate,124.0393,C6H5NO2,M+H,CHCA,Positive,0.002
+422,TRUE,,nicotinate,146.0212,C6H5NO2,M+Na,CHCA,Positive,0.003
+423,TRUE,,nicotinate,161.9957,C6H5NO2,M+K,CHCA,Positive,0
+424,TRUE,,Nicotinurate,181.0608,C8H8N2O3,M+H,CHCA,Positive,0.21
+425,TRUE,,Nicotinurate,203.0427,C8H8N2O3,M+Na,CHCA,Positive,0.005
+426,TRUE,,Nicotinurate,219.0172,C8H8N2O3,M+K,CHCA,Positive,0
+427,TRUE,,N-methylnicotinamide,137.0709,C7H8N2O,M+H,CHCA,Positive,2.908
+428,TRUE,,N-methylnicotinamide,159.0529,C7H8N2O,M+Na,CHCA,Positive,0.023
+429,TRUE,,N-methylnicotinamide,175.0274,C7H8N2O,M+K,CHCA,Positive,0.003
+430,TRUE,,N-methylphenethylamine,136.1121,C9H13N,M+H,CHCA,Positive,0.049
+431,TRUE,,N-methylphenethylamine,158.094,C9H13N,M+Na,CHCA,Positive,0.029
+432,TRUE,,N-methylphenethylamine,174.0685,C9H13N,M+K,CHCA,Positive,0.393
+433,TRUE,,O-Acetyl-L-Homoserine,162.0761,C6H11NO4,M+H,CHCA,Positive,0.408
+434,TRUE,,O-Acetyl-L-Homoserine,184.058,C6H11NO4,M+Na,CHCA,Positive,0.163
+435,TRUE,,O-Acetyl-L-Homoserine,200.0325,C6H11NO4,M+K,CHCA,Positive,0.017
+436,TRUE,,Oleoylcarnitine,426.3578,C25H47NO4,M+H,CHCA,Positive,0.015
+437,TRUE,,Oleoylcarnitine,448.3397,C25H47NO4,M+Na,CHCA,Positive,0.002
+438,TRUE,,palmitate (16:0),257.2475,C16H32O2,M+H,CHCA,Positive,0.005
+439,TRUE,,palmitate (16:0),279.2295,C16H32O2,M+Na,CHCA,Positive,0.001
+440,TRUE,,palmitate (16:0),295.2039,C16H32O2,M+K,CHCA,Positive,0.028
+441,TRUE,,Palmitoylcarnitine,400.3421,C23H45NO4,M+H,CHCA,Positive,0.01
+442,TRUE,,Palmitoylcarnitine,422.3241,C23H45NO4,M+Na,CHCA,Positive,0.017
+443,TRUE,,Palmitoylcarnitine,438.2986,C23H45NO4,M+K,CHCA,Positive,0.143
+444,TRUE,,phenylacetylglycine,194.0812,C10H11NO3,M+H,CHCA,Positive,19.02
+445,TRUE,,phenylacetylglycine,216.0631,C10H11NO3,M+Na,CHCA,Positive,11.36
+446,TRUE,,phenylacetylglycine,232.0376,C10H11NO3,M+K,CHCA,Positive,0.003
+447,TRUE,,phosphoethanolamine,142.0264,C2H8NO4P,M+H,CHCA,Positive,2.034
+448,TRUE,,phosphoethanolamine,164.0083,C2H8NO4P,M+Na,CHCA,Positive,0.03
+449,TRUE,,phosphoethanolamine,179.9828,C2H8NO4P,M+K,CHCA,Positive,0.214
+450,TRUE,,pipecolate,130.0863,C6H11NO2,M+H,CHCA,Positive,19.763
+451,TRUE,,pipecolate,152.0682,C6H11NO2,M+Na,CHCA,Positive,0.29
+452,TRUE,,pipecolate,168.0427,C6H11NO2,M+K,CHCA,Positive,0.792
+453,TRUE,,protocatechuic acid,155.0339,C7H6O4,M+H,CHCA,Positive,0.597
+454,TRUE,,protocatechuic acid,177.0158,C7H6O4,M+Na,CHCA,Positive,0.002
+455,TRUE,,protocatechuic acid,192.9903,C7H6O4,M+K,CHCA,Positive,0.002
+456,TRUE,,pseudouridine/uridine,245.0768,C9H12N2O6/C9H12N2O6,M+H/M+H,CHCA/CHCA,,0.03
+457,TRUE,,pseudouridine/uridine,267.0588,C9H12N2O6/C9H12N2O6,M+Na/M+Na,CHCA/CHCA,,0.061
+458,TRUE,,pseudouridine/uridine,283.0332,C9H12N2O6/C9H12N2O6,M+K/M+K,CHCA/CHCA,,0.006
+459,TRUE,,Pteroic acid,313.1044,C14H12N6O3,M+H,CHCA,Positive,0.088
+460,TRUE,,Pteroic acid,335.0863,C14H12N6O3,M+Na,CHCA,Positive,0.937
+461,TRUE,,Pteroic acid,351.0608,C14H12N6O3,M+K,CHCA,Positive,0.006
+462,TRUE,,pyridine-3-carboxamide,123.0553,C6H6N2O,M+H,CHCA,Positive,7.567
+463,TRUE,,pyridine-3-carboxamide,145.0372,C6H6N2O,M+Na,CHCA,Positive,0.003
+464,TRUE,,pyridine-3-carboxamide,161.0117,C6H6N2O,M+K,CHCA,Positive,0
+465,TRUE,,pyridoxal,168.0655,C8H9NO3,M+H,CHCA,Positive,0.057
+466,TRUE,,pyridoxal,190.0475,C8H9NO3,M+Na,CHCA,Positive,1491.706
+467,TRUE,,pyridoxal,206.022,C8H9NO3,M+K,CHCA,Positive,0.01
+468,TRUE,,Quercetin,303.0499,C15H10O7,M+H,CHCA,Positive,0.004
+469,TRUE,,Quercetin,325.0319,C15H10O7,M+Na,CHCA,Positive,0.001
+470,TRUE,,Quercetin,341.0064,C15H10O7,M+K,CHCA,Positive,0.002
+471,TRUE,,Quinaldic acid,174.055,C10H7NO2,M+H,CHCA,Positive,8.933
+472,TRUE,,Quinaldic acid,196.0369,C10H7NO2,M+Na,CHCA,Positive,36.509
+473,TRUE,,Quinaldic acid,212.0114,C10H7NO2,M+K,CHCA,Positive,0.005
+474,TRUE,,quinolinate,168.0291,C7H5NO4,M+H,CHCA,Positive,0
+475,TRUE,,quinolinate,190.0111,C7H5NO4,M+Na,CHCA,Positive,0.009
+476,TRUE,,quinolinate,205.9856,C7H5NO4,M+K,CHCA,Positive,0.001
+477,TRUE,,Resveratrol,229.0859,C14H12O3,M+H,CHCA,Positive,0.121
+478,TRUE,,Resveratrol,251.0679,C14H12O3,M+Na,CHCA,Positive,0.02
+479,TRUE,,Resveratrol,267.0424,C14H12O3,M+K,CHCA,Positive,0.013
+480,TRUE,,ribitol (adonitol)/xylitol,153.0757,C5H12O5/C5H12O5,M+H/M+H,CHCA/CHCA,,0.192
+481,TRUE,,ribitol (adonitol)/xylitol,175.0577,C5H12O5/C5H12O5,M+Na/M+Na,CHCA/CHCA,,1.381
+482,TRUE,,ribitol (adonitol)/xylitol,191.0322,C5H12O5/C5H12O5,M+K/M+K,CHCA/CHCA,,137.191
+483,TRUE,,ribose 5-phosphate/Xylulose 5-phosphate,231.0264,C5H11O8P/C5H11O8P,M+H/M+H,CHCA/CHCA,,0.001
+484,TRUE,,ribose 5-phosphate/Xylulose 5-phosphate,253.0084,C5H11O8P/C5H11O8P,M+Na/M+Na,CHCA/CHCA,,0
+485,TRUE,,ribose 5-phosphate/Xylulose 5-phosphate,268.9829,C5H11O8P/C5H11O8P,M+K/M+K,CHCA/CHCA,,0.003
+486,TRUE,,Rosmarinic acid,361.0918,C18H16O8,M+H,CHCA,Positive,0.654
+487,TRUE,,Rosmarinic acid,383.0737,C18H16O8,M+Na,CHCA,Positive,0.018
+488,TRUE,,Rosmarinic acid,399.0482,C18H16O8,M+K,CHCA,Positive,0.058
+489,TRUE,,SAM(S-adenosylmethionine),399.1445,C15H22N6O5S+,M+H,CHCA,Positive,0.025
+490,TRUE,,SAM(S-adenosylmethionine),421.1265,C15H22N6O5S+,M+Na,CHCA,Positive,0.023
+491,TRUE,,SAM(S-adenosylmethionine),437.1009,C15H22N6O5S+,M+K,CHCA,Positive,0.004
+492,TRUE,,sebacate (decanedioate),203.1278,C10H18O4,M+H,CHCA,Positive,0.091
+493,TRUE,,sebacate (decanedioate),225.1097,C10H18O4,M+Na,CHCA,Positive,0.226
+494,TRUE,,sebacate (decanedioate),241.0842,C10H18O4,M+K,CHCA,Positive,0.375
+495,TRUE,,sedoheptulose-7-phosphate,291.0476,C7H15O10P,M+H,CHCA,Positive,0.004
+496,TRUE,,sedoheptulose-7-phosphate,313.0295,C7H15O10P,M+Na,CHCA,Positive,0
+497,TRUE,,sedoheptulose-7-phosphate,329.004,C7H15O10P,M+K,CHCA,Positive,0.001
+498,TRUE,,Shikimic acid,175.0601,C7H10O5,M+H,CHCA,Positive,0.888
+499,TRUE,,Shikimic acid,197.042,C7H10O5,M+Na,CHCA,Positive,0.622
+500,TRUE,,Shikimic acid,213.0165,C7H10O5,M+K,CHCA,Positive,0.004
+501,TRUE,,sorbitol (glucitol),183.0863,C6H14O6,M+H,CHCA,Positive,3.554
+502,TRUE,,sorbitol (glucitol),205.0683,C6H14O6,M+Na,CHCA,Positive,0.472
+503,TRUE,,sorbitol (glucitol),221.0427,C6H14O6,M+K,CHCA,Positive,0.003
+504,TRUE,,Stearoylcarnitine,428.3734,C25H49NO4,M+H,CHCA,Positive,0.014
+505,TRUE,,sucrose,343.1235,C12H22O11,M+H,CHCA,Positive,0.086
+506,TRUE,,sucrose,365.1054,C12H22O11,M+Na,CHCA,Positive,0.053
+507,TRUE,,sucrose,381.0799,C12H22O11,M+K,CHCA,Positive,0.016
+508,TRUE,,Syringic acid,199.0601,C9H10O5,M+H,CHCA,Positive,0.043
+509,TRUE,,Syringic acid,221.042,C9H10O5,M+Na,CHCA,Positive,0.003
+510,TRUE,,Syringic acid,237.0165,C9H10O5,M+K,CHCA,Positive,0.001
+511,TRUE,,Taurocyamine,168.0437,C3H9N3O3S,M+H,CHCA,Positive,0.611
+512,TRUE,,Taurocyamine,190.0257,C3H9N3O3S,M+Na,CHCA,Positive,0.048
+513,TRUE,,Taurocyamine,206.0002,C3H9N3O3S,M+K,CHCA,Positive,0.621
+514,TRUE,,Taxifolin,305.0656,C15H12O7,M+H,CHCA,Positive,0.007
+515,TRUE,,Taxifolin,327.0475,C15H12O7,M+Na,CHCA,Positive,0.321
+516,TRUE,,Taxifolin,343.022,C15H12O7,M+K,CHCA,Positive,0.001
+517,TRUE,,"Thiamine (VB1)(3-[(4-amino-2-methylpyrimidin-5-yl)methyl]-5-(2-hydroxyethyl)-4-methyl-1,3-thiazol-3-ium)",266.1196,C12H17N4OS,M+H,CHCA,Positive,0.529
+518,TRUE,,"Thiamine (VB1)(3-[(4-amino-2-methylpyrimidin-5-yl)methyl]-5-(2-hydroxyethyl)-4-methyl-1,3-thiazol-3-ium)",288.1015,C12H17N4OS,M+Na,CHCA,Positive,0.698
+519,TRUE,,"Thiamine (VB1)(3-[(4-amino-2-methylpyrimidin-5-yl)methyl]-5-(2-hydroxyethyl)-4-methyl-1,3-thiazol-3-ium)",304.076,C12H17N4OS,M+K,CHCA,Positive,0.022
+520,TRUE,,Thiamine pyrophosphate(thiamin pyrophosphate),426.0522,C12H19N4O7P2S,M+H,CHCA,Positive,0
+521,TRUE,,Thiamine pyrophosphate(thiamin pyrophosphate),448.0342,C12H19N4O7P2S,M+Na,CHCA,Positive,0
+522,TRUE,,trans-cinnamic acid,149.0597,C9H8O2,M+H,CHCA,Positive,1.649
+523,TRUE,,trans-cinnamic acid,171.0416,C9H8O2,M+Na,CHCA,Positive,0.068
+524,TRUE,,trans-cinnamic acid,187.0161,C9H8O2,M+K,CHCA,Positive,0.002
+525,TRUE,,trans-Zeatin,220.1193,C10H13N5O,M+H,CHCA,Positive,0.212
+526,TRUE,,trans-Zeatin,242.1012,C10H13N5O,M+Na,CHCA,Positive,0.11
+527,TRUE,,trans-Zeatin,258.0757,C10H13N5O,M+K,CHCA,Positive,0.079
+528,TRUE,,tryptophan,205.0972,C11H12N2O2,M+H,CHCA,Positive,130.706
+529,TRUE,,tryptophan,227.0791,C11H12N2O2,M+Na,CHCA,Positive,21.001
+530,TRUE,,tryptophan,243.0536,C11H12N2O2,M+K,CHCA,Positive,87.109
+531,TRUE,,tyramine,138.0913,C8H11NO,M+H,CHCA,Positive,0.027
+532,TRUE,,tyramine,160.0733,C8H11NO,M+Na,CHCA,Positive,11.908
+533,TRUE,,tyramine,176.0478,C8H11NO,M+K,CHCA,Positive,0.008
+534,TRUE,,urocanate,139.0502,C6H6N2O2,M+H,CHCA,Positive,0.024
+535,TRUE,,urocanate,161.0321,C6H6N2O2,M+Na,CHCA,Positive,0.003
+536,TRUE,,urocanate,177.0066,C6H6N2O2,M+K,CHCA,Positive,0
+537,TRUE,,vitamin B4 (Adenine),136.0618,C5H5N5,M+H,CHCA,Positive,0.998
+538,TRUE,,vitamin B4 (Adenine),158.0437,C5H5N5,M+Na,CHCA,Positive,0.122
+539,TRUE,,vitamin B4 (Adenine),174.0182,C5H5N5,M+K,CHCA,Positive,0.001
+540,TRUE,,vitamin C,177.0394,C6H8O6,M+H,CHCA,Positive,0.064
+541,TRUE,,vitamin C,199.0213,C6H8O6,M+Na,CHCA,Positive,0.021
+542,TRUE,,vitamin C,214.9958,C6H8O6,M+K,CHCA,Positive,0
+543,TRUE,,xanthine,153.0407,C5H4N4O2,M+H,CHCA,Positive,0
+544,TRUE,,xanthine,175.0226,C5H4N4O2,M+Na,CHCA,Positive,0
+545,TRUE,,xanthine,190.9971,C5H4N4O2,M+K,CHCA,Positive,0.009
+546,TRUE,,xanthurenate,206.0448,C10H7NO4,M+H,CHCA,Positive,5.499
+547,TRUE,,xanthurenate,228.0267,C10H7NO4,M+Na,CHCA,Positive,0.004
+548,TRUE,,xanthurenate,244.0012,C10H7NO4,M+K,CHCA,Positive,0.075
+549,TRUE,,xylonate,167.055,C5H10O6,M+H,CHCA,Positive,0.01
+550,TRUE,,xylonate,189.037,C5H10O6,M+Na,CHCA,Positive,2.91
+551,TRUE,,xylonate,205.0114,C5H10O6,M+K,CHCA,Positive,0.008
