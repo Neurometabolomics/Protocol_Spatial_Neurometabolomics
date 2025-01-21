@@ -1,12 +1,12 @@
 ---
-title: "Cluster analysis for brain region"
+title: "Cluster analysis for cortex region"
 output: html_document
 date: "2024-11-25"
 editor_options: 
   chunk_output_type: console
 ---
 
-This is document to create cluster image on Figure 4C_brain.
+This is document to create cluster image on Figure 4C_cortex.
 
 To begin our analysis, we first need to make sure that all the required R packages are installed and ready to use. In this section, we use a custom function to check if each package is already installed, and if not, it will install it for you automatically. This step ensures that you have all the tools you need to smoothly run the rest of the code. It’s a simple but crucial setup to avoid any interruptions later on.
 
@@ -42,7 +42,7 @@ To ensure that all input and output files are correctly accessed and saved, we s
 ```{r}
 # Set up the working directory
 # Update this path to match the location of your input files
-setwd("~/Documents/GitHub/STAR_Protocol/Input/4C_brain")
+setwd("~/Documents/GitHub/STAR_Protocol/Input/4C_cortex")
 
 # Print the current working directory to confirm
 getwd()
@@ -83,6 +83,7 @@ head(data_matrix)
 ```
 
 Next, we extract the relevant metadata (m/z values and labels) from the data matrix to prepare for classification using the RefMet library. This involves creating a new dataframe, tag, with rounded m/z values for consistency.
+
 
 ```{r}
 # Extract m/z values and labels from the data matrix
@@ -540,17 +541,18 @@ head(filtered_refmet)
 ```
 
 At this step, we save the final refined RefMet classification dataset to a CSV file. This serves as a clear checkpoint, ensuring the data is preserved and avoiding any mix-ups if you plan to analyze a different data matrix in the future.
+Add classification to new_tag
 
 ```{r}
 # Save the reference for future use
-write.csv(new_refmet, file = "../../Results/4C_brain/refmet_brain.csv", row.names = FALSE)
+write.csv(new_refmet, file = "../../Results/4C_cortex/refmet_cortex.csv", row.names = FALSE)
 ```
 
 Now that we’ve refined the classifications with RefMet, it’s time to integrate this information into our dataset. In this step, we update the Label column in new_tag with the Standardized.name from the refined RefMet results and add hierarchical classifications, including Superclass, Mainclass, and Subclass. To ensure consistency, we clean these classification columns by removing unnecessary annotations (like text in square brackets) and trimming whitespace. Finally, we merge this enriched new_tag dataset with the cluster data, creating a comprehensive dataset that combines refined metabolite information and cluster associations, ready for further analysis.
 
 ```{r}
 # Add classifications to `new_tag`
-new_refmet <- read.csv("../../Results/4C_brain/refmet_brain.csv")
+new_refmet <- read.csv("../../Results/4C_cortex/refmet_cortex.csv")
 
 new_tag <- tag
 new_tag$Label <- new_refmet$Standardized.name
@@ -592,9 +594,7 @@ summarized_for_barplot <- tmp_df |>
         TIC = rowSums(across(starts_with("Intensity")), na.rm = TRUE),
         TIC = round(TIC / sum(TIC) * 100, 2)
     ) |>
-    filter(TIC > 0,
-           Superclass != "Polyketides" # Note: Exclusion explanation below
-    ) |>
+    filter(TIC > 0) |>
     group_by(Superclass) |>
     mutate(
         mainclass.number = n(),
@@ -616,10 +616,6 @@ summarized_for_barplot <- tmp_df |>
 head(summarized_for_barplot)
 ```
 
-The cortex and cerebellum are key regions of the brain, and in this analysis, we identified 10 major superclasses of metabolites that are consistently present in both regions. However, the overall brain dataset includes an additional superclass, Polyketides. This superclass constitutes only about 0.01% of the total signal intensity and is not observed in either the cortex or cerebellum datasets.
-
-To maintain consistency and facilitate meaningful comparisons between the cortex, cerebellum, and whole brain, Polyketides was excluded from the analysis. This approach ensures that the analysis focuses on comparable metabolic profiles across the three datasets while minimizing the impact of negligible or inconsistent signals.
-
 Next, we reshape the summarized data for plotting. The data is converted from wide format to long format, allowing us to map the Cluster and Intensity to the x- and y-axes, respectively. Each bar in the stacked bar plot represents the intensity of a superclass across different clusters.
 
 Using the ggplot2 package, we create a stacked bar plot where colors differentiate superclasses. The y-axis shows the intensity ratio, while the x-axis represents individual clusters. Finally, we save the plot as a PDF for documentation and display it for verification.
@@ -639,7 +635,7 @@ long_barplot1 <- summarized_for_barplot |>
 p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) +
     geom_bar(stat = "identity", position = "stack") +
     labs(
-        title = "Brain",
+        title = "Cortex",
         x = "Cluster",
         y = "Intensity",
         fill = "Superclass"
@@ -656,7 +652,7 @@ p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) 
       )
 
 # Save the plot as a PDF
-ggsave(p1, filename = "../../Results/4C_brain/4C_brain.pdf", width = 7, height = 4)
+ggsave(p1, filename = "../../Results/4C_brain/4C_cortex.pdf", width = 7, height = 4)
 
 # Preview plot
 print(p1)
