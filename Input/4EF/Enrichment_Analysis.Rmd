@@ -1,0 +1,732 @@
+---
+title: "Enrichment Analysis"
+output: html_document
+date: "2024-11-19"
+editor_options: 
+  chunk_output_type: console
+---
+
+This is document describes the proces of creating heatmap and enrichment plot for Figure 4E and 4F.
+
+To begin our analysis, we first need to make sure that all the required R packages are installed and ready to use. In this section, we use a custom function to check if each package is already installed, and if not, it will install it for you automatically. This step ensures that you have all the tools you need to smoothly run the rest of the code. It’s a simple but crucial setup to avoid any interruptions later on.
+
+```{r setup, include=FALSE}
+#1) Install and upload the libraries of the packages we will use for the code below:
+
+# Function to check if a package is installed and install it if not
+install_if_missing <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg, dependencies = TRUE)
+  }
+  require(pkg, character.only = TRUE)
+}
+
+packages <- c(
+  "plyr", "tidyverse", "ggpubr", "readxl", "kableExtra", "ggplot2",
+  "dplyr", "stringr", "tidyr", "RColorBrewer", "forcats",
+  "gridExtra", "pwr", "broom", "gt", "glue", "knitr", "broom", "pwr", "pheatmap",
+  "ComplexHeatmap", "circlize", "gridExtra", "circlize", "grid", "plotly", "webshot2", 
+  "stringr", "ggalt", "ggpubr", "rstatix", "forcats", "gplots",
+  "remotes", "Cardinal", "EBImage", "reshape2", "IsoCorrectoR" # Additional packages
+)
+
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+pacman::p_load(
+  plyr, tidyverse, ggpubr, readxl, kableExtra, ggplot2, dplyr, stringr, tidyr,
+  RColorBrewer, forcats, gridExtra, pwr, broom, gt, glue, knitr, pheatmap,
+  ComplexHeatmap, circlize, plotly, webshot2, Cardinal, EBImage, reshape2, IsoCorrectoR
+)
+
+# Load or install the necessary packages
+sapply(packages, install_if_missing)
+
+```
+
+Before starting the analysis, it’s important to set the working directory where your input files are stored. For this example, we are using the folder Input/4EF, but you should update the path to match the location of your own data. Once the directory is set, you can verify it with getwd() to ensure all input and output files are correctly accessed and saved.
+
+```{r}
+# Set up the working directory
+# Update this path to match the location of your input files
+setwd("~/Documents/GitHub/STAR_Protocol/Input/4EF")
+
+# Print the current working directory to confirm
+getwd()
+```
+
+For importing and processing MSI data, we work with datasets for mouse controls 5, 9, and 10. These files are in ImzML format, and due to their large size, we’ve provided preprocessed .RData files in the Input/4EF folder. The steps for importing, processing, and segmenting these files are outlined below but commented out to avoid unnecessary reprocessing. Instead, pre-segmented files will be used, and large segmentation results are split into manageable chunks to facilitate storage and analysis.
+
+```{r}
+# File splitting function using saveResultsListBinarySplit
+# saveResultsListBinarySplit <- function(results_list, output_dir, chunk_size_mb = 10) {
+#     if (!dir.exists(output_dir)) {
+#         dir.create(output_dir, recursive = TRUE)
+#     }
+#     
+#     # Serialize the object to a single binary data stream
+#     binary_data <- serialize(results_list, NULL)
+#     
+#     # Define chunk size in bytes
+#     chunk_size <- chunk_size_mb * 1024^2
+#     
+#     # Split the binary data into chunks
+#     num_chunks <- ceiling(length(binary_data) / chunk_size)
+#     message("Saving ResultsList in ", num_chunks, " chunks.")
+#     
+#     for (i in seq_len(num_chunks)) {
+#         start <- (i - 1) * chunk_size + 1
+#         end <- min(i * chunk_size, length(binary_data))
+#         chunk <- binary_data[start:end]
+#         chunk_path <- file.path(output_dir, paste0("chunk_", i, ".bin"))
+#         writeBin(chunk, chunk_path)
+#     }
+#     
+#     message("Binary split completed. Chunks saved in: ", output_dir)
+# }
+#
+##### C5 #####
+# Import file
+# c5_mse_file <- "mouse_control5_glucose_profile.imzML"
+# c5_mse <- readMSIData(c5_mse_file)
+#
+# Process file
+# c5_mse_queue <- c5_mse |>
+#     normalize() |>
+#     smooth() |>
+#     reduceBaseline() |>
+#     peakPick(SNR=6)
+# c5_mse_proc <- peakAlign(c5_mse_queue)
+#
+# Process file check point
+# save.image("../../Results/4EF/C5/c5_process.RData")
+#
+# Perform segmentation
+# c5_ssc <- spatialShrunkenCentroids(c5_mse_proc, r=1, k=20, s=c(4,8,16,32))
+# saveResultsListBinarySplit(c5_ssc, "../../Input/4EF/C5", chunk_size_mb = 10)
+#
+##### C9 #####
+# Import file
+# c9_mse_file <- "mouse_control9_glucose_profile.imzML"
+# c9_mse <- readMSIData(c9_mse_file)
+#
+# Process file
+# c9_mse_queue <- c9_mse |>
+#     normalize() |>
+#     smooth() |>
+#     reduceBaseline() |>
+#     peakPick(SNR=6)
+# c9_mse_proc <- peakAlign(c9_mse_queue)
+#
+# Process file check point
+# save.image("../../Results/4EF/C9/c9_process.RData")
+#
+# Perform segmentation
+# c9_ssc <- spatialShrunkenCentroids(c9_mse_proc, r=1, k=20, s=c(4,8,16,32))
+# saveResultsListBinarySplit(c9_ssc, "../../Input/4EF/C9", chunk_size_mb = 10)
+#
+##### C10 #####
+# Import file
+# c10_mse_file <- "mouse_control10_glucose_profile.imzML"
+# c10_mse <- readMSIData(c10_mse_file)
+#
+# Process file
+# c10_mse_queue <- c10_mse |>
+#     normalize() |>
+#     smooth() |>
+#     reduceBaseline() |>
+#     peakPick(SNR=6)
+# c10_mse_proc <- peakAlign(c10_mse_queue)
+#
+# Process file check point
+# save.image("../../Results/4EF/C10/c10_process.RData")
+#
+# Perform segmentation
+# c10_ssc <- spatialShrunkenCentroids(c10_mse_proc, r=1, k=20, s=c(4,8,16,32))
+# saveResultsListBinarySplit(c10_ssc, "../../Input/4EF/C10", chunk_size_mb = 10)
+```
+
+For segmented files, we use a recombination function to reassemble them into complete objects. This allows even large datasets to be processed without exceeding file size limitations. The function locates the binary chunks, combines them into a single stream, and reconstructs the original ResultsList object. Note that the actual mass spectrometry image file is over 2GB (Github storage limits), we cannot breaking down and upload it like the processed files.
+
+```{r}
+# Function to load and combine a ResultsList object from binary chunks
+loadResultsListBinarySplit <- function(input_dir) {
+    # Get the list of chunk files and sort them
+    chunk_files <- list.files(input_dir, pattern = "chunk_\\d+\\.bin$", full.names = TRUE)
+    chunk_files <- chunk_files[order(nchar(chunk_files), chunk_files)]  # Ensure correct order
+
+    # Read and combine all chunks
+    combined_binary <- raw(0)
+    for (chunk_file in chunk_files) {
+        chunk <- readBin(chunk_file, "raw", file.info(chunk_file)$size)
+        combined_binary <- c(combined_binary, chunk)
+    }
+
+    # Deserialize the combined binary data
+    unserialize(combined_binary)
+}
+
+# Load processed files for each dataset
+load("../../Input/4EF/C5/c5_process.RData")
+load("../../Input/4EF/C9/c9_process.RData")
+load("../../Input/4EF/C10/c10_process.RData")
+
+# Load segmentation files for each dataset
+c5_ssc <- loadResultsListBinarySplit(input_dir = "../../Input/4EF/C5")
+c9_ssc <- loadResultsListBinarySplit(input_dir = "../../Input/4EF/C9")
+c10_ssc <- loadResultsListBinarySplit(input_dir = "../../Input/4EF/C10")
+```
+
+To define specific regions of interest (ROIs), we use the getSegmentROI function, which extracts logical masks for desired regions based on segmentation clusters and selected classes. This function is tailored for datasets processed with Cardinal version 3.6 or higher and works seamlessly with EBImage for visualization.
+
+```{r}
+# Function to extract ROIs from segmentation results
+getSegmentROI <- function(ssc, cluster, select_classes, select_target=NULL) {
+  
+  # Ensure compatibility with Cardinal version 3.6 or higher
+  if (packageVersion("Cardinal") > "3.6") {
+    # Get the pixel data and dimensions for the selected cluster and classes
+    pixels <- image(ssc[[cluster]], type="class", select=select_classes)$marks$pixels$encoding$color
+    channels <- image(ssc[[cluster]], type="class", select=select_classes)$channels
+    
+    # Create a grayscale image from the pixel data
+    obj <- EBImage::Image(pixels, dim=c(channels$x$limits[2], channels$y$limits[2]), colormode = Grayscale)
+    obj_loc <- ifelse(is.na(obj), FALSE, TRUE)
+    
+    # If no specific target is selected, return the full ROI
+    if (is.null(select_target) || tolower(select_target) == "all") {
+      roi <- obj_loc
+    } else {
+      # Compute features for segmentation and filter by size
+      features <- computeFeatures.shape(bwlabel(obj_loc))
+      sorted_features <- features[order(-as.data.frame(features)$s.area), ]
+      mean_s_area <- mean(sorted_features[,1])
+      filtered_features <- sorted_features[sorted_features[,1] > mean_s_area, ]
+      
+      # Select the specific target based on input
+      roi <- bwlabel(obj_loc) == row.names(filtered_features)[select_target]
+      roi <- fillHull(roi)
+    } 
+  } else {
+    print("This function only works with Cardinal version 3.6 or higher")
+  }
+  return(roi)
+}
+
+# C5 ROIs
+c5_brain <- getSegmentROI(c5_ssc, cluster = 4, select_classes = c(1:3,5:13,15:20))
+c5_cortex <- getSegmentROI(c5_ssc, cluster = 5, select_classes = c(6,8), select_target = 1)
+c5_hippo <- getSegmentROI(c5_ssc, cluster = 5, select_classes = c(7,8,11), select_target = 8)
+c5_cereb <- getSegmentROI(c5_ssc, cluster = 4, select_classes = c(2,5,15,16,17,19), select_target = 2)
+
+# C9 ROIs
+c9_brain <- getSegmentROI(c9_ssc, cluster = 1, select_classes = c(1:8,10,12:19))
+c9_cortex <- fillHull(getSegmentROI(c9_ssc, cluster = 1, select_classes = c(7,5), select_target = 1) +
+  getSegmentROI(c9_ssc, cluster = 1, select_classes = c(7), select_target = 3) +
+  getSegmentROI(c9_ssc, cluster = 1, select_classes = c(6), select_target = 2) +
+  getSegmentROI(c9_ssc, cluster = 1, select_classes = c(8), select_target = 2) +
+  getSegmentROI(c9_ssc, cluster = 1, select_classes = c(12), select_target = 1))
+c9_cortex <- c9_cortex > 0
+c9_hippo <- getSegmentROI(c9_ssc, cluster = 4, select_classes = c(6,10,15), select_target = 5)
+c9_cereb <- getSegmentROI(c9_ssc, cluster = 1, select_classes = c(13,14), select_target = 1)
+
+# C10 ROIs
+c10_brain <- getSegmentROI(c10_ssc, cluster = 3, select_classes = c(2:5, 7:13,15:20))
+c10_cortex <- getSegmentROI(c10_ssc, cluster = 4, select_classes = c(5,12), select_target = 1)
+c10_hippo <- getSegmentROI(c10_ssc, cluster = 4, select_classes = c(2,5,10,12), select_target = 13)
+c10_cereb <- fillHull(getSegmentROI(c10_ssc, cluster = 4, select_classes = c(10,13,15,18), select_target = 1) +
+  getSegmentROI(c10_ssc, cluster = 4, select_classes = c(10,13,15,18), select_target = 2) +
+  getSegmentROI(c10_ssc, cluster = 4, select_classes = c(10,13,15,18), select_target = 3) +
+  getSegmentROI(c10_ssc, cluster = 4, select_classes = c(9), select_target = 2))
+c10_cereb <- c10_cereb > 0
+```
+
+Let’s take a look at what the ROIs look like before we proceed to ensure they are reasonable. These ROIs were delineated using chemical segmentation, but you can also manually draw them yourself using Cardinal’s ROI tools if needed. The viewROIs function combines the logical images and displays them in a 2x2 grid using EBImage’s display() function for easy visualization and verification.
+
+```{r}
+# Function to display images in a 2x2 grid
+viewROIs <- function(image_list) {
+  # Combine images into a single object
+  combined_images <- do.call(combine, image_list)
+  
+  # Display the combined images in a 2x2 grid
+  display(combined_images, method = "raster", all = TRUE, nx = 2)
+}
+
+# Example: Display C5 images
+c5_images <- list(
+  c5_brain,
+  c5_cereb,
+  c5_cortex,
+  c5_hippo
+)
+
+viewROIs(c5_images)
+
+# Example: Display C9 images
+c9_images <- list(
+  c9_brain,
+  c9_cereb,
+  c9_cortex,
+  c9_hippo
+)
+
+viewROIs(c9_images)
+
+# Example: Display C10 images
+c10_images <- list(
+  c10_brain,
+  c10_cereb,
+  c10_cortex,
+  c10_hippo
+)
+
+viewROIs(c10_images)
+```
+
+Since the dimensions of ROIs must match their corresponding processed MSI objects, we use the matchSize function to resize the logical images. This ensures that all ROIs are correctly aligned with their respective datasets.
+
+```{r}
+
+matchSize <- function(img, target) {
+  
+  w <- max(target@elementMetadata$x)
+  h <- max(target@elementMetadata$y)
+  
+  resized_img <- resize(img, w, h)
+  
+  if (is.logical(img)) {
+    resized_img <- resized_img > 0
+  }
+  
+  return(resized_img)
+}
+
+c5_cereb <- matchSize(c5_cereb, c5_mse_proc)
+c5_cortex <- matchSize(c5_cortex, c5_mse_proc)
+c5_hippo <- matchSize(c5_hippo, c5_mse_proc)
+
+c9_cereb <- matchSize(c9_cereb, c9_mse_proc)
+c9_cortex <- matchSize(c9_cortex, c9_mse_proc)
+c9_hippo <- matchSize(c9_hippo, c9_mse_proc)
+
+c10_cereb <- matchSize(c10_cereb, c10_mse_proc)
+c10_cortex <- matchSize(c10_cortex, c10_mse_proc)
+c10_hippo <- matchSize(c10_hippo, c10_mse_proc)
+```
+
+Once the ROIs are resized, they are reassigned to the MSI objects using the assignROI function, which maps each ROI to its corresponding dataset. This step ensures that subsequent analyses focus only on the selected regions.
+
+```{r}
+# Function to assign ROI to the MSI object
+assignROI <- function(msi, roi_list, verbose = FALSE) {
+  for (name in names(roi_list)) {
+    if (verbose) {
+      cat("Assigning ROI:", name, "\n")
+    }
+    msi[[name]] <- roi_list[[name]]
+  }
+  return(msi)
+}
+
+# Assign ROIs to the MSI objects
+c5_rois <- c("c5_cortex", "c5_hippo", "c5_cereb")
+c5_roi_list <- mget(c5_rois)
+c5_mse_proc <- assignROI(c5_mse_proc, c5_roi_list)
+
+c9_rois <- c("c9_cortex", "c9_hippo", "c9_cereb")
+c9_roi_list <- mget(c9_rois)
+c9_mse_proc <- assignROI(c9_mse_proc, c9_roi_list)
+
+c10_rois <- c("c10_cortex", "c10_hippo", "c10_cereb")
+c10_roi_list <- mget(c10_rois)
+c10_mse_proc <- assignROI(c10_mse_proc, c10_roi_list)
+```
+
+Next, we extract the Total Ion Count (TIC) for each ROI. The getROITIC function allows us to calculate the TIC, either normalized to the number of pixels in the ROI or as the raw sum. This step helps in understanding the signal intensity distribution across different regions.
+
+```{r}
+# Function to extract TIC for each ROI
+getROITIC <- function(msi, roi_list, normalize = TRUE, decimal = 4, verbose = FALSE) {
+  df <- NULL
+  for (name in names(roi_list)) {
+    if (verbose) cat("Get TIC from ROI:", name, "\n")
+    tic <- fData(summarizeFeatures(msi, stat="sum", groups=msi[[name]], verbose = FALSE))
+    if (is.null(df)) {
+      df <- data.frame(mz = as.numeric(format(round(as.matrix(tic[,"mz"]), decimal), nsmall = decimal)))
+    }
+    if (normalize) {
+      new_df <- data.frame(tic = as.matrix(tic[,"TRUE.sum"])/sum(roi_list[[name]]))
+    } else {
+      new_df <- data.frame(tic = as.matrix(tic[,"TRUE.sum"]))
+    }
+    colnames(new_df) <- name
+    df <- cbind(df, new_df)
+  }
+  return(df)
+}
+
+# Normalized TIC
+c5_ndata <- getROITIC(c5_mse_proc, c5_roi_list, normalize = TRUE)
+c9_ndata <- getROITIC(c9_mse_proc, c9_roi_list, normalize = TRUE)
+c10_ndata <- getROITIC(c10_mse_proc, c10_roi_list, normalize = TRUE)
+```
+
+To evaluate the reproducibility of this method and address concerns about variability, we calculate the coefficient of variation (CV) across the ROIs. 
+
+```{r}
+# Function to build CV data frame from TIC table
+buildCVDataframe <- function(tic_list, col_list, mz_thresh = 1) {
+  df <- NULL
+  for (name in names(tic_list)) {
+    new_df <- tic_list[[name]]
+    colnames(new_df) <- c("mz", paste0(col_list, ".", name))
+    if (is.null(df)) {
+      df <- new_df
+    } else {
+      df <- merge(df, new_df, all=TRUE)
+    }
+  }
+  
+  # Group data by m/z range (if mz_thresh is not NULL)
+  if (!is.null(mz_thresh)) {
+    thresh <- 10^-(mz_thresh)
+    df[is.na(df)] <- 0
+    df$bin <- cut(df$mz, breaks = seq(min(df$mz), max(df$mz), by = thresh), include.lowest = TRUE)
+    max_bin <- aggregate(mz ~ bin, data = df, max)
+    sum_bin <- aggregate(. ~ bin, data = df[, -1], FUN = sum)
+    df <- merge(max_bin, sum_bin)
+    df[df == 0] <- NA
+    df <- df[order(df$mz),]
+    df$bin <- NULL
+  }
+  return(df)
+}
+
+# Function to calculate CV from a CV data frame
+getCV <- function(df, roi_list, na.rm = TRUE, outline.rm = TRUE, noise.rm = TRUE, stat = TRUE) {
+  result_df <- data.frame(Region = character(), CV = numeric())
+
+  for (roi in roi_list) {
+    # Filter columns related to the current ROI
+    pattern <- paste0("mz|", roi)
+    cv_df <- df[, grepl(pattern, names(df))] |>
+      mutate(
+        Mean = rowMeans(across(starts_with(roi)), na.rm = TRUE),
+        SD = apply(across(starts_with(roi)), 1, sd, na.rm = TRUE),
+        CV = SD / Mean *100
+      )
+
+    if (na.rm) {
+      cv_df <- cv_df[complete.cases(cv_df), ]
+    }
+
+    if (noise.rm) {
+      # Calculate signal-to-noise ratio (assuming noise is the SD)
+      cv_df$SNR <- cv_df$Mean / cv_df$SD
+      cv_df <- cv_df[cv_df$SNR >= 3, ]
+    }
+
+    if (outline.rm) {
+      Q1 <- quantile(cv_df$CV, 0.25, na.rm = TRUE)
+      Q3 <- quantile(cv_df$CV, 0.75, na.rm = TRUE)
+      IQR <- Q3 - Q1
+      lower_bound <- Q1 - 1.5 * IQR
+      upper_bound <- Q3 + 1.5 * IQR
+      cv_df <- cv_df[cv_df$CV >= lower_bound & cv_df$CV <= upper_bound, ]
+    }
+
+    # Compute average mean, SD and CV for the current ROI
+    mean_mean <- mean(cv_df$Mean, na.rm = TRUE)
+    mean_sd <- sd(cv_df$SD, na.rm = TRUE)
+    mean_cv <- mean(cv_df$CV, na.rm = TRUE)
+
+    if (stat) {
+      new_df <- data.frame(Region = roi, Mean = mean_mean, SD = mean_sd,  CV = mean_cv)
+    } else {
+      new_df <- data.frame(Region = roi, CV = mean_cv)
+    }
+
+    result_df <- rbind(result_df, new_df)
+  }
+
+  return(result_df)
+}
+
+tic_list <- mget(c("c5_ndata", "c9_ndata", "c10_ndata"))
+col_list <- c("Cortex", "Hippocampus", "Cerebellum")
+cv_df <- buildCVDataframe(tic_list, col_list)
+cv <- getCV(cv_df, col_list, na.rm = TRUE, outline.rm = TRUE, noise.rm = TRUE)
+
+# View CV values
+cv
+
+p <- ggplot(cv, aes(x = Region, y = CV, fill = Region)) +
+  geom_errorbar(aes(ymin = CV - 3*SD, ymax = CV + 3*SD), width = 0.2) +
+  geom_boxplot(aes(lower=CV-SD, upper=CV+SD, middle=CV, ymin=CV-3*SD, ymax=CV+3*SD), 
+               stat = "identity",) +
+  labs(title = "Coefficient of Variation by Region",
+       x = "Region",
+       y = "CV (%)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.title = element_text(hjust = 0.5))
+
+print(p)
+```
+
+Here, we extract targeted metabolites from the TIC data using the filterMetaboliteTIC function, which matches specified ions—like GABA, glutamine, and glutamate isotopologues—to the closest masses in the dataset. After defining the isotopologue masses, we combine them into six_metabolites, our target list. Using this, we extract metabolite data from normalized TIC datasets for each group (c5_ndata, c9_ndata, c10_ndata) and merge the results into merged_final. This consolidated dataframe organizes the key metabolites for further analysis in a straightforward and reproducible way.
+
+```{r}
+# Function to extract target compounds from TIC table
+filterMetaboliteTIC <- function(msi_df, ion_list, tracing=NULL) {
+  msi_tic <- list()
+  if (is.data.frame(ion_list)) {
+    metabolite_names <- ion_list[, unlist(lapply(ion_list, is.character), use.names = FALSE)]
+    mass_list <- ion_list[, unlist(lapply(ion_list, is.numeric), use.names = FALSE)]
+    if (!is.null(tracing)) {
+      new_names <- NULL
+      new_masses <- NULL
+      new_df <- NULL
+      for (i in tracing) {
+        new_names <- c(new_names, paste0(metabolite_names,"_M",i))
+        new_masses <- c(new_masses, mass_list + (i*1.00783))
+      }
+      new_df <- data.frame(Metabolite=new_names, mz=new_masses)
+      new_df[order(new_df$Metabolite),]
+      metabolite_names <- new_df$Metabolite
+      mass_list <- new_df$mz
+    }
+    
+    head_col <- data.frame(Metabolite=metabolite_names, mz=mass_list)
+  } else {
+    mass_list <- ion_list
+    head_col <- data.frame(mz=mass_list)
+  }
+  
+  for (i in seq_along(mass_list)) {
+    mass <- mass_list[i]
+    row_number <- which.min(abs(msi_df$mz - mass))
+    col_number <- which(colnames(msi_df)=="mz") + 1
+    new_tic <- cbind(head_col[i, , drop=FALSE], msi_df[row_number, col_number:ncol(msi_df)])
+    msi_tic <- rbind(msi_tic, new_tic)
+  }
+
+  return(msi_tic)
+}
+
+# Define isotopologue data
+tic_list <- mget(c("c5_ndata", "c9_ndata", "c10_ndata"))
+col_list <- c("Cortex", "Cerebellum")
+gaba_isotopologue <- data.frame(
+  Metabolite = c("GABA_M0", "GABA_M1", "GABA_M2", "GABA_M3",  "GABA_M4"),
+  Mass = c(104.07095,	105.07434,	106.07773,	107.08112,	108.08451)
+)
+gln_isotopologue <- data.frame(
+  Metabolite = c("Glutamine_M0", "Glutamine_M1", "Glutamine_M2", "Glutamine_M3",  "Glutamine_M4", "Glutamine_M5"),
+  Mass = c(147.07694,	148.060065,	149.08319,	150.072315,	151.06944,	152.042565)
+)
+glu_isotopologue <- data.frame(
+  Metabolite = c("Glutamate_M0", "Glutamate_M1", "Glutamate_M2", "Glutamate_M3",  "Glutamate_M4", "Glutamate_M5"),
+  Mass = c(148.06102,	149.06433,	150.06764,	151.07095,	152.07426,	153.07757)
+)
+six_metabolites <- NULL
+six_metabolites <- rbind(gaba_isotopologue, gln_isotopologue, glu_isotopologue)
+
+# Extract metabolites for each dataset
+c5_6mets <- filterMetaboliteTIC(c5_ndata, six_metabolites)
+c9_6mets <- filterMetaboliteTIC(c9_ndata, six_metabolites)
+c10_6mets <- filterMetaboliteTIC(c10_ndata, six_metabolites)
+
+# Merge the extracted data into a single data frame
+final_data <- merge(merge(c5_6mets, c9_6mets), c10_6mets)
+```
+
+To account for natural isotope abundances and tracer enrichment effects, we use the IsocorrectoR package. This step prepares input files (measurement, molecule, and element) necessary for isotope correction. The prepIsocoR function formats the data for IsocorrectoR by renaming columns and rows in the measurement file, defining the isotopologue structure in the molecule file, and specifying isotope abundances and tracer properties in the element file. These files are then used with the IsoCorrection function to generate corrected data. The corrected results are saved in a specified output directory for downstream analysis.
+
+```{r}
+# Function to prepare and correct natural abundance using IsocorrectoR
+prepIsocoR <- function(measure_file = NA, molecule_file = NA, element_file = NA, outdir = ".") {
+  # check input
+  if (is.null(measure_file) || !is.data.frame(measure_file)) {
+    stop("Please provide a valid data frame for the measurement file.")
+  }
+  
+  # Rename column name
+  colnames(measure_file)[-1] <- paste0("Sample", seq_along(colnames(measure_file)[-1]))
+  colnames(measure_file)[1] <- "Measurements/Samples"
+  
+  # Rename row name
+  measure_file$`Measurements/Samples` <- gsub("M", "", measure_file$`Measurements/Samples`)
+  rownames(measure_file) <- NULL
+  
+  measure_file_path <- file.path(outdir, "measure_file.csv")
+  write.csv(measure_file, file = measure_file_path, row.names = FALSE)
+  
+  metabolites <- c("GABA", "Glutamate", "Glutamine")
+  formulas <- c("C4H9N1O2LabC4", "C5H9N1O4LabC5", "C5H10N2O3LabC5")
+  neutral_loss <- c(NA, NA, NA)
+  
+  molecule_file <- data.frame(
+    Molecule = metabolites,
+    `MS ion or MS/MS product ion` = formulas,
+    `MS/MS neutral loss` = neutral_loss
+  )
+  
+  colnames(molecule_file) <- c(
+    "Molecule",
+    "MS ion or MS/MS product ion",
+    "MS/MS neutral loss"
+  )
+  
+  write.csv(molecule_file, file = "molecule_file.csv", row.names = FALSE)
+  
+  # Create a data frame for the element file
+  element_file <- data.frame(
+    Element = c("C", "H", "N", "O"),
+    `Isotope abundance_Mass shift` = c(
+      "0.0107_1/0.9893_0",  # Carbon isotopes
+      "0.000115_1/0.999885_0",  # Hydrogen isotopes
+      "0.99632_0/0.00368_1",  # Nitrogen isotopes
+      "0.99757_0/0.00038_1/0.00205_2"  # Oxygen isotopes
+    ),
+    `Tracer isotope mass shift` = c(1, 1, 1, 2),
+    `Tracer purity` = c(0.99, 0.99, 0.99, 0.99)
+  )
+  
+  colnames(element_file) <- c(
+    "Element",
+    "Isotope abundance_Mass shift",
+    "Tracer isotope mass shift",
+    "Tracer purity"
+  )
+
+  write.csv(element_file, file = "element_file.csv", row.names = FALSE)
+  
+  invisible(NULL)
+}
+
+prepIsocoR(measure_file = final_data)
+
+IsoCorrection(
+    MeasurementFile = "measure_file.csv",
+    MoleculeFile = "molecule_file.csv",
+    ElementFile = "element_file.csv",
+    DirOut = "../../Results/4EF",                       # Output directory
+    FileOut = "final_data",         # Output file name
+    FileOutFormat = "csv",              # Output file format
+    CorrectTracerImpurity = TRUE,
+    CorrectTracerElementCore = TRUE,
+    CalculateMeanEnrichment = TRUE
+)
+```
+
+After correcting the natural abundance using the IsoCorrectoR package, we rename the output for traceability. From the corrected results, we prepare a heatmap and bar plot to visualize the distribution and enrichment of metabolites across tissues.
+
+```{r}
+# Read  and process result
+
+corrected_final_data <- read.csv("../../Results/4EF/Isocorrected_results/IsoCorrectoR_final_data_Corrected.csv")
+corrected_final_data$X <- gsub("_(\\d+)$", "_M\\1", corrected_final_data$X)
+names(corrected_final_data) <- names(final_data)
+
+#Create a dataframe to make the data suitable for plotting:
+final_data_2 <- corrected_final_data %>%
+  separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
+  pivot_longer(
+    cols = starts_with("c"), # Seleccionar las columnas que empiezan con "c"
+    names_to = "Tissue",     # Nombre de la nueva columna con las variables originales
+    values_to = "Values"     # Nombre de la columna con los valores
+  ) %>%
+  group_by(Metabolite_1, Tissue) %>%
+  mutate(
+    Total = sum(Values, na.rm = TRUE),       # Calcular la suma total de los valores por Metabolite_1 y Tissue
+    Normalized_Value = Values / Total       # Dividir cada valor por el total
+  ) %>%
+  ungroup() %>%
+  select(-Total) %>%
+  mutate(
+    Tissue_Group = case_when(
+      str_ends(Tissue, "cortex") ~ "Cortex",  # Identificar tejidos que terminan en "cortex"
+      str_ends(Tissue, "hippo") ~ "Hippo",    # Identificar tejidos que terminan en "hippo"
+      str_ends(Tissue, "cereb") ~ "Cereb"     # Identificar tejidos que terminan en "cereb"
+    )
+  ) %>%
+  group_by(Metabolite_1, Tissue_Group, Ion) %>%
+  summarize(
+    Avg_Normalized_Value = mean(Normalized_Value, na.rm = TRUE),  # Calcular el promedio
+    StdDev_Normalized_Value = sd(Normalized_Value, na.rm = TRUE), # Calcular la desviación estándar
+    .groups = "drop"  # Desagrupar después de calcular
+  ) %>%
+  ungroup() %>% 
+  unite("Metabolite", Metabolite_1, Ion, sep = "_")  # Unir las columnas Metabolite_1 e Ion
+
+# Specify the desired metabolite order (reversed for Pyruvate to appear at the top):
+desired_order <- rev(c(
+  "Pyruvate_M0", "Pyruvate_M1", "Pyruvate_M2", "Pyruvate_M3",
+  "Glutamate_M0", "Glutamate_M1", "Glutamate_M2", "Glutamate_M3", "Glutamate_M4", "Glutamate_M5",
+  "Glutamine_M0", "Glutamine_M1", "Glutamine_M2", "Glutamine_M3", "Glutamine_M4", "Glutamine_M5",
+  "GABA_M0", "GABA_M1", "GABA_M2", "GABA_M3", "GABA_M4",
+  "Succinate_M0", "Succinate_M1", "Succinate_M2", "Succinate_M3", "Succinate_M4",
+  "Fumarate_M0", "Fumarate_M1", "Fumarate_M2", "Fumarate_M3", "Fumarate_M4"
+))
+
+# Update the Metabolite column to follow the reversed desired order
+final_data_2 <- final_data_2 %>%
+  mutate(Metabolite = factor(Metabolite, levels = desired_order))
+
+# Generate the ggplot heatmap with reversed y-axis for Figure 4E
+final_data_2_heatmap <- final_data_2 %>%
+  ggplot(aes(x = Tissue_Group, y = Metabolite, fill = Avg_Normalized_Value)) +
+  geom_tile(color = "grey") +  # Add borders for better readability
+  scale_fill_gradient2(
+    low = "blue", mid = "white", high = "red", midpoint = 0.3,  # Set midpoint to 0.3
+    na.value = "grey"  # Set color for NA values
+  ) +
+  labs(
+    x = "Tissue Group",
+    y = "Metabolite",
+    fill = "Avg Normalized Value"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis text for readability
+    axis.text.y = element_text(size = 8),              # Adjust y-axis text size
+    panel.grid.major = element_blank(),                # Remove grid lines
+    panel.grid.minor = element_blank()
+  )
+ggsave(final_data_2_heatmap, filename = "../../Results/4EF/final_data_heatmap.pdf", height = 7, width = 4)
+
+print(final_data_2_heatmap)
+
+#Barplot with Glutamate, Glutamine, and GABA for Figure 4F
+final_data_2_barplot <- final_data_2 %>%
+  separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
+  filter(Metabolite_1 %in% c("Glutamate", "Glutamine", "GABA", "Fumarate"),
+         Ion %in% c("M0", "M2"),
+         Tissue_Group %in% c("Cereb", "Cortex")) %>%
+  mutate(Metabolite_1 = factor(Metabolite_1, levels = c("Glutamate", "Glutamine", "GABA", "Fumarate"))) %>%  # Set facet order
+  ggplot(aes(x = Tissue_Group, y = Avg_Normalized_Value, fill = Ion)) +
+  geom_errorbar(aes(ymin = Avg_Normalized_Value - StdDev_Normalized_Value,
+                    ymax = Avg_Normalized_Value + StdDev_Normalized_Value, color = Ion),
+                position = position_dodge(width = 1), width = 0.2) +  # Error bars
+  geom_bar(stat = "identity", position = position_dodge(width = 1)) +  # Bar plot with dodge for grouping
+  facet_wrap(~ Metabolite_1, scales = "free_y") +  # Facet by metabolite
+  scale_color_manual(values = c("dodgerblue1", "red")) +  # Color error bars
+  scale_fill_manual(values = c("dodgerblue1", "red")) +  # Color bars
+  labs(
+    x = "Brain Region",
+    y = "Avg Normalized Value",
+    fill = "Isotopologue"
+  ) +
+  scale_y_continuous(name = "C-13 Enrichment", expand = c(0, 0), breaks = seq(0, 1.2, 0.2)) +
+  theme(
+    axis.title.y = element_text(color = "black"),
+    axis.title.y.right = element_text(color = "blue"),
+    axis.text = element_text(size = 12, color = "black", family = "Helvetica"),
+    axis.title = element_text(size = 12, face = "bold", color = "black"),
+    axis.text.x = element_text(angle = 0, hjust = 0.5, vjust = 1.2, color = "black")
+  ) +
+  coord_cartesian(ylim = c(0, 1))
+
+ggsave(final_data_2_barplot, filename = "../../Results/4EF/final_data_barplot.pdf", height = 6, width = 6)
+
+print(final_data_2_barplot)
+```

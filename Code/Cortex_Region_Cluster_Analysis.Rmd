@@ -37,7 +37,7 @@ pacman::p_load(
 sapply(packages, install_if_missing)
 ```
 
-To ensure that all input and output files are correctly accessed and saved, we specify the working directory where our data is stored. For this analysis, the directory is set to Input/4C_brain. However, your file path might be different, so make sure to set the working directory to the appropriate folder where your input files are stored. This folder should contain the data required for clustering and classification.
+To ensure that all input and output files are correctly accessed and saved, we specify the working directory where our data is stored. For this analysis, the directory is set to Input/4C_cortex. However, your file path might be different, so make sure to set the working directory to the appropriate folder where your input files are stored. This folder should contain the data required for clustering and classification.
 
 ```{r}
 # Set up the working directory
@@ -652,7 +652,7 @@ p1 <- ggplot(long_barplot1, aes(x = Cluster, y = Intensity, fill = Superclass)) 
       )
 
 # Save the plot as a PDF
-ggsave(p1, filename = "../../Results/4C_brain/4C_cortex.pdf", width = 7, height = 4)
+ggsave(p1, filename = "../../Results/4C_cortex/4C_cortex.pdf", width = 7, height = 4)
 
 # Preview plot
 print(p1)
