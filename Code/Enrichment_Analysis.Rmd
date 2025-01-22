@@ -23,7 +23,7 @@ install_if_missing <- function(pkg) {
 
 packages <- c(
   "plyr", "tidyverse", "ggpubr", "readxl", "kableExtra", "ggplot2",
-  "dplyr", "stringr", "tidyr", "RColorBrewer", "forcats",
+  "dplyr", "stringr", "tidyr", "RColorBrewer", "forcats", "ggpattern",
   "gridExtra", "pwr", "broom", "gt", "glue", "knitr", "broom", "pwr", "pheatmap",
   "ComplexHeatmap", "circlize", "gridExtra", "circlize", "grid", "plotly", "webshot2", 
   "stringr", "ggalt", "ggpubr", "rstatix", "forcats", "gplots",
@@ -622,7 +622,6 @@ After correcting the natural abundance using the IsoCorrectoR package, we rename
 
 ```{r}
 # Read  and process result
-
 corrected_final_data <- read.csv("../../Results/4EF/Isocorrected_results/IsoCorrectoR_final_data_Corrected.csv")
 corrected_final_data$X <- gsub("_(\\d+)$", "_M\\1", corrected_final_data$X)
 names(corrected_final_data) <- names(final_data)
@@ -696,7 +695,7 @@ ggsave(final_data_2_heatmap, filename = "../../Results/4EF/final_data_heatmap.pd
 
 print(final_data_2_heatmap)
 
-#Barplot with Glutamate, Glutamine, and GABA for Figure 4F
+# Barplot with Glutamate, Glutamine, and GABA for Figure 4F
 final_data_2_barplot <- final_data_2 %>%
   separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
   filter(Metabolite_1 %in% c("Glutamate", "Glutamine", "GABA", "Fumarate"),
@@ -713,10 +712,10 @@ final_data_2_barplot <- final_data_2 %>%
   scale_fill_manual(values = c("dodgerblue1", "red")) +  # Color bars
   labs(
     x = "Brain Region",
-    y = "Avg Normalized Value",
+    y = expression(""^13 * C ~ "-Enrichment"),
     fill = "Isotopologue"
   ) +
-  scale_y_continuous(name = "C-13 Enrichment", expand = c(0, 0), breaks = seq(0, 1.2, 0.2)) +
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0, 1.2, 0.2)) +
   theme(
     axis.title.y = element_text(color = "black"),
     axis.title.y.right = element_text(color = "blue"),
@@ -730,3 +729,164 @@ ggsave(final_data_2_barplot, filename = "../../Results/4EF/final_data_barplot.pd
 
 print(final_data_2_barplot)
 ```
+
+Lastly, we validate the enrichment analysis from MSI data by comparing it with results obtained using the GC-MS method. The GC-MS measurements were performed using data from eight mice, allowing us to cross-reference isotopologue distributions and ensure consistency between the two methods.
+
+```{r}
+# Load and process GCMS data
+gcms_n8 <- read.csv("GCMS_n8/compound_summary_table.csv")
+gcms_data <- gcms_n8 %>%
+  mutate(
+    Tissue = case_when(
+      Tissue == "CB" ~ "Cereb",
+      Tissue == "CT" ~ "Cortex",
+      TRUE ~ Tissue
+    ),
+    compound_and_ion = str_replace_all(compound_and_ion, "Glu", "Glutamate"),
+    compound_and_ion = str_replace_all(compound_and_ion, "Gln", "Glutamine")
+  ) %>%
+  filter(Genotype == "Control") %>%
+  select(-X, -Genotype, -n)
+
+# Rename columns in GCMS
+names(gcms_data) <- c("Metabolite", "Tissue_Group", "GCMS_mean_value", "GCMS_std_deviation")
+
+# Process MSI data
+final_data_3 <- final_data_2 %>%
+  mutate(Metabolite = gsub("M", "", Metabolite))
+
+# Rename columns in MSI
+colnames(final_data_3)[colnames(final_data_3) == "Avg_Normalized_Value"] <- "MSI_mean_value"
+colnames(final_data_3)[colnames(final_data_3) == "StdDev_Normalized_Value"] <- "MSI_std_deviation"
+
+# Merge the datasets based on Tissue and Metabolite
+merged_data <- merge(final_data_3, gcms_data)
+
+# View the merged data
+print(merged_data)
+
+# Barplot with isotopologue colors and MSI vs GCMS patterns
+final_data_3_barplot <- merged_data %>%
+  separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
+  filter(
+    Metabolite_1 %in% c("Glutamate", "Glutamine", "GABA"),
+    Ion %in% c("0", "2"),
+    Tissue_Group %in% c("Cereb", "Cortex")
+  ) %>%
+  pivot_longer(
+    cols = c(MSI_mean_value, GCMS_mean_value),
+    names_to = "Source",
+    values_to = "Mean_Value"
+  ) %>%
+  mutate(
+    StdDev_Value = case_when(
+      Source == "MSI_mean_value" ~ MSI_std_deviation,
+      Source == "GCMS_mean_value" ~ GCMS_std_deviation
+    ),
+    Source = recode(Source, "MSI_mean_value" = "MSI", "GCMS_mean_value" = "GCMS"),
+    Pattern = if_else(Source == "MSI", "none", "stripe")
+  ) %>%
+  ggplot(aes(x = Tissue_Group, y = Mean_Value, fill = Ion, pattern = Pattern)) +
+  geom_bar_pattern(
+    stat = "identity",
+    colour = "black",
+    size = 0.5,
+    position = position_dodge(width = 1),
+    pattern_fill = "black",
+    pattern_spacing = 0.03,
+    pattern_angle = 45
+  ) +  # Bar plot with dodge for grouping
+  geom_errorbar(
+    aes(
+      ymin = Mean_Value - StdDev_Value,
+      ymax = Mean_Value + StdDev_Value
+    ),
+    position = position_dodge(width = 1),
+    width = 0.25
+  ) +  # Error bars
+  facet_wrap(~ Metabolite_1, scales = "free_y") +
+  scale_fill_manual(
+    values = c("0" = "dodgerblue1", "2" = "red"),
+    labels = c("M0", "M2"),
+    guide = guide_legend(override.aes = list(pattern = "none"))
+  ) + 
+  scale_pattern_manual(
+    values = c("none", "stripe"),
+    labels = c("MSI", "GC-MS"),
+    guide = guide_legend(
+      override.aes = list(fill = "black", alpha = 0.25, pattern_fill = "black")
+    )
+  ) +
+  labs(
+    x = "Brain Region",
+    y = expression(""^13 * C ~ "-Enrichment"),
+    fill = "Isotopologue",
+    pattern = "Method"
+  ) +
+  theme(
+    axis.title.y = element_text(color = "black"),
+    axis.text = element_text(size = 12, color = "black"),
+    axis.title = element_text(size = 12, face = "bold", color = "black"),
+    axis.text.x = element_text(angle = 45, hjust = 1, color = "black"),
+    legend.position = "top"
+  ) +
+  coord_cartesian(ylim = c(0, 1))
+
+ggsave(final_data_3_barplot, filename = "../../Results/4EF/MSI_vs_GCMS_barplot.pdf", height = 6, width = 6)
+
+print(final_data_3_barplot)
+```
+
+To assess the consistency of differences between MSI and GC-MS across metabolites, we calculated per-metabolite statistics and performed a pooled z-test for global significance.
+
+```{r}
+# Calculate p-value calculation using z-test
+p_values <- merged_data %>%
+  separate(Metabolite, into = c("Metabolite_1", "Ion"), sep = "_") %>%
+  filter(
+    Metabolite_1 %in% c("Glutamate", "Glutamine", "GABA"),
+    Ion %in% c("0", "2"),
+    Tissue_Group %in% c("Cereb", "Cortex")
+  ) %>%
+  mutate(
+    n_MSI = 3, 
+    n_GCMS = 8, 
+    z_value = abs(MSI_mean_value - GCMS_mean_value) /
+      sqrt((MSI_std_deviation^2 / n_MSI) + (GCMS_std_deviation^2 / n_GCMS)),
+    p_value = 2 * pnorm(-abs(z_value))  # Two-tailed p-value
+  ) %>%
+  mutate(
+    label = paste0("p = ", signif(p_value, digits = 2))
+  )
+
+# Calculate per-metabolite average statistics
+per_metabolite_summary <- p_values %>%
+    group_by(Metabolite_1) %>%
+    summarise(
+        avg_diff = mean(MSI_mean_value - GCMS_mean_value),
+        avg_p_value = mean(p_value),
+        significant = sum(p_value < 0.05) / n(),  # Proportion of significant comparisons
+        .groups = "drop"
+    )
+
+# Perform pooled z-test for global significance
+pooled_mean_diff <- mean(p_values$MSI_mean_value - p_values$GCMS_mean_value)
+pooled_std_error <- sqrt(mean(
+    (p_values$MSI_std_deviation^2 / p_values$n_MSI) +
+    (p_values$GCMS_std_deviation^2 / p_values$n_GCMS)
+))
+z_pooled <- pooled_mean_diff / pooled_std_error
+p_pooled <- 2 * (1 - pnorm(abs(z_pooled)))  # Two-tailed p-value
+
+# Print results
+cat("Per-Metabolite Summary:\n")
+print(per_metabolite_summary)
+
+cat("\nPooled Analysis:\n")
+cat("Pooled Mean Difference:", pooled_mean_diff, "\n")
+cat("Pooled Standard Error:", pooled_std_error, "\n")
+cat("Pooled Z-Value:", z_pooled, "\n")
+cat("Pooled P-Value:", p_pooled, "\n")
+```
+
+The comparison between MSI and GC-MS data reveals some differences, with specific metabolites showing varying levels of agreement. For GABA, the average difference (0.0401) and high average p-value (0.318) suggest minimal significant differences, with only 25% of comparisons being significant at p < 0.05. Glutamate exhibits a slightly higher average difference (0.0525) but no significant comparisons (average p-value = 0.287). In contrast, Glutamine shows a smaller average difference (-0.0197) but a lower average p-value (0.0434), indicating more consistent differences, with 75% of comparisons being significant. The pooled analysis across all metabolites shows a minor overall difference (mean difference = 0.0243) and a non-significant global p-value (0.6800), suggesting overall agreement between MSI and GC-MS data. This is consistent with the CV calculation, where MSI demonstrated moderate consistency. It is important to use an appropriate sample size (we recommend 5–6 mice) to increase confidence in the results. These findings support the reliability of MSI as a method, with GC-MS serving as a strong complementary validation tool, especially for metabolites like Glutamine that show more consistent differences.
