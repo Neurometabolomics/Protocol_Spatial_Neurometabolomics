@@ -19,7 +19,7 @@ You can view the analysis for each dataset by clicking on the links below:
 
 1. [Brain Region Cluster Analysis](https://numliap.github.io/STAR_Protocol/Brain_Region_Cluster_Analysis.html)
 2. [Cortex Region Cluster Analysis](https://numliap.github.io/STAR_Protocol/Cortex_Region_Cluster_Analysis.html)
-3. [Cerebellum Region Cluster Analysis](https://numliap.github.io/STAR_Protocol/Cerebellum_Region_Cluster_Analysis.html)
+3. [Cerebellum Region Cluster Analysis](https://numliap.github.io/STAR_Protocol/Cereb_Region_Cluster_Analysis.html)
 
 ### Enrichment Analysis (Figure 4E and 4F)
 
