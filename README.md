@@ -45,8 +45,4 @@ To replicate this analysis:
 
 1. Clone the repository:
    ```bash
-<<<<<<< HEAD
    git clone https://github.com/Numliap/STAR_Protocol.git
-=======
-   git clone https://github.com/Numliap/STAR_Protocol.git
->>>>>>> 03a549c2769d9f034204356a26ff4fd2bbf55c7c
