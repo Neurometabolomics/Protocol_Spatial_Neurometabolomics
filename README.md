@@ -17,13 +17,13 @@ You can view the analysis for each dataset by clicking on the links below:
 
 ### Cluster Analysis (Figure 4C)
 
-1. [Brain Region Cluster Analysis](Docs/Brain_Region_Cluster_Analysis.html)
-2. [Cortex Region Cluster Analysis](Docs/Cortex_Region_Cluster_Analysis.html)
-3. [Cerebellum Region Cluster Analysis](Docs/Cerebellum_Region_Cluster_Analysis.html)
+1. [Brain Region Cluster Analysis](docs/Brain_Region_Cluster_Analysis.html)
+2. [Cortex Region Cluster Analysis](docs/Cortex_Region_Cluster_Analysis.html)
+3. [Cerebellum Region Cluster Analysis](docs/Cerebellum_Region_Cluster_Analysis.html)
 
 ### Enrichment Analysis (Figure 4E and 4F)
 
-4. [Enrichment Analysis](Docs/Enrichment_Analysis.html)
+4. [Enrichment Analysis](docs/Enrichment_Analysis.html)
 
 ---
 
