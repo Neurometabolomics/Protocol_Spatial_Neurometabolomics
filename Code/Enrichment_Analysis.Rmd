@@ -452,7 +452,7 @@ getCV <- function(df, roi_list, na.rm = TRUE, outline.rm = TRUE, noise.rm = TRUE
 }
 
 tic_list <- mget(c("c5_ndata", "c9_ndata", "c10_ndata"))
-col_list <- c("Cortex", "Hippocampus", "Cerebellum")
+col_list <- c("Cortex", "Cerebellum")
 cv_df <- buildCVDataframe(tic_list, col_list)
 cv <- getCV(cv_df, col_list, na.rm = TRUE, outline.rm = TRUE, noise.rm = TRUE)
 
@@ -470,6 +470,8 @@ p <- ggplot(cv, aes(x = Region, y = CV, fill = Region)) +
         plot.title = element_text(hjust = 0.5))
 
 print(p)
+
+ggsave(p, filename = "../../Results/4EF/CV_plot.pdf", height = 6, width = 6)
 ```
 
 Here, we extract targeted metabolites from the TIC data using the filterMetaboliteTIC function, which matches specified ions—like GABA, glutamine, and glutamate isotopologues—to the closest masses in the dataset. After defining the isotopologue masses, we combine them into six_metabolites, our target list. Using this, we extract metabolite data from normalized TIC datasets for each group (c5_ndata, c9_ndata, c10_ndata) and merge the results into merged_final. This consolidated dataframe organizes the key metabolites for further analysis in a straightforward and reproducible way.
