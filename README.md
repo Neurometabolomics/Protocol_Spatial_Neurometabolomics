@@ -1,4 +1,4 @@
-# STAR Protocol: Cluster and Enrichment Analysis for Brain Region Data
+# Protocol for spatial metabolomics and isotope tracing in the mouse brain
 
 This repository contains the code, raw data, and analysis results for cluster and enrichment analyses of brain region datasets. The project involves comparing clusters across different brain regions (e.g., Cortex, Cerebellum) using mass spectrometry imaging (MSI) data and performing isotopologue enrichment analysis.
 
