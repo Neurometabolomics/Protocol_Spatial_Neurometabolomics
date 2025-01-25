@@ -17,13 +17,13 @@ You can view the analysis for each dataset by clicking on the links below:
 
 ### Cluster Analysis (Figure 4C)
 
-1. [Brain Region Cluster Analysis](https://numliap.github.io/STAR_Protocol/Brain_Region_Cluster_Analysis.html)
-2. [Cortex Region Cluster Analysis](https://numliap.github.io/STAR_Protocol/Cortex_Region_Cluster_Analysis.html)
-3. [Cerebellum Region Cluster Analysis](https://numliap.github.io/STAR_Protocol/Cereb_Region_Cluster_Analysis.html)
+1. [Brain Region Cluster Analysis](https://neurometabolomics.github.io/STAR_Protocol/Brain_Region_Cluster_Analysis.html)
+2. [Cortex Region Cluster Analysis](https://neurometabolomics.github.io/STAR_Protocol/Cortex_Region_Cluster_Analysis.html)
+3. [Cerebellum Region Cluster Analysis](https://neurometabolomics.github.io/STAR_Protocol/Cereb_Region_Cluster_Analysis.html)
 
 ### Enrichment Analysis (Figure 4E and 4F)
 
-4. [Enrichment Analysis](https://numliap.github.io/STAR_Protocol/Enrichment_Analysis.html)
+4. [Enrichment Analysis](https://neurometabolomics.github.io/STAR_Protocol/Enrichment_Analysis.html)
 
 ---
 
