@@ -8,8 +8,7 @@ editor_options:
 
 This is document to create cluster image on Figure 4C_cereb.
 
-To begin our analysis, we first need to make sure that all the required R packages are installed and ready to use. In this section, we use a custom function to check if each package is already installed, and if not, it will install it for you automatically. This step ensures that you have all the tools you need to smoothly run the rest of the code. It’s a simple but crucial setup to avoid any interruptions later on.
-
+To begin our analysis, we first need to make sure that all the required R packages are installed and ready to use. In this section, we use a custom function to check if each package is already installed, and if not, it will install it automatically. 
 ```{r setup, include=FALSE}
 # Install and upload the libraries of the packages we will use for the code below:
 
@@ -37,7 +36,7 @@ pacman::p_load(
 sapply(packages, install_if_missing)
 ```
 
-To ensure that all input and output files are correctly accessed and saved, we specify the working directory where our data is stored. For this analysis, the directory is set to Input/4C_cereb. However, your file path might be different, so make sure to set the working directory to the appropriate folder where your input files are stored. This folder should contain the data required for clustering and classification.
+To guarantee that all input and output files are correctly accessed and saved, we specify the working directory where the data is stored. For this analysis, the directory is set to Input/4C_cereb. However, since file paths may vary, it is important to set the working directory to the appropriate folder containing the input files required for clustering and classification.
 
 ```{r}
 # Set up the working directory
@@ -48,7 +47,7 @@ setwd("~/Documents/GitHub/STAR_Protocol/Input/4C_cereb")
 getwd()
 ```
 
-Now that the working directory is set, the next step is to load the required data files. For this analysis, we will read the cluster data and the data matrix. The cluster files follow a sequential naming format (e.g., ClusterNo.1.csv, ClusterNo.2.csv, etc.), while the data matrix file is named Data_Matrix.csv. Ensure these files are present in your working directory. Both file types are generated from IMAGEREVEAL, as described in manuscript part 6, step 10.
+The next step is to load the necessary data files, including the cluster data and the data matrix. The cluster files follow a sequential naming format (e.g., ClusterNo.1.csv, ClusterNo.2.csv, etc.), while the data matrix file is named Data_Matrix.csv. These files must be present in the working directory. Both file types are generated from IMAGEREVEAL, as detailed in manuscript part 6, step 10.
 
 ```{r}
 # Function to read cluster files and combine them into a single dataframe
@@ -82,8 +81,7 @@ head(cluster)
 head(data_matrix)
 ```
 
-Next, we extract the relevant metadata (m/z values and labels) from the data matrix to prepare for classification using the RefMet library. This involves creating a new dataframe, tag, with rounded m/z values for consistency.
-
+Next, we extract the relevant metadata (m/z values and labels) from the data matrix to prepare for classification using the RefMet library. This involves creating a new dataframe with rounded m/z values for consistency.
 
 ```{r}
 # Extract m/z values and labels from the data matrix
@@ -97,15 +95,13 @@ tag <- data.frame(
 head(tag)
 ```
 
-In this step, we use the RefMet database to classify metabolites based on their labels. This process involves sending the list of labels to the RefMet database via an API call and retrieving standardized metabolite classifications.
+In this step, we use the RefMet database to classify metabolites based on their labels. This process involves sending the list of labels to the RefMet database via an API call and retrieving standardized metabolite classifications. However, not all compounds will be classified due to mismatches between the Shimadzu library and RefMet or challenges in resolving isomers. To address this, we follow a structured approach:
 
-However, not all compounds will be classified due to mismatches between the Shimadzu library and RefMet or challenges in resolving isomers. To address this, we follow a structured approach:
-
-1.  **Pre-classify the compounds**: Query the RefMet database for initial classifications.
-2.  **Identify missing compounds**: Filter and inspect labels that could not be classified.
-3.  **Manually add missing compounds**: Supplement the dataset with curated data from the `../metabolite_reference` directory.
-4.  **Reclassify the dataset**: Use updated labels to refine classifications.
-5.  **Fill remaining classification gaps manually**: Address any residual missing data directly.
+1.  **Pre-classify the compounds**: query the RefMet database for initial classifications.
+2.  **Identify missing compounds**: filter and inspect labels that could not be classified.
+3.  **Manually add missing compounds**: supplement the dataset with curated data from the `../metabolite_reference` directory.
+4.  **Reclassify the dataset**: use updated labels to refine classifications.
+5.  **Fill remaining classification gaps manually**: address any residual missing data directly.
 
 ### Step 1: Pre-classify the compounds
 
@@ -458,7 +454,7 @@ head(filtered_refmet)
 
 ### Step 4: Reclassify the dataset
 
-With updated labels, we re-run the classification step to ensure improved accuracy.
+With updated labels, we re-run the classification step to achieve improved accuracy.
 
 ```{r}
 new_tag <- tag
@@ -498,7 +494,7 @@ head(filtered_refmet)
 
 ### Step 5: Fill remaining classification gaps manually
 
-Finally, we manually address any residual gaps by filling in missing classifications directly.Fill out the missing class
+We manually address any residual gaps by filling in missing classifications directly. 
 
 ```{r}
 new_refmet[19, 1] <- "[2-(trimethylazaniumyl)ethoxy]phosphonic acid"
@@ -540,15 +536,14 @@ filtered_refmet <- subset(new_refmet, is.na(Standardized.name))
 head(filtered_refmet)
 ```
 
-At this step, we save the final refined RefMet classification dataset to a CSV file. This serves as a clear checkpoint, ensuring the data is preserved and avoiding any mix-ups if you plan to analyze a different data matrix in the future.
-Add classification to new_tag
+At this stage, we save the final refined RefMet classification dataset as a CSV file, creating a clear checkpoint to preserve the data and prevent mix-ups if a different data matrix is analyzed in the future. Additionally, classification is added to new_tag.
 
 ```{r}
 # Save the reference for future use
 write.csv(new_refmet, file = "../../Results/4C_cereb/refmet_cereb.csv", row.names = FALSE)
 ```
 
-Now that we’ve refined the classifications with RefMet, it’s time to integrate this information into our dataset. In this step, we update the Label column in new_tag with the Standardized.name from the refined RefMet results and add hierarchical classifications, including Superclass, Mainclass, and Subclass. To ensure consistency, we clean these classification columns by removing unnecessary annotations (like text in square brackets) and trimming whitespace. Finally, we merge this enriched new_tag dataset with the cluster data, creating a comprehensive dataset that combines refined metabolite information and cluster associations, ready for further analysis.
+Now that the classifications have been refined with RefMet, we integrate this information into the dataset. In this step, the Label column in new_tag is updated with the Standardized.name from the refined RefMet results, and hierarchical classifications—Superclass, Mainclass, and Subclass—are added. To maintain consistency, these classification columns are cleaned by removing unnecessary annotations (such as text in square brackets) and trimming whitespace. Finally, the enriched new_tag dataset is merged with the cluster data, creating a comprehensive dataset that combines refined metabolite information with cluster associations, preparing it for further analysis.
 
 ```{r}
 # Add classifications to `new_tag`
@@ -574,9 +569,7 @@ merged_cluster <- merge(new_tag, cluster)
 head(merged_cluster)
 ```
 
-In this step, we prepare the data for visualization by summarizing it based on Superclass and Mainclass. We start by defining a set of unique colors to distinguish between superclasses in the plots. Afterward, we remove unnecessary columns and group the data by Superclass and Mainclass to calculate the total intensity for each group.
-
-The total ion current (TIC) is also computed as a percentage contribution of each group to the overall intensity. To simplify the data for visualization, minor classes within a superclass are labeled as “Other” if their contribution is minimal. Finally, we assign colors to each superclass and its main classes for consistent representation in the plots.
+In this step, we prepare the data for visualization by summarizing it based on Superclass and Mainclass. We start by defining a set of unique colors to distinguish between superclasses in the plots. Afterward, we remove unnecessary columns and group the data by Superclass and Mainclass to calculate the total intensity for each group. The total ion current (TIC) is also computed as a percentage contribution of each group to the overall intensity. To simplify the data for visualization, minor classes within a superclass are labeled as “Other” if their contribution is minimal. We also assign colors to each superclass and its main classes for consistent representation in the plots.
 
 ```{r}
 # Define unique colors for Superclasses
@@ -616,9 +609,7 @@ summarized_for_barplot <- tmp_df |>
 head(summarized_for_barplot)
 ```
 
-Next, we reshape the summarized data for plotting. The data is converted from wide format to long format, allowing us to map the Cluster and Intensity to the x- and y-axes, respectively. Each bar in the stacked bar plot represents the intensity of a superclass across different clusters.
-
-Using the ggplot2 package, we create a stacked bar plot where colors differentiate superclasses. The y-axis shows the intensity ratio, while the x-axis represents individual clusters. Finally, we save the plot as a PDF for documentation and display it for verification.
+Next, we reshape the summarized data for plotting. The data is converted from wide format to long format, allowing us to map the cluster and intensity to the x- and y-axes, respectively. Each bar in the stacked bar plot represents the intensity of a superclass across different clusters. Using the ggplot2 package, we create a stacked bar plot where colors differentiate superclasses. The y-axis shows the intensity ratio, while the x-axis represents individual clusters. Finally, we save the plot as a PDF file.
 
 ```{r}
 # Reshape data for plotting
