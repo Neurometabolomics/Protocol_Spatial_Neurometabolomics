@@ -1,13 +1,13 @@
 # Protocol for spatial metabolomics and isotope tracing in the mouse brain
 
-This repository contains the code, raw data, and analysis results for cluster and enrichment analyses of brain region datasets. The project involves comparing clusters across different brain regions (e.g., Cortex, Cerebellum) using mass spectrometry imaging (MSI) data and performing isotopologue enrichment analysis.
+This repository includes the code, raw data, and analysis results for cluster and enrichment analyses of brain region datasets. The project involves comparing clusters across different brain regions (e.g., cortex, cerebellum) using mass spectrometry imaging (MSI) data and performing isotopologue enrichment analysis.
 
 ## Project Structure
 
-- **Code**: Contains all R scripts and R Markdown files used for data processing and analysis.
-- **Input**: Contains the raw data files required for analysis.
-- **Results**: Contains the processed data and results generated from the analysis.
-- **Docs**: Contains the HTML documents generated from R Markdown, which provide detailed analysis and visualizations.
+- **Code**: includes all R scripts and R Markdown files used for data processing and analysis.
+- **Input**: contains the raw data files required for analysis.
+- **Results**: holds the processed data and results generated from the analysis.
+- **Docs**: contains the HTML documents generated from R Markdown, which provide detailed analysis and visualizations.
 
 ---
 
@@ -15,19 +15,19 @@ This repository contains the code, raw data, and analysis results for cluster an
 
 You can view the analysis for each dataset by clicking on the links below:
 
-### Cluster Analysis (Figure 4C)
+### Cluster analysis (Figure 4C)
 
-1. [Brain Region Cluster Analysis](https://neurometabolomics.github.io/STAR_Protocol/Brain_Region_Cluster_Analysis.html)
-2. [Cortex Region Cluster Analysis](https://neurometabolomics.github.io/STAR_Protocol/Cortex_Region_Cluster_Analysis.html)
-3. [Cerebellum Region Cluster Analysis](https://neurometabolomics.github.io/STAR_Protocol/Cereb_Region_Cluster_Analysis.html)
+1. [Brain Region Cluster Analysis](https://github.com/Neurometabolomics/Protocol_Spatial_Neurometabolomics/blob/main/Code/Brain_Region_Cluster_Analysis.Rmd)
+2. [Cortex Region Cluster Analysis](https://github.com/Neurometabolomics/Protocol_Spatial_Neurometabolomics/blob/main/Code/Cortex_Region_Cluster_Analysis.Rmd)
+3. [Cerebellum Region Cluster Analysis](https://github.com/Neurometabolomics/Protocol_Spatial_Neurometabolomics/blob/main/Code/Cereb_Region_Cluster_Analysis.Rmd)
 
-### Enrichment Analysis (Figure 4E and 4F)
+### Enrichment analysis (Figure 4E and 4F)
 
-4. [Enrichment Analysis](https://neurometabolomics.github.io/STAR_Protocol/Enrichment_Analysis.html)
+4. [Enrichment Analysis](https://github.com/Neurometabolomics/Protocol_Spatial_Neurometabolomics/blob/main/Code/Enrichment_Analysis.Rmd)
 
 ---
 
-## Input Data
+## Input data
 
 All raw data files used for this analysis are stored in the **Input** folder. Each dataset is organized into subfolders, such as `Input/4C_brain`, for better clarity and accessibility.
 
