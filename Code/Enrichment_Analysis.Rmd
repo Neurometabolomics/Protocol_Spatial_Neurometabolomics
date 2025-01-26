@@ -6,9 +6,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-This is document describes the proces of creating heatmap and enrichment plot for Figure 4E and 4F.
+This is document describes the process of creating heatmap and enrichment plot for Figure 4E and 4F.
 
-To begin our analysis, we first need to make sure that all the required R packages are installed and ready to use. In this section, we use a custom function to check if each package is already installed, and if not, it will install it for you automatically. This step ensures that you have all the tools you need to smoothly run the rest of the code. It’s a simple but crucial setup to avoid any interruptions later on.
+To begin our analysis, we first need to make sure that all the required R packages are installed and ready to use. In this section, we use a custom function to check if each package is already installed, and if not, it will install it automatically.
 
 ```{r setup, include=FALSE}
 #1) Install and upload the libraries of the packages we will use for the code below:
@@ -53,7 +53,7 @@ setwd("~/Documents/GitHub/STAR_Protocol/Input/4EF")
 getwd()
 ```
 
-For importing and processing MSI data, we work with datasets for mouse controls 5, 9, and 10. These files are in ImzML format, and due to their large size, we’ve provided preprocessed .RData files in the Input/4EF folder. The steps for importing, processing, and segmenting these files are outlined below but commented out to avoid unnecessary reprocessing. Instead, pre-segmented files will be used, and large segmentation results are split into manageable chunks to facilitate storage and analysis.
+For importing and processing MSI data, we work with datasets for mouse controls 5, 9, and 10. These files are in ImzML format, and due to their large size, we have provided preprocessed .RData files in the Input/4EF folder. The steps for importing, processing, and segmenting these files are outlined below but commented out to avoid unnecessary reprocessing. Instead, pre-segmented files will be used, and large segmentation results are split into manageable chunks to facilitate storage and analysis.
 
 ```{r}
 # File splitting function using saveResultsListBinarySplit
@@ -239,7 +239,7 @@ c10_cereb <- fillHull(getSegmentROI(c10_ssc, cluster = 4, select_classes = c(10,
 c10_cereb <- c10_cereb > 0
 ```
 
-Let’s take a look at what the ROIs look like before we proceed to ensure they are reasonable. These ROIs were delineated using chemical segmentation, but you can also manually draw them yourself using Cardinal’s ROI tools if needed. The viewROIs function combines the logical images and displays them in a 2x2 grid using EBImage’s display() function for easy visualization and verification.
+Here, we look at the ROIs. These ROIs were delineated using chemical segmentation, but it can also be manually drawn using Cardinal’s ROI tools if needed. The viewROIs function combines the logical images and displays them in a 2x2 grid using EBImage’s display() function for easy visualization and verification.
 
 ```{r}
 # Function to display images in a 2x2 grid
@@ -313,7 +313,7 @@ c10_cortex <- matchSize(c10_cortex, c10_mse_proc)
 c10_hippo <- matchSize(c10_hippo, c10_mse_proc)
 ```
 
-Once the ROIs are resized, they are reassigned to the MSI objects using the assignROI function, which maps each ROI to its corresponding dataset. This step ensures that subsequent analyses focus only on the selected regions.
+Once the ROIs are resized, they are reassigned to the MSI objects using the assignROI function, which maps each ROI to its corresponding dataset. This step guarantees that subsequent analyses focus only on the selected regions.
 
 ```{r}
 # Function to assign ROI to the MSI object
@@ -341,7 +341,7 @@ c10_roi_list <- mget(c10_rois)
 c10_mse_proc <- assignROI(c10_mse_proc, c10_roi_list)
 ```
 
-Next, we extract the Total Ion Count (TIC) for each ROI. The getROITIC function allows us to calculate the TIC, either normalized to the number of pixels in the ROI or as the raw sum. This step helps in understanding the signal intensity distribution across different regions.
+Next, we extract the total ion count (TIC) for each ROI. The getROITIC function allows us to calculate the TIC, either normalized to the number of pixels in the ROI or as the raw sum. This step helps in understanding the signal intensity distribution across different regions.
 
 ```{r}
 # Function to extract TIC for each ROI
@@ -370,7 +370,7 @@ c9_ndata <- getROITIC(c9_mse_proc, c9_roi_list, normalize = TRUE)
 c10_ndata <- getROITIC(c10_mse_proc, c10_roi_list, normalize = TRUE)
 ```
 
-To evaluate the reproducibility of this method and address concerns about variability, we calculate the coefficient of variation (CV) across the ROIs. 
+To evaluate the reproducibility of this method, we calculate the coefficient of variation (CV) across the ROIs from different biological samples. 
 
 ```{r}
 # Function to build CV data frame from TIC table
@@ -541,7 +541,7 @@ c10_6mets <- filterMetaboliteTIC(c10_ndata, six_metabolites)
 final_data <- merge(merge(c5_6mets, c9_6mets), c10_6mets)
 ```
 
-To account for natural isotope abundances and tracer enrichment effects, we use the IsocorrectoR package. This step prepares input files (measurement, molecule, and element) necessary for isotope correction. The prepIsocoR function formats the data for IsocorrectoR by renaming columns and rows in the measurement file, defining the isotopologue structure in the molecule file, and specifying isotope abundances and tracer properties in the element file. These files are then used with the IsoCorrection function to generate corrected data. The corrected results are saved in a specified output directory for downstream analysis.
+To account for natural isotope abundances, we use the IsocorrectoR package. This step prepares input files (measurement, molecule, and element) necessary for isotope correction. The prepIsocoR function formats the data for IsocorrectoR by renaming columns and rows in the measurement file, defining the isotopologue structure in the molecule file, and specifying isotope abundances and tracer properties in the element file. These files are then used with the IsoCorrection function to generate 13C corrected data. The results are saved in a specified output directory for downstream analysis.
 
 ```{r}
 # Function to prepare and correct natural abundance using IsocorrectoR
@@ -620,7 +620,7 @@ IsoCorrection(
 )
 ```
 
-After correcting the natural abundance using the IsoCorrectoR package, we rename the output for traceability. From the corrected results, we prepare a heatmap and bar plot to visualize the distribution and enrichment of metabolites across tissues.
+After correcting for natural 13C abundance, we rename the output for traceability. From the corrected results, we prepare a heatmap and barplot to visualize the distribution and enrichment of metabolites across tissues.
 
 ```{r}
 # Read  and process result
@@ -732,7 +732,7 @@ ggsave(final_data_2_barplot, filename = "../../Results/4EF/final_data_barplot.pd
 print(final_data_2_barplot)
 ```
 
-Lastly, we validate the enrichment analysis from MSI data by comparing it with results obtained using the GC-MS method. The GC-MS measurements were performed using data from eight mice, allowing us to cross-reference isotopologue distributions and ensure consistency between the two methods.
+Lastly, we validate the enrichment analysis from MSI data by comparing it with results obtained using the GC-MS method. The GC-MS measurements were performed using data from age-matched mice (P21, N=8), allowing us to cross-reference isotopologue distributions and ensure consistency between the two methods.
 
 ```{r}
 # Load and process GCMS data
@@ -890,5 +890,3 @@ cat("Pooled Standard Error:", pooled_std_error, "\n")
 cat("Pooled Z-Value:", z_pooled, "\n")
 cat("Pooled P-Value:", p_pooled, "\n")
 ```
-
-The comparison between MSI and GC-MS data reveals some differences, with specific metabolites showing varying levels of agreement. For GABA, the average difference (0.0401) and high average p-value (0.318) suggest minimal significant differences, with only 25% of comparisons being significant at p < 0.05. Glutamate exhibits a slightly higher average difference (0.0525) but no significant comparisons (average p-value = 0.287). In contrast, Glutamine shows a smaller average difference (-0.0197) but a lower average p-value (0.0434), indicating more consistent differences, with 75% of comparisons being significant. The pooled analysis across all metabolites shows a minor overall difference (mean difference = 0.0243) and a non-significant global p-value (0.6800), suggesting overall agreement between MSI and GC-MS data. This is consistent with the CV calculation, where MSI demonstrated moderate consistency. It is important to use an appropriate sample size (we recommend 5–6 mice) to increase confidence in the results. These findings support the reliability of MSI as a method, with GC-MS serving as a strong complementary validation tool, especially for metabolites like Glutamine that show more consistent differences.
